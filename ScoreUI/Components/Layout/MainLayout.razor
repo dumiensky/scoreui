@@ -17,7 +17,14 @@
 </MudLayout>
 
 <div id="blazor-error-ui">
-	An unhandled error has occurred.
-	<a href="" class="reload">Reload</a>
-	<a class="dismiss">🗙</a>
+	<MudAlert Severity="Severity.Error" Variant="Variant.Filled">
+		<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+			<MudText>
+				Wystąpił nieoczekiwany błąd.
+			</MudText>
+			<MudButton Href="/" Variant="Variant.Filled" Color="Color.Dark" StartIcon="@Icons.Material.Filled.Refresh">
+				Załaduj ponownie aplikację.
+			</MudButton>
+		</MudStack>
+	</MudAlert>
 </div>
