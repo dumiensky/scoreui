@@ -1,0 +1,35 @@
+﻿@using ScoreUI.Models.Consts
+@attribute [Route(Urls.Home)]
+
+<PageTitle>ScoreUI</PageTitle>
+
+<MudGrid>
+	<MudItem xs="12" md="1" lg="2" xl="3">
+		
+	</MudItem> 
+	<MudItem xs="12" md="10" lg="8" xl="6">
+		<MudPaper Class="ma-3 pa-3">
+			<MudStack Justify="Justify.Center">
+				<MudImage Alt="ScoreUI Logo" Src="/ScoreUI_logo.png" Height="200" ObjectFit="ObjectFit.Contain" />
+			</MudStack>
+			<MudGrid Spacing="3" Class="my-3">
+				<MudItem xs="12" lg="6">
+					<MudButton FullWidth Variant="Variant.Filled" Color="Color.Success">
+						Stwórz turniej
+					</MudButton>
+				</MudItem>
+				<MudItem xs="12" lg="6">
+					<MudButton FullWidth Variant="Variant.Filled" Color="Color.Info">
+						Oceniaj pojedynczy mecz
+					</MudButton>
+				</MudItem>
+			</MudGrid>
+			<MudText Typo="Typo.caption" Class="d-block mt-10">
+				ScoreUI to narzędzie pozwalające śledzić na żywo wyniki turniejów i pojedynczych rozgrywek, które udostępnia widoki do prowadzenia transmisji na żywo z tych wydarzeń. Dzięki dedykowanym widokom, Twoje rozgrywki staną się bardziej profesjonalne i ludzie będą chętniej je oglądać
+			</MudText>
+		</MudPaper>
+	</MudItem>
+	<MudItem xs="12" md="1" lg="2" xl="3">
+
+	</MudItem>
+</MudGrid>
