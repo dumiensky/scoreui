@@ -20,6 +20,10 @@ public class TournamentSettings
 	public List<Type> AllowedMatchTypes { get; set; } = new();
 
 	public SimpleMatchSettings SimpleMatch { get; set; } = new();
+
+	public DualPointsMatchSettings DualPointsMatch { get; set; } = new();
+
+	public MultiDuelMatchSettings MultiDuelMatch { get; set; } = new();
 }
 
 public abstract class MatchSettings

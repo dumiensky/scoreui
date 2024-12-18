@@ -1,0 +1,223 @@
+@using ScoreUI.Models.Consts
+@using ScoreUI.Models.Entities
+@attribute [Route(Urls.Tournaments.Create)]
+
+<div class="pa-3 d-flex justify-center">
+	<MudPaper Style="width: 100%; max-width: 800px;">
+		<div class="gray lighten-3 pa-3">
+			<MudText Typo="Typo.h5" Align="Align.Center">
+				Kreator turnieju
+			</MudText>
+			<MudStack Row Class="ma-3">
+				<MudButton
+					FullWidth
+					StartIcon="@Icons.Material.Filled.ChevronLeft"
+					Disabled="_currentPage == _pages.First()"
+					OnClick="() => _currentPage = _pages[_pages.IndexOf(_currentPage) - 1]">
+					Poprzednia
+				</MudButton>
+				<MudButton
+					FullWidth
+					EndIcon="@Icons.Material.Filled.ChevronRight"
+					Disabled="_currentPage == _pages.Last() || _currentPage.Validator()"
+					OnClick="() => _currentPage = _pages[_pages.IndexOf(_currentPage) + 1]">
+					Następna
+				</MudButton>
+			</MudStack>
+		</div>
+		<div class="pa-3">
+			@switch (_currentPage.Value)
+			{
+				case CreatorPage.Info:
+
+					<MudTextField
+						@bind-Value="_tournament.Name"
+						Label="Nazwa turnieju"
+						Variant="Variant.Outlined"
+						Class="my-3"
+						Required
+						RequiredError="Nazwa turnieju jest wymagana"
+						Immediate />
+
+					<MudTextField
+						@bind-Value="_tournament.ShortName"
+						Label="Krótka nazwa turnieju"
+						Variant="Variant.Outlined"
+						Class="my-3" />
+
+					break;
+
+				case CreatorPage.MatchTypes:
+
+					<MudText>
+						Dozwolone typy meczy
+					</MudText>
+
+					<MudCheckBox
+						T="bool"
+						Class="mt-3"
+						Value="@_tournament.Settings.AllowedMatchTypes.Contains(typeof(SimpleMatch))"
+						Label="Mecz prosty"
+						ValueChanged="e => CheckChanged(_tournament.Settings.AllowedMatchTypes, typeof(SimpleMatch), e)" />
+					<MudText Typo="Typo.body2">
+						Mecz prosty, punktowany pojedynczo dla każdego uczestnika
+					</MudText>
+
+					<MudCheckBox
+						T="bool"
+						Class="mt-3"
+						Value="@_tournament.Settings.AllowedMatchTypes.Contains(typeof(DualPointsMatch))"
+						Label="Mecz podwójnie punktowany"
+						ValueChanged="e => CheckChanged(_tournament.Settings.AllowedMatchTypes, typeof(DualPointsMatch), e)" />
+					<MudText Typo="Typo.body2">
+						Mecz punktowany na punkty główne i podrzędne
+					</MudText>
+
+					<MudCheckBox
+						T="bool"
+						Class="mt-3"
+						Value="@_tournament.Settings.AllowedMatchTypes.Contains(typeof(MultiDuelMatch))"
+						Label="Mecz wielopojedynkowy"
+						ValueChanged="e => CheckChanged(_tournament.Settings.AllowedMatchTypes, typeof(MultiDuelMatch), e)" />
+					<MudText Typo="Typo.body2">
+						Mecz składający się z wielu prostych pojedynków
+					</MudText>
+
+					break;
+					
+				case CreatorPage.MatchSettings:
+
+					if (_tournament.Settings.AllowedMatchTypes.Contains(typeof(SimpleMatch)))
+					{
+						<div class="gray lighten-5 pa-3 my-3 rounded">
+							<MudText>
+								Ustawienia <strong>Meczu prostego</strong>
+							</MudText>
+							<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.IsTimed" Label="Mierzyć czas?" />
+							@if (_tournament.Settings.SimpleMatch.IsTimed)
+							{
+								<MudTimePicker @bind-Value="_tournament.Settings.SimpleMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
+								<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
+								<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.CountTimerDown" Label="Odliczać czas w dół?" />
+							}
+						</div>
+					}
+					
+					if (_tournament.Settings.AllowedMatchTypes.Contains(typeof(DualPointsMatch)))
+					{
+						<div class="gray lighten-5 pa-3 my-3 rounded">
+							<MudText>
+								Ustawienia <strong>Meczu podwójnie punktowanego</strong>
+							</MudText>
+							<MudCheckBox @bind-Value="_tournament.Settings.DualPointsMatch.IsTimed" Label="Mierzyć czas?" />
+							@if (_tournament.Settings.DualPointsMatch.IsTimed)
+							{
+								<MudTimePicker @bind-Value="_tournament.Settings.DualPointsMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
+								<MudCheckBox @bind-Value="_tournament.Settings.DualPointsMatch.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
+								<MudCheckBox @bind-Value="_tournament.Settings.DualPointsMatch.CountTimerDown" Label="Odliczać czas w dół?" />
+							}
+							<MudTextField @bind-Value="_tournament.Settings.DualPointsMatch.ScoreAName" Label="Nazwa punktów głównych" Class="ml-4" Variant="Variant.Outlined" />
+							<MudTextField @bind-Value="_tournament.Settings.DualPointsMatch.ScoreBName" Label="Nazwa punktów podrzędnych" Class="ml-4" Variant="Variant.Outlined" />
+						</div>
+					}
+					
+					if (_tournament.Settings.AllowedMatchTypes.Contains(typeof(MultiDuelMatch)))
+					{
+						<div class="gray lighten-5 pa-3 my-3 rounded">
+							<MudText>
+								Ustawienia <strong>Meczu wielopojedynkowego</strong>
+							</MudText>
+							<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.IsTimed" Label="Mierzyć czas?" />
+							@if (_tournament.Settings.MultiDuelMatch.IsTimed)
+							{
+								<MudTimePicker @bind-Value="_tournament.Settings.MultiDuelMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
+								<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
+								<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.CountTimerDown" Label="Odliczać czas w dół?" />
+								<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.ResetTimeOnNewMatch" Label="Resetować czas podczas zmiany pojedynku?" />
+							}
+							<MudNumericField @bind-Value="_tournament.Settings.MultiDuelMatch.MinDuels" Min="1" Max="99" Label="Minimalna ilość pojedynków" Class="ml-4" Variant="Variant.Outlined" />
+							<MudNumericField @bind-Value="_tournament.Settings.MultiDuelMatch.MaxDuels" Min="1" Max="99" Label="Maksymalna ilość pojedynków" Class="ml-4" Variant="Variant.Outlined" />
+						</div>
+					}
+					
+					break;
+					
+				case CreatorPage.Final:
+					
+					<MudStack Row AlignItems="AlignItems.Center" Justify="Justify.Center" Class="mt-5">
+						<MudIcon Icon="@Icons.Material.Filled.Check" />
+						<MudText Color="Color.Success">
+							<strong>Wszystko gotowe!</strong>
+						</MudText>
+					</MudStack>
+					
+					<MudText>
+						Zaraz przeniesiemy Cię na stronę turnieju, gdzie będziesz mógł dodać uczestników i stworzyć mecze
+					</MudText>
+					
+					<MudButton Color="Color.Success" Variant="Variant.Filled" FullWidth OnClick="Submit" Class="mt-10 mb-5">
+						Zatwierdź
+					</MudButton>
+					
+					break;
+			}
+		</div>
+	</MudPaper>
+</div>
+
+@code {
+
+	readonly Tournament _tournament = new()
+	{
+		Name = string.Empty
+	};
+
+	List<Page> _pages = [];
+	Page _currentPage = default!;
+
+	protected override void OnParametersSet()
+	{
+		_pages =
+		[
+			new(CreatorPage.Info, () => string.IsNullOrWhiteSpace(_tournament.Name)),
+			new(CreatorPage.MatchTypes, () => !_tournament.Settings.AllowedMatchTypes.Any()),
+			new(CreatorPage.MatchSettings, () => false),
+			new(CreatorPage.Final, () => false)
+		];
+		_currentPage = _pages[0];
+	}
+
+	static void CheckChanged<T>(ICollection<T> values, T value, bool e)
+	{
+		if (e)
+		{
+			if (!values.Contains(value))
+			{
+				values.Add(value);
+			}
+		}
+		else
+		{
+			if (values.Contains(value))
+			{
+				values.Remove(value);
+			}
+		}
+	}
+
+	enum CreatorPage
+	{
+		Info,
+		MatchTypes,
+		MatchSettings,
+		Final
+	}
+
+	record Page(CreatorPage Value, Func<bool> Validator);
+
+	Task Submit()
+	{
+		throw new NotImplementedException();
+	}
+
+}
