@@ -22,6 +22,10 @@ public class TournamentSettings
 	public DualPointsMatchSettings DualPointsMatch { get; set; } = new();
 
 	public MultiDuelMatchSettings MultiDuelMatch { get; set; } = new();
+	
+	public string? Alias { get; set; }
+	
+	public string? Key { get; set; }
 }
 
 public abstract class MatchSettings

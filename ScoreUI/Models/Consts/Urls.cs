@@ -9,8 +9,10 @@ public static class Urls
 	{
 		const string Index = "/tournaments";
 		public const string Create = Index + "/create";
-		public const string Details = Index + "/{TournamentId:guid}";
+		public const string ManageId = Index + "/{TournamentId:guid}";
+		public const string ManageAlias = Index + "/{TournamentAlias}";
 
-		public static string GetDetails(Guid tournamentId) => $"{Index}/{tournamentId}";
+		public static string GetManageId(Guid tournamentId) => $"{Index}/{tournamentId}";
+		public static string GetManageAlias(string alias) => $"{Index}/{alias}";
 	}
 }

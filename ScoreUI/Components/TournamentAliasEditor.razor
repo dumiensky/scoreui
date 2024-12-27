@@ -1,0 +1,69 @@
+@using ScoreUI.Services.Interfaces
+@inject ITournamentService _tournamentService
+
+<MudTextField
+	Variant="Variant.Outlined"
+	Label="Alias turnieju"
+	Value="_editorValue"
+	ValueChanged="(string e) => Callback(e)"
+	AdornmentIcon="@_icon"
+	Adornment="Adornment.End"
+	Immediate
+	DebounceInterval="200" />
+
+@if (_error is not null)
+{
+	<MudText Typo="Typo.caption" Color="Color.Error">
+		@_error
+	</MudText>
+}
+
+@code {
+	
+	[Parameter]
+	public string? Value { get; set; }
+	
+	[Parameter]
+	public EventCallback<string?> ValueChanged { get; set; }
+
+	string? _editorValue, _error, _icon;
+
+	protected override void OnParametersSet()
+	{
+		_editorValue = Value;
+	}
+
+	async Task Callback(string e)
+	{
+		if (string.IsNullOrWhiteSpace(e))
+		{
+			_editorValue = null;
+			_error = null;
+			_icon = null;
+			await ValueChanged.InvokeAsync(null);
+		}
+		else if (e.Length <= 3)
+		{
+			_editorValue = null;
+			_error = "Minimalna długość aliasu to 4 znaki.";
+			_icon = Icons.Material.Filled.Error;
+			await ValueChanged.InvokeAsync(null);
+		}
+		else if (await _tournamentService.IsAliasFree(e))
+		{
+			var alias = e.ToLower();
+			_editorValue = alias;
+			_error = null;
+			_icon = Icons.Material.Filled.Check;
+			await ValueChanged.InvokeAsync(alias);
+		}
+		else
+		{
+			_editorValue = null;
+			_error = "Ten alias nie może być ustawiony";
+			_icon = Icons.Material.Filled.Error;
+			await ValueChanged.InvokeAsync(null);
+		}
+	}
+
+}

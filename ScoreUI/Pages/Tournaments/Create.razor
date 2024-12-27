@@ -97,7 +97,7 @@
 							<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.IsTimed" Label="Mierzyć czas?" />
 							@if (_tournament.Settings.SimpleMatch.IsTimed)
 							{
-								<MudTimePicker @bind-Value="_tournament.Settings.SimpleMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
+								<MudTimePicker @bind-Time="_tournament.Settings.SimpleMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
 								<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
 								<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.CountTimerDown" Label="Odliczać czas w dół?" />
 							}
@@ -113,7 +113,7 @@
 							<MudCheckBox @bind-Value="_tournament.Settings.DualPointsMatch.IsTimed" Label="Mierzyć czas?" />
 							@if (_tournament.Settings.DualPointsMatch.IsTimed)
 							{
-								<MudTimePicker @bind-Value="_tournament.Settings.DualPointsMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
+								<MudTimePicker @bind-Time="_tournament.Settings.DualPointsMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
 								<MudCheckBox @bind-Value="_tournament.Settings.DualPointsMatch.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
 								<MudCheckBox @bind-Value="_tournament.Settings.DualPointsMatch.CountTimerDown" Label="Odliczać czas w dół?" />
 							}
@@ -131,7 +131,7 @@
 							<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.IsTimed" Label="Mierzyć czas?" />
 							@if (_tournament.Settings.MultiDuelMatch.IsTimed)
 							{
-								<MudTimePicker @bind-Value="_tournament.Settings.MultiDuelMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
+								<MudTimePicker @bind-Time="_tournament.Settings.MultiDuelMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
 								<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
 								<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.CountTimerDown" Label="Odliczać czas w dół?" />
 								<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.ResetTimeOnNewMatch" Label="Resetować czas podczas zmiany pojedynku?" />
@@ -141,6 +141,26 @@
 						</div>
 					}
 					
+					break;
+					
+				case CreatorPage.AccessOptions:
+					
+					<MudAlert Class="my-3" Severity="Severity.Info" Variant="Variant.Filled" Dense NoIcon>
+						Ustaw alias turnieju, jeżeli chcesz chcesz móc szybko do niego wrócić
+					</MudAlert>
+					
+					<TournamentAliasEditor @bind-Value="_tournament.Settings.Alias" />
+					
+					<MudAlert Class="my-3" Severity="Severity.Info" Variant="Variant.Filled" Dense NoIcon>
+						Ustaw klucz dostępu do turnieju, jeżeli chcesz zabezpieczyć do niego dostęp
+					</MudAlert>
+					
+					<MudTextField
+						@bind-Value="_tournament.Settings.Key"
+						Label="Klucz dostępu do turnieju"
+						Variant="Variant.Outlined"
+						Class="my-3" />
+
 					break;
 					
 				case CreatorPage.Final:
@@ -183,6 +203,7 @@
 			new(CreatorPage.Info, () => string.IsNullOrWhiteSpace(_tournament.Name)),
 			new(CreatorPage.MatchTypes, () => (_tournament.Settings.SimpleMatch.IsEnabled | _tournament.Settings.DualPointsMatch.IsEnabled | _tournament.Settings.MultiDuelMatch.IsEnabled) == false),
 			new(CreatorPage.MatchSettings, () => false),
+			new(CreatorPage.AccessOptions, () => false),
 			new(CreatorPage.Final, () => false)
 		];
 		_currentPage = _pages[0];
@@ -193,6 +214,7 @@
 		Info,
 		MatchTypes,
 		MatchSettings,
+		AccessOptions,
 		Final
 	}
 
@@ -201,7 +223,7 @@
 	async Task Submit()
 	{
 		await _tournamentService.Create(_tournament);
-		_nav.NavigateTo(Urls.Tournaments.GetDetails(_tournament.Id));
+		_nav.NavigateTo(Urls.Tournaments.GetManageId(_tournament.Id));
 	}
 
 }

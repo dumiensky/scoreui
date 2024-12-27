@@ -1,9 +1,74 @@
 @using ScoreUI.Models.Entities
 
-<h3>Manage</h3>
-<h4>@Tournament.Name</h4>
+@switch (_accessState)
+{
+	case AccessState.PasswordPending:
+		
+		<MudText Typo="Typo.h4" Align="Align.Center">
+			Ten turniej jest zabezpieczony kluczem dostępu
+		</MudText>
+		
+		<MudTextField
+			@bind-Value="_key"
+			Variant="Variant.Outlined"
+			Class="my-3"
+			Label="Klucz dostępu"/>
+		
+		<MudButton
+			Variant="Variant.Filled"
+			Color="Color.Success"
+			Class="my-3"
+			OnClick="SubmitKey">
+			Zatwierdź
+		</MudButton>
+
+		break;
+		
+	case AccessState.AccessDenied:
+		
+		<MudAlert Severity="Severity.Error" Variant="Variant.Filled">
+			Odmowa dostępu
+		</MudAlert>
+		
+		break;
+		
+	case AccessState.AccessGranted:
+		
+		<h3>Manage</h3>
+		<h4>@Tournament.Name</h4>
+
+		break;
+}
 
 @code {
 	[Parameter, EditorRequired]
 	public required Tournament Tournament { get; set; }
+
+	string? _key;
+	AccessState _accessState = AccessState.PasswordPending;
+
+	protected override void OnInitialized()
+	{
+		if (string.IsNullOrEmpty(Tournament.Settings.Key))
+			_accessState = AccessState.AccessGranted;
+	}
+
+	void SubmitKey()
+	{
+		if (_key?.ToLower() == Tournament.Settings.Key)
+		{
+			_accessState = AccessState.AccessGranted;
+		}
+		else
+		{
+			_accessState = AccessState.AccessDenied;
+		}
+	}
+
+	enum AccessState
+	{
+		PasswordPending,
+		AccessDenied,
+		AccessGranted
+	}
 }
