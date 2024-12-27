@@ -17,13 +17,20 @@ public class Tournament : Entity
 
 public class TournamentSettings
 {
-	public List<Type> AllowedMatchTypes { get; set; } = new();
-
 	public SimpleMatchSettings SimpleMatch { get; set; } = new();
+
+	public DualPointsMatchSettings DualPointsMatch { get; set; } = new();
+
+	public MultiDuelMatchSettings MultiDuelMatch { get; set; } = new();
+	
+	public string? Alias { get; set; }
+	
+	public string? Key { get; set; }
 }
 
 public abstract class MatchSettings
 {
+	public bool IsEnabled { get; set; }
 	public bool IsTimed { get; set; }
 
 	public TimeSpan? MaxTime { get; set; }

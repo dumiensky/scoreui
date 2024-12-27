@@ -1,13 +1,23 @@
+using MongoDB.Wrapper;
+using MongoDB.Wrapper.Abstractions;
+using MongoDB.Wrapper.Settings;
 using MudBlazor.Services;
 using ScoreUI.Components;
+using ScoreUI.Services;
+using ScoreUI.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var mongoDbSettings = new MongoDbSettings();
+builder.Configuration.GetSection(nameof(mongoDbSettings)).Bind(mongoDbSettings);
 
 builder
 	.Services.AddRazorComponents()
 	.AddInteractiveServerComponents();
 
 builder.Services.AddMudServices();
+builder.Services.AddSingleton<IMongoDb>(new MongoDb(mongoDbSettings));
+builder.Services.AddTransient<ITournamentService, TournamentService>();
 
 var app = builder.Build();
 

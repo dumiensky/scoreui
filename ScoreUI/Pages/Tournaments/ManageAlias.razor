@@ -1,0 +1,37 @@
+@using ScoreUI.Models.Consts
+@using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
+@attribute [Route(Urls.Tournaments.ManageAlias)]
+
+@inject ITournamentService _tournamentService
+
+@if (!_loaded)
+{
+	<MudProgressCircular Indeterminate />
+}
+else if (_tournament is null)
+{
+	<ScoreUI.Pages.Tournaments.NotFound />
+}
+else
+{
+	<Manage Tournament="_tournament" />
+}
+
+@code {
+	[Parameter]
+	public string? TournamentAlias { get; set; }
+
+	Tournament? _tournament;
+	bool _loaded;
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (TournamentAlias is not null)
+		{
+			_tournament = await _tournamentService.FindByAlias(TournamentAlias);
+		}
+		_loaded = true;
+	}
+
+}

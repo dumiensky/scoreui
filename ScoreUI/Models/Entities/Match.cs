@@ -1,6 +1,13 @@
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Wrapper;
+
 namespace ScoreUI.Models.Entities;
 
-public abstract class Match
+[BsonKnownTypes(
+	typeof(SimpleMatch), 
+	typeof(DualPointsMatch), 
+	typeof(MultiDuelMatch))]
+public abstract class Match : Entity
 {
 	public Guid OneId { get; set; }
 	public Guid TwoId { get; set; }
