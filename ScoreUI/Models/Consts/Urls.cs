@@ -10,5 +10,7 @@ public static class Urls
 		const string Index = "/tournaments";
 		public const string Create = Index + "/create";
 		public const string Details = Index + "/{TournamentId:guid}";
+
+		public static string GetDetails(Guid tournamentId) => $"{Index}/{tournamentId}";
 	}
 }

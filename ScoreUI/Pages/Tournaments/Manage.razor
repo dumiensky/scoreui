@@ -1,0 +1,9 @@
+@using ScoreUI.Models.Entities
+
+<h3>Manage</h3>
+<h4>@Tournament.Name</h4>
+
+@code {
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+}

@@ -1,6 +1,10 @@
 @using ScoreUI.Models.Consts
 @using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
 @attribute [Route(Urls.Tournaments.Create)]
+
+@inject ITournamentService _tournamentService
+@inject NavigationManager _nav
 
 <div class="pa-3 d-flex justify-center">
 	<MudPaper Style="width: 100%; max-width: 800px;">
@@ -215,9 +219,10 @@
 
 	record Page(CreatorPage Value, Func<bool> Validator);
 
-	Task Submit()
+	async Task Submit()
 	{
-		throw new NotImplementedException();
+		await _tournamentService.Create(_tournament);
+		_nav.NavigateTo(Urls.Tournaments.GetDetails(_tournament.Id));
 	}
 
 }

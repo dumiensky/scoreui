@@ -1,0 +1,34 @@
+@using ScoreUI.Models.Consts
+@using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
+@attribute [Route(Urls.Tournaments.Details)]
+
+@inject ITournamentService _tournamentService
+
+@if (!_loaded)
+{
+	<MudProgressCircular Indeterminate />
+}
+else if (_tournament is null)
+{
+	<ScoreUI.Pages.Tournaments.NotFound />
+}
+else
+{
+	<Manage Tournament="_tournament" />
+}
+
+@code {
+	[Parameter]
+	public Guid TournamentId { get; set; }
+
+	Tournament? _tournament;
+	bool _loaded;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_tournament = await _tournamentService.Get(TournamentId);
+		_loaded = true;
+	}
+
+}
