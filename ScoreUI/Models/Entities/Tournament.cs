@@ -17,8 +17,6 @@ public class Tournament : Entity
 
 public class TournamentSettings
 {
-	public List<Type> AllowedMatchTypes { get; set; } = new();
-
 	public SimpleMatchSettings SimpleMatch { get; set; } = new();
 
 	public DualPointsMatchSettings DualPointsMatch { get; set; } = new();
@@ -28,6 +26,7 @@ public class TournamentSettings
 
 public abstract class MatchSettings
 {
+	public bool IsEnabled { get; set; }
 	public bool IsTimed { get; set; }
 
 	public TimeSpan? MaxTime { get; set; }

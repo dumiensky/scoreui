@@ -60,9 +60,8 @@
 					<MudCheckBox
 						T="bool"
 						Class="mt-3"
-						Value="@_tournament.Settings.AllowedMatchTypes.Contains(typeof(SimpleMatch))"
-						Label="Mecz prosty"
-						ValueChanged="e => CheckChanged(_tournament.Settings.AllowedMatchTypes, typeof(SimpleMatch), e)" />
+						@bind-Value="@_tournament.Settings.SimpleMatch.IsEnabled"
+						Label="Mecz prosty" />
 					<MudText Typo="Typo.body2">
 						Mecz prosty, punktowany pojedynczo dla każdego uczestnika
 					</MudText>
@@ -70,9 +69,8 @@
 					<MudCheckBox
 						T="bool"
 						Class="mt-3"
-						Value="@_tournament.Settings.AllowedMatchTypes.Contains(typeof(DualPointsMatch))"
-						Label="Mecz podwójnie punktowany"
-						ValueChanged="e => CheckChanged(_tournament.Settings.AllowedMatchTypes, typeof(DualPointsMatch), e)" />
+						@bind-Value="@_tournament.Settings.DualPointsMatch.IsEnabled"
+						Label="Mecz podwójnie punktowany" />
 					<MudText Typo="Typo.body2">
 						Mecz punktowany na punkty główne i podrzędne
 					</MudText>
@@ -80,9 +78,8 @@
 					<MudCheckBox
 						T="bool"
 						Class="mt-3"
-						Value="@_tournament.Settings.AllowedMatchTypes.Contains(typeof(MultiDuelMatch))"
-						Label="Mecz wielopojedynkowy"
-						ValueChanged="e => CheckChanged(_tournament.Settings.AllowedMatchTypes, typeof(MultiDuelMatch), e)" />
+						@bind-Value="@_tournament.Settings.MultiDuelMatch.IsEnabled"
+						Label="Mecz wielopojedynkowy" />
 					<MudText Typo="Typo.body2">
 						Mecz składający się z wielu prostych pojedynków
 					</MudText>
@@ -91,7 +88,7 @@
 					
 				case CreatorPage.MatchSettings:
 
-					if (_tournament.Settings.AllowedMatchTypes.Contains(typeof(SimpleMatch)))
+					if (_tournament.Settings.SimpleMatch.IsEnabled)
 					{
 						<div class="gray lighten-5 pa-3 my-3 rounded">
 							<MudText>
@@ -107,7 +104,7 @@
 						</div>
 					}
 					
-					if (_tournament.Settings.AllowedMatchTypes.Contains(typeof(DualPointsMatch)))
+					if (_tournament.Settings.DualPointsMatch.IsEnabled)
 					{
 						<div class="gray lighten-5 pa-3 my-3 rounded">
 							<MudText>
@@ -125,7 +122,7 @@
 						</div>
 					}
 					
-					if (_tournament.Settings.AllowedMatchTypes.Contains(typeof(MultiDuelMatch)))
+					if (_tournament.Settings.MultiDuelMatch.IsEnabled)
 					{
 						<div class="gray lighten-5 pa-3 my-3 rounded">
 							<MudText>
@@ -184,29 +181,11 @@
 		_pages =
 		[
 			new(CreatorPage.Info, () => string.IsNullOrWhiteSpace(_tournament.Name)),
-			new(CreatorPage.MatchTypes, () => !_tournament.Settings.AllowedMatchTypes.Any()),
+			new(CreatorPage.MatchTypes, () => (_tournament.Settings.SimpleMatch.IsEnabled | _tournament.Settings.DualPointsMatch.IsEnabled | _tournament.Settings.MultiDuelMatch.IsEnabled) == false),
 			new(CreatorPage.MatchSettings, () => false),
 			new(CreatorPage.Final, () => false)
 		];
 		_currentPage = _pages[0];
-	}
-
-	static void CheckChanged<T>(ICollection<T> values, T value, bool e)
-	{
-		if (e)
-		{
-			if (!values.Contains(value))
-			{
-				values.Add(value);
-			}
-		}
-		else
-		{
-			if (values.Contains(value))
-			{
-				values.Remove(value);
-			}
-		}
 	}
 
 	enum CreatorPage
