@@ -1,0 +1,54 @@
+@using ScoreUI.Models.Entities
+
+<MudPaper Class="my-3 pa-3 indigo lighten-5">
+	<MudText Typo="Typo.h3">
+		@Tournament.Name
+	</MudText>
+</MudPaper>
+
+<MudPaper Class="my-3 pa-3">
+	<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+		<MudText Typo="Typo.h6">
+			Uczestnicy
+		</MudText>
+		<MudButton Disabled Color="Color.Success" StartIcon="@Icons.Material.Filled.PersonAdd">
+			Dodaj Uczestnika
+		</MudButton>
+	</MudStack>
+	@if (Tournament.Participants.Any())
+	{
+	}
+	else
+	{
+		<MudAlert Severity="Severity.Info" Class="my-2">
+			Nie dodano żadnego uczestnika
+		</MudAlert>
+	}
+</MudPaper>
+
+<MudPaper Class="my-3 pa-3">
+	<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+		<MudText Typo="Typo.h6">
+			Pojedynki
+		</MudText>
+		<MudButton Disabled Color="Color.Success" StartIcon="@Icons.Material.Filled.Add">
+			Dodaj pojedynek
+		</MudButton>
+	</MudStack>
+	@if (Tournament.Matches.Any())
+	{
+	}
+	else
+	{
+		<MudAlert Severity="Severity.Info" Class="my-2">
+			Nie dodano żadnego pojedynku
+		</MudAlert>
+	}
+</MudPaper>
+
+@code {
+
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+
+}
