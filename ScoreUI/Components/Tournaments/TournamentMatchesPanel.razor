@@ -1,0 +1,28 @@
+@using ScoreUI.Models.Entities
+
+<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+	<MudText Typo="Typo.h6">
+		Pojedynki
+	</MudText>
+	<MudButton Disabled Color="Color.Success" StartIcon="@Icons.Material.Filled.Add">
+		Dodaj pojedynek
+	</MudButton>
+</MudStack>
+
+@if (Tournament.Matches.Any())
+{
+	
+}
+else
+{
+	<MudAlert Severity="Severity.Info" Class="my-2">
+		Nie dodano żadnego pojedynku
+	</MudAlert>
+}
+
+@code {
+
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+
+}
