@@ -19,7 +19,9 @@
 {
 	foreach (var match in Tournament.ActiveMatches)
 	{
-		<MatchDisplay Tournament="Tournament" Match="match" OnDelete="DeleteMatch" />
+		<div class="my-3">
+			<MatchDisplay Tournament="Tournament" Match="match" OnDelete="DeleteMatch" />
+		</div>
 	}
 }
 else

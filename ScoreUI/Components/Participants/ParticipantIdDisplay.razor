@@ -1,0 +1,22 @@
+@using ScoreUI.Models.Entities
+
+@if (_participant is not null)
+{
+	<ParticipantDisplay Participant="_participant" />
+}
+
+@code {
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required Guid Id { get; set; }
+
+	Participant? _participant;
+
+	protected override void OnParametersSet()
+	{
+		_participant = Tournament.Participants.FirstOrDefault(_ => _.Id == Id);
+	}
+
+}
