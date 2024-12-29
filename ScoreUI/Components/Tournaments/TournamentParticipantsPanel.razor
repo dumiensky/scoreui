@@ -19,7 +19,7 @@
 </MudStack>
 @if (Tournament.Participants.Any())
 {
-	<MudTable Items="Tournament.Participants.OrderBy(_ => _.Name)" Dense>
+	<MudTable Items="Tournament.ActiveParticipants.OrderBy(_ => _.Name)" Dense Elevation="0">
 		<RowTemplate>
 			<MudTd>
 				@context.Name
@@ -93,7 +93,7 @@ else
 
 	async Task DeleteParticipant(Participant context)
 	{
-		Tournament.Participants.Remove(context);
+		context.Deleted = true;
 
 		if (await _tournamentService.Update(Tournament))
 			_snack.Add("Usunięto uczestnika", Severity.Success);

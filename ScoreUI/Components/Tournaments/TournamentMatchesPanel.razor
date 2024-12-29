@@ -1,17 +1,26 @@
+@using ScoreUI.Components.Matches
 @using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
+
+@inject IDialogService _dialogService
+@inject ITournamentService _tournamentService
+@inject ISnackbar _snack
 
 <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
 	<MudText Typo="Typo.h6">
 		Pojedynki
 	</MudText>
-	<MudButton Disabled Color="Color.Success" StartIcon="@Icons.Material.Filled.Add">
+	<MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="AddMatch">
 		Dodaj pojedynek
 	</MudButton>
 </MudStack>
 
-@if (Tournament.Matches.Any())
+@if (Tournament.ActiveMatches.Any())
 {
-	
+	foreach (var match in Tournament.ActiveMatches)
+	{
+		<MatchDisplay Tournament="Tournament" Match="match" OnDelete="DeleteMatch" />
+	}
 }
 else
 {
@@ -24,5 +33,43 @@ else
 
 	[Parameter, EditorRequired]
 	public required Tournament Tournament { get; set; }
+	
+	async Task AddMatch()
+	{
+		var dialog = await _dialogService.ShowAsync<EditMatchDialog>("Dodaj pojedynek",
+			new DialogParameters<EditMatchDialog>()
+			{
+				{ _ => _.Tournament, Tournament }
+			});
+		var result = await dialog.Result;
+
+		if (result?.Data is EditMatchDialog.Data rData)
+		{
+			Match match = rData.MatchType switch
+			{
+				EditMatchDialog.MatchType.Simple => SimpleMatch.Create(rData.OneId, rData.TwoId, rData.DisplayText, rData.Comment),
+				EditMatchDialog.MatchType.DualPoints => DualPointsMatch.Create(rData.OneId, rData.TwoId, rData.DisplayText, rData.Comment),
+				EditMatchDialog.MatchType.MultiDuel => MultiDuelMatch.Create(rData.OneId, rData.TwoId, rData.DisplayText, rData.Comment),
+				_ => throw new("Unsupported match type")
+			};
+
+			Tournament.Matches.Add(match);
+
+			if (await _tournamentService.Update(Tournament))
+				_snack.Add("Dodano pojedynek", Severity.Success);
+
+			await InvokeAsync(StateHasChanged);
+		}
+	}
+
+	async Task DeleteMatch(Match context)
+	{
+		context.Deleted = true;
+
+		if (await _tournamentService.Update(Tournament))
+			_snack.Add("Usunięto pojedynek", Severity.Success);
+
+		await InvokeAsync(StateHasChanged);
+	}
 
 }

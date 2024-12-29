@@ -13,6 +13,10 @@ public class Tournament : Entity
 	public List<Match> Matches { get; set; } = new();
 
 	public TournamentSettings Settings { get; set; } = new();
+
+	public IEnumerable<Participant> ActiveParticipants => Participants.Where(_ => !_.Deleted);
+
+	public IEnumerable<Match> ActiveMatches => Matches.Where(_ => !_.Deleted);
 }
 
 public class TournamentSettings
