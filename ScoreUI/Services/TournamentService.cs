@@ -24,4 +24,9 @@ public class TournamentService(IMongoDb mongoDb) : ITournamentService
 
 		return !await mongoDb.Any<Tournament>(_ => _.Settings.Alias!.ToLower() == alias.ToLower());
 	}
+
+	public async Task<bool> Update(Tournament tournament)
+	{
+		return await mongoDb.Replace(tournament);
+	}
 }
