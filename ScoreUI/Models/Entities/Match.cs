@@ -11,6 +11,8 @@ public abstract class Match : Entity
 {
 	public Guid OneId { get; set; }
 	public Guid TwoId { get; set; }
+	public string? DisplayText { get; set; }
+	public string? Comment { get; set; }
 
 	public abstract Guid? GetWinnerId();
 }
@@ -26,6 +28,17 @@ public class SimpleMatch : Match
 			> 0 => OneId,
 			< 0 => TwoId,
 			_ => null
+		};
+
+	public static SimpleMatch Create(Guid oneId, Guid twoId, string? displayText, string? comment) =>
+		new()
+		{
+			Added = DateTimeOffset.Now,
+			Id = Guid.NewGuid(),
+			OneId = oneId,
+			TwoId = twoId,
+			DisplayText = displayText,
+			Comment = comment
 		};
 }
 
@@ -47,6 +60,17 @@ public class DualPointsMatch : Match
 				< 0 => TwoId,
 				_ => null
 			}
+		};
+
+	public static DualPointsMatch Create(Guid oneId, Guid twoId, string? displayText, string? comment) =>
+		new()
+		{
+			Added = DateTimeOffset.Now,
+			Id = Guid.NewGuid(),
+			OneId = oneId,
+			TwoId = twoId,
+			DisplayText = displayText,
+			Comment = comment
 		};
 }
 
@@ -81,4 +105,15 @@ public class MultiDuelMatch : Match
 				_ => null
 			};
 	}
+	
+	public static MultiDuelMatch Create(Guid oneId, Guid twoId, string? displayText, string? comment) =>
+		new()
+		{
+			Added = DateTimeOffset.Now,
+			Id = Guid.NewGuid(),
+			OneId = oneId,
+			TwoId = twoId,
+			DisplayText = displayText,
+			Comment = comment
+		};
 }

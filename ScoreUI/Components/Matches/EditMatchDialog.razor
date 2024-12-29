@@ -1,0 +1,92 @@
+@using ScoreUI.Components.Participants
+@using ScoreUI.Models.Entities
+<MudDialog>
+	<DialogContent>
+
+		<ParticipantSelector Tournament="Tournament" @bind-Value="_oneId" />
+		<ParticipantSelector Tournament="Tournament" @bind-Value="_twoId" />
+		
+		<MudRadioGroup @bind-Value="_matchType" Disabled="_disableMatchType">
+			@if (Tournament.Settings.SimpleMatch.IsEnabled)
+			{
+				<MudRadio T="MatchType?" Value="MatchType.Simple">
+					Mecz Prosty
+				</MudRadio>
+			}
+			@if (Tournament.Settings.DualPointsMatch.IsEnabled)
+			{
+				<MudRadio T="MatchType?" Value="MatchType.DualPoints">
+					Mecz Podwójnie punktowany
+				</MudRadio>
+			}
+			@if (Tournament.Settings.MultiDuelMatch.IsEnabled)
+			{
+				<MudRadio T="MatchType?" Value="MatchType.MultiDuel">
+					Mecz Wielopojedynkowy
+				</MudRadio>
+			}
+		</MudRadioGroup>
+		
+		<MudTextField @bind-Value="_displayText" Label="Nazwa pojedynku" />
+		<MudTextField @bind-Value="_comment" Label="Komentarz (prywatny)" />
+
+	</DialogContent>
+	<DialogActions>
+		<MudStack Row Justify="Justify.SpaceBetween">
+			<MudButton OnClick="Cancel">
+				Anuluj
+			</MudButton>
+			<MudButton OnClick="Submit" Color="Color.Success" Variant="Variant.Filled" 
+						Disabled="_oneId is null || _twoId is null || _matchType is null">
+				Zatwierdź
+			</MudButton>
+		</MudStack>
+	</DialogActions>
+</MudDialog>
+
+@code {
+	
+	[CascadingParameter]
+	public required MudDialogInstance Instance { get; set; }
+	
+	[Parameter]
+	public required Tournament Tournament { get; set; }
+	
+	[Parameter]
+	public Data? Values { get; set; }
+
+	Guid? _oneId, _twoId;
+	MatchType? _matchType;
+	bool _disableMatchType;
+	string? _displayText, _comment;
+	
+	protected override void OnParametersSet()
+	{
+		_oneId = Values?.OneId;
+		_twoId = Values?.TwoId;
+		_matchType = Values?.MatchType;
+		_disableMatchType = Values?.MatchType is not null;
+		_displayText = Values?.DisplayText;
+		_comment = Values?.Comment;
+	}
+	
+	void Submit()
+	{
+		if (_oneId is null || _twoId is null || _matchType is null)
+			return;
+		
+		Instance.Close(DialogResult.Ok(new Data(_oneId.Value, _twoId.Value, _displayText, _comment, _matchType.Value)));
+	}
+	
+	void Cancel() => Instance.Close(DialogResult.Cancel());
+
+	public record Data(Guid OneId, Guid TwoId, string? DisplayText, string? Comment, MatchType MatchType);
+
+	public enum MatchType
+	{
+		Simple,
+		DualPoints,
+		MultiDuel
+	}
+
+}

@@ -1,0 +1,37 @@
+@using ScoreUI.Models.Entities
+
+<MudSelect T="Guid?" Value="_value" ValueChanged="ValueHasChanged" Label="@Label">
+	@foreach (var value in Tournament.ActiveParticipants)
+	{
+		<MudSelectItem T="Guid?" Value="value.Id">
+			<ParticipantDisplay Participant="value" />
+		</MudSelectItem>
+	}
+</MudSelect>
+
+@code {
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+	
+	[Parameter]
+	public Guid? Value { get; set; }
+	
+	[Parameter]
+	public EventCallback<Guid?> ValueChanged { get; set; }
+	
+	[Parameter]
+	public string? Label { get; set; }
+
+	Guid? _value;
+
+	protected override void OnParametersSet()
+	{
+		_value = Value;
+	}
+
+	void ValueHasChanged(Guid? newValue)
+	{
+		_value = newValue;
+		ValueChanged.InvokeAsync(newValue);
+	}
+}

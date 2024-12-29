@@ -1,0 +1,104 @@
+@using ScoreUI.Components.Participants
+@using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
+
+@inject IDialogService _dialogService
+@inject ITournamentService _tournamentService
+@inject ISnackbar _snack
+
+<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+	<MudText Typo="Typo.h6">
+		Uczestnicy
+	</MudText>
+	<MudButton
+		Color="Color.Success"
+		StartIcon="@Icons.Material.Filled.PersonAdd"
+		OnClick="AddParticipant">
+		Dodaj Uczestnika
+	</MudButton>
+</MudStack>
+@if (Tournament.Participants.Any())
+{
+	<MudTable Items="Tournament.ActiveParticipants.OrderBy(_ => _.Name)" Dense Elevation="0">
+		<RowTemplate>
+			<MudTd>
+				@context.Name
+			</MudTd>
+			<MudTd>
+				@context.ShortName
+			</MudTd>
+			<MudTd>
+				@if (context.ColorHex is not null)
+				{
+					<div style="width: 50px; background: @context.ColorHex">
+						&nbsp;
+					</div>
+				}
+				else
+				{
+					<span>-</span>
+				}
+			</MudTd>
+			<MudTd>
+				@if (context.ImageBase64 is not null)
+				{
+					<img src="@context.ImageBase64" width="50" alt="logo" />
+				}
+				else
+				{
+					<span>-</span>
+				}
+			</MudTd>
+			<MudTd>
+				<MudButton Size="Size.Small" Variant="Variant.Filled" Color="Color.Error" OnClick="() => DeleteParticipant(context)">
+					Usuń
+				</MudButton>
+			</MudTd>
+		</RowTemplate>
+	</MudTable>
+}
+else
+{
+	<MudAlert Severity="Severity.Info" Class="my-2">
+		Nie dodano żadnego uczestnika
+	</MudAlert>
+}
+
+@code {
+
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+
+	async Task AddParticipant()
+	{
+		var dialog = await _dialogService.ShowAsync<EditParticipantDialog>("Dodaj uczestnika");
+		var result = await dialog.Result;
+
+		if (result?.Data is EditParticipantDialog.Data rData)
+		{
+			var participant = Participant.Create(
+				rData.Name,
+				rData.ShortName,
+				rData.ImageBase64,
+				rData.ColorHex);
+
+			Tournament.Participants.Add(participant);
+
+			if (await _tournamentService.Update(Tournament))
+				_snack.Add("Dodano uczestnika", Severity.Success);
+
+			await InvokeAsync(StateHasChanged);
+		}
+	}
+
+	async Task DeleteParticipant(Participant context)
+	{
+		context.Deleted = true;
+
+		if (await _tournamentService.Update(Tournament))
+			_snack.Add("Usunięto uczestnika", Severity.Success);
+
+		await InvokeAsync(StateHasChanged);
+	}
+
+}
