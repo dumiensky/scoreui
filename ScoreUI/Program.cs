@@ -2,7 +2,7 @@ using MongoDB.Wrapper;
 using MongoDB.Wrapper.Abstractions;
 using MongoDB.Wrapper.Settings;
 using MudBlazor.Services;
-using ScoreUI.Components;
+using ScoreUI.Pages;
 using ScoreUI.Services;
 using ScoreUI.Services.Interfaces;
 

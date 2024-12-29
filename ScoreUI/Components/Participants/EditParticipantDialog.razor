@@ -1,0 +1,107 @@
+@using System.Text
+<MudDialog>
+	<DialogContent>
+		
+		<MudTextField
+			@bind-Value="_name"
+			Label="Nazwa"
+			Variant="Variant.Outlined"
+			Required
+			RequiredError="To pole jest wymagane"
+			MaxLength="100"/>
+
+		<MudTextField
+			@bind-Value="_shortName"
+			Label="Krótka nazwa"
+			Variant="Variant.Outlined"
+			Placeholder="Wpisz krótką nazwę"
+			MaxLength="12"/>
+		
+		<MudColorPicker 
+			@bind-Text="_color"
+			Label="Kolor gracza"
+			Placeholder="Wybierz kolor"
+			Style="@($"color: {_color};")"/>
+
+		@if (_img is null)
+		{
+			<MudFileUpload T="IBrowserFile" FilesChanged="UploadFile">
+				<ActivatorContent>
+					<MudButton Variant="Variant.Filled"
+								Color="Color.Primary"
+								StartIcon="@Icons.Material.Filled.CloudUpload">
+						Dodaj logo
+					</MudButton>
+				</ActivatorContent>
+			</MudFileUpload>
+		}
+		else
+		{
+			<MudText>Wgrano logo:</MudText>
+			<img src="@_img" width="100" alt="Wgrane logo" />
+			<MudButton Size="Size.Small" Variant="Variant.Filled" Color="Color.Error" OnClick="() => _img = null">
+				Usuń logo
+			</MudButton>
+		}
+		
+	</DialogContent>
+	<DialogActions>
+		<MudStack Row Justify="Justify.SpaceBetween">
+			<MudButton OnClick="Cancel">
+				Anuluj
+			</MudButton>
+			<MudButton OnClick="Submit" Color="Color.Success" Variant="Variant.Filled" Disabled="string.IsNullOrWhiteSpace(_name)">
+				Zatwierdź
+			</MudButton>
+		</MudStack>
+	</DialogActions>
+</MudDialog>
+
+@code {
+
+	[CascadingParameter]
+	public required MudDialogInstance Instance { get; set; }
+	
+	[Parameter]
+	public Data? Values { get; set; }
+
+	string? _name, _shortName, _img, _color;
+	
+	protected override void OnParametersSet()
+	{
+		_name = Values?.Name;
+		_shortName = Values?.ShortName;
+		_img = Values?.ImageBase64;
+		_color = Values?.ColorHex;
+	}
+	
+	private async Task UploadFile(IBrowserFile? file)
+	{
+		if (file is null)
+			return;
+		
+		using var rs = file.OpenReadStream();
+		using var ms = new MemoryStream();
+		await rs.CopyToAsync(ms);
+
+		var bytes = ms.ToArray();
+		var str = Convert.ToBase64String(bytes);
+		var dataString = $"data:image;base64,{str}";
+		
+		_img = dataString;
+		await InvokeAsync(StateHasChanged);
+	}
+
+	void Submit()
+	{
+		if (string.IsNullOrWhiteSpace(_name))
+			return;
+		
+		Instance.Close(DialogResult.Ok(new Data(_name, _shortName, _img, _color)));
+	}
+	
+	void Cancel() => Instance.Close(DialogResult.Cancel());
+
+	public record Data(string Name, string? ShortName, string? ImageBase64, string? ColorHex);
+
+}

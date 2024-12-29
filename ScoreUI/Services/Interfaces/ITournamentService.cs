@@ -8,4 +8,5 @@ public interface ITournamentService
 	Task<Tournament?> Get(Guid tournamentId);
 	Task<bool> IsAliasFree(string? alias);
 	Task<Tournament?> FindByAlias(string alias);
+	Task<bool> Update(Tournament tournament);
 }
