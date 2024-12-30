@@ -3,10 +3,10 @@
 <MudStack Row Justify="Justify.SpaceBetween">
 	<MudStack Row AlignItems="AlignItems.Center">
 		<MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
-			<MudButton Variant="Variant.Filled">
+			<MudButton Variant="Variant.Filled" OnClick="() => Modify(m => m.ScoreOne += 1)">
 				<MudIcon Icon="@Icons.Material.Filled.Add" />
 			</MudButton>
-			<MudButton Variant="Variant.Filled">
+			<MudButton Variant="Variant.Filled" OnClick="() => Modify(m => m.ScoreOne -= 1)">
 				<MudIcon Icon="@Icons.Material.Filled.Remove" />
 			</MudButton>
 		</MudStack>
@@ -19,10 +19,10 @@
 			<strong>@Match.ScoreTwo</strong>
 		</MudText>
 		<MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
-			<MudButton Variant="Variant.Filled">
+			<MudButton Variant="Variant.Filled" OnClick="() => Modify(m => m.ScoreTwo += 1)">
 				<MudIcon Icon="@Icons.Material.Filled.Add" />
 			</MudButton>
-			<MudButton Variant="Variant.Filled">
+			<MudButton Variant="Variant.Filled" OnClick="() => Modify(m => m.ScoreTwo -= 1)">
 				<MudIcon Icon="@Icons.Material.Filled.Remove" />
 			</MudButton>
 		</MudStack>
@@ -32,4 +32,10 @@
 @code {
 	[Parameter, EditorRequired]
 	public required SimpleMatch Match { get; set; }
+
+	void Modify(Action<SimpleMatch> action)
+	{
+		action(Match);
+	}
+
 }
