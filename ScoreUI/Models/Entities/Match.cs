@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Wrapper;
 
@@ -15,6 +17,9 @@ public abstract class Match : Entity
 	public string? Comment { get; set; }
 
 	public abstract Guid? GetWinnerId();
+
+	public string GetMatchToken(string? key) =>
+		Convert.ToHexString(SHA1.HashData(Encoding.UTF8.GetBytes($"{key}x{Id}7")));
 }
 
 public class SimpleMatch : Match

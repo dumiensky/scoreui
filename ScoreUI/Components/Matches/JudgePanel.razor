@@ -1,0 +1,11 @@
+@using ScoreUI.Models.Entities
+
+<h3>JudgeMatchPanel</h3>
+
+@code {
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required Match Match { get; set; }
+}
