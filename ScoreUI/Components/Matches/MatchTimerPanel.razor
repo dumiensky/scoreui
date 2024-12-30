@@ -1,0 +1,98 @@
+@using ScoreUI.Models.Entities
+
+<div class="d-flex align-center justify-center">
+	<div style="max-width: 500px" class="gray lighten-2 pa-3">
+		<MudText Typo="Typo.h3" Color="Color.Primary" Align="Align.Center">
+			@(_time.Minutes.ToString("00"))m : @(_time.Seconds.ToString("00"))s
+		</MudText>
+		<MudStack Row>
+			<MudButton 
+				FullWidth 
+				Variant="Variant.Filled" 
+				Color="Color.Success"
+				OnClick="Start"
+				Disabled="_timer is not null || AutoStop()">
+				START
+			</MudButton>
+			<MudButton 
+				FullWidth 
+				Variant="Variant.Filled" 
+				Color="Color.Warning"
+				OnClick="Stop"
+				Disabled="_timer is null">
+				STOP
+			</MudButton>
+			<MudButton 
+				FullWidth 
+				Variant="Variant.Filled" 
+				Color="Color.Dark"
+				OnClick="Reset"
+				Disabled="_timer is not null">
+				RESET
+			</MudButton>
+		</MudStack>
+	</div>
+</div>
+
+@code {
+	[Parameter, EditorRequired]
+	public required Match Match { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required MatchSettings Settings { get; set; }
+
+	TimeSpan _time = TimeSpan.Zero;
+	int _stepSeconds;
+
+	Timer? _timer;
+
+	protected override void OnInitialized()
+	{
+		Reset();
+	}
+
+	void Start()
+	{
+		_timer = new(
+			_ =>
+			{
+				_time += TimeSpan.FromSeconds(_stepSeconds);
+
+				if (AutoStop())
+				{
+					Stop();
+				}
+				
+				InvokeAsync(StateHasChanged);
+			},
+			null,
+			TimeSpan.Zero,
+			TimeSpan.FromSeconds(1));
+	}
+
+	bool AutoStop()
+	{
+		return !Settings.OvertimeAllowed && (Settings.CountTimerDown ? _time <= TimeSpan.Zero : Settings.MaxTime.HasValue && _time >= Settings.MaxTime.Value);
+	}
+
+	void Stop()
+	{
+		_timer?.Dispose();
+		_timer = null;
+	}
+
+	void Reset()
+	{
+		if (Settings is { MaxTime: not null, CountTimerDown: true })
+		{
+			_time = Settings.MaxTime.Value;
+			_stepSeconds = -1;
+		}
+		else
+		{
+			_time = TimeSpan.Zero;
+			_stepSeconds = 1;
+		}
+	}
+
+}

@@ -25,10 +25,23 @@
 	</MudGrid>
 </MudPaper>
 
+@if (_matchSettings?.IsTimed == true)
+{
+	<MatchTimerPanel Match="Match" Settings="_matchSettings" />
+}
+
 @code {
 	[Parameter, EditorRequired]
 	public required Tournament Tournament { get; set; }
 	
 	[Parameter, EditorRequired]
 	public required Match Match { get; set; }
+
+	MatchSettings? _matchSettings;
+
+	protected override void OnParametersSet()
+	{
+		_matchSettings = Match.GetSettings(Tournament);
+	}
+
 }

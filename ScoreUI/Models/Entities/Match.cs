@@ -20,6 +20,8 @@ public abstract class Match : Entity
 
 	public string GetMatchToken(string? key) =>
 		Convert.ToHexString(SHA1.HashData(Encoding.UTF8.GetBytes($"{key}x{Id}7")));
+
+	public abstract MatchSettings GetSettings(Tournament tournament);
 }
 
 public class SimpleMatch : Match
@@ -34,6 +36,9 @@ public class SimpleMatch : Match
 			< 0 => TwoId,
 			_ => null
 		};
+
+	public override MatchSettings GetSettings(Tournament tournament) =>
+		tournament.Settings.SimpleMatch;
 
 	public static SimpleMatch Create(Guid oneId, Guid twoId, string? displayText, string? comment) =>
 		new()
@@ -67,6 +72,9 @@ public class DualPointsMatch : Match
 			}
 		};
 
+	public override MatchSettings GetSettings(Tournament tournament) =>
+		tournament.Settings.DualPointsMatch;
+
 	public static DualPointsMatch Create(Guid oneId, Guid twoId, string? displayText, string? comment) =>
 		new()
 		{
@@ -96,6 +104,9 @@ public class MultiDuelMatch : Match
 			_ => null
 		};
 	}
+
+	public override MatchSettings GetSettings(Tournament tournament) =>
+		tournament.Settings.MultiDuelMatch;
 
 	public class Duel
 	{
