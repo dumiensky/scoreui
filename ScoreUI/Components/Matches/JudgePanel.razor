@@ -1,6 +1,29 @@
 @using ScoreUI.Models.Entities
 
-<h3>JudgeMatchPanel</h3>
+@if (!string.IsNullOrWhiteSpace(Match.DisplayText))
+{
+	<MudPaper Class="my-3 pa-3 gray lighten-4">
+		<MudText Typo="Typo.h6">
+			@Match.DisplayText
+		</MudText>
+	</MudPaper>
+}
+
+<MudPaper Class="my-3 pa-3">
+	<MudGrid>
+		<MudItem xs="12" md="5" xl="4">
+			<MatchParticipantDisplay Tournament="Tournament" Id="Match.OneId" />
+		</MudItem>
+
+		<MudItem xs="12" md="2" xl="4">
+			&nbsp;
+		</MudItem>
+
+		<MudItem xs="12" md="5" xl="4">
+			<MatchParticipantDisplay Tournament="Tournament" Id="Match.TwoId" RightToLeft />
+		</MudItem>
+	</MudGrid>
+</MudPaper>
 
 @code {
 	[Parameter, EditorRequired]

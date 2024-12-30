@@ -16,7 +16,7 @@
 
 	protected override void OnParametersSet()
 	{
-		_participant = Tournament.Participants.FirstOrDefault(_ => _.Id == Id);
+		_participant = Tournament.GetParticipant(Id);
 	}
 
 }

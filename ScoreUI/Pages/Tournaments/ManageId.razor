@@ -15,12 +15,15 @@ else if (_tournament is null)
 }
 else
 {
-	<ManagePage Tournament="_tournament" />
+	<ManagePage Tournament="_tournament" Token="@Token" />
 }
 
 @code {
 	[Parameter]
 	public Guid TournamentId { get; set; }
+	
+	[Parameter, SupplyParameterFromQuery]
+	public string? Token { get; set; }
 
 	Tournament? _tournament;
 	bool _loaded;

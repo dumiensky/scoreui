@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using MongoDB.Wrapper;
 
 namespace ScoreUI.Models.Entities;
@@ -17,6 +19,12 @@ public class Tournament : Entity
 	public IEnumerable<Participant> ActiveParticipants => Participants.Where(_ => !_.Deleted);
 
 	public IEnumerable<Match> ActiveMatches => Matches.Where(_ => !_.Deleted);
+
+	public Participant? GetParticipant(Guid participantId) =>
+		Participants.FirstOrDefault(_ => _.Id == participantId);
+	
+	public string GetTournamentToken() =>
+		Convert.ToHexString(SHA1.HashData(Encoding.UTF8.GetBytes($"v?{Settings.Key}8{Id}23")));
 }
 
 public class TournamentSettings
