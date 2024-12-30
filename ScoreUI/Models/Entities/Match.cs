@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Wrapper;
+using ScoreUI.Models.Enums;
 
 namespace ScoreUI.Models.Entities;
 
@@ -11,6 +12,7 @@ namespace ScoreUI.Models.Entities;
 	typeof(MultiDuelMatch))]
 public abstract class Match : Entity
 {
+	public MatchStatus Status { get; set; }
 	public Guid OneId { get; set; }
 	public Guid TwoId { get; set; }
 	public string? DisplayText { get; set; }
@@ -22,6 +24,9 @@ public abstract class Match : Entity
 		Convert.ToHexString(SHA1.HashData(Encoding.UTF8.GetBytes($"{key}x{Id}7")));
 
 	public abstract MatchSettings GetSettings(Tournament tournament);
+
+	public bool ScoringDisabled => Status is MatchStatus.Done;
+	public bool ScoringEnabled => Status is MatchStatus.Pending;
 }
 
 public class SimpleMatch : Match

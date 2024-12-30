@@ -8,4 +8,7 @@
 	
 	[Parameter, EditorRequired]
 	public required MultiDuelMatchSettings Settings { get; set; }
+	
+	[Parameter]
+	public EventCallback OnUpdate { get; set; }
 }

@@ -1,4 +1,10 @@
 @using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
+@using ScoreUI.Components.Participants
+@using ScoreUI.Models.Enums
+
+@inject ITournamentService _tournamentService
+@inject ISnackbar _snack
 
 @if (!string.IsNullOrWhiteSpace(Match.DisplayText))
 {
@@ -25,19 +31,28 @@
 	</MudGrid>
 </MudPaper>
 
+@if (Match.Status is MatchStatus.Done && Match.GetWinnerId() is {} matchWinnerId)
+{
+	<MudAlert Severity="Severity.Success" Variant="Variant.Filled" Class="my-3 pa-3">
+		Ten pojedynek został już oceniony<br/>
+		Zwycięzca:
+		<ParticipantIdDisplay Tournament="Tournament" Id="matchWinnerId" />
+	</MudAlert>
+}
+
 <MudPaper Class="my-3 pa-3">
 	@switch (Match)
 	{
 		case SimpleMatch sm:
-			<SimpleMatchScoringPanel Match="sm" />
+			<SimpleMatchScoringPanel Match="sm" OnUpdate="OnUpdate" />
 			break;
 			
 		case DualPointsMatch dp when _matchSettings is DualPointsMatchSettings dps:
-			<DualPointsMatchScoringPanel Match="dp" Settings="dps" />
+			<DualPointsMatchScoringPanel Match="dp" Settings="dps" OnUpdate="OnUpdate" />
 			break;
 			
 		case MultiDuelMatch md when _matchSettings is MultiDuelMatchSettings mds:
-			<MultiDuelMatchScoringPanel Match="md" Settings="mds" />
+			<MultiDuelMatchScoringPanel Match="md" Settings="mds" OnUpdate="OnUpdate" />
 			break;
 	}
 </MudPaper>
@@ -46,6 +61,21 @@
 {
 	<MudPaper Class="my-3 pa-3 gray lighten-4">
 		<MatchTimerPanel Match="Match" Settings="_matchSettings" />
+	</MudPaper>
+}
+
+@if (Match.ScoringEnabled && Match.GetWinnerId() is { } winnerId)
+{
+	<MudPaper Class="my-3 pa-3 gray lighten-4">
+		<MudText Align="Align.Center">
+			Zatwierdź zwycięstwo
+		</MudText>
+		<div class="d-flex justify-center">
+			<ParticipantIdDisplay Tournament="Tournament" Id="winnerId" />
+		</div>
+		<MudButton FullWidth Color="Color.Success" Variant="Variant.Filled" Class="my-3" OnClick="Submit">
+			ZATWIERDŹ
+		</MudButton>
 	</MudPaper>
 }
 
@@ -71,6 +101,18 @@
 	protected override void OnParametersSet()
 	{
 		_matchSettings = Match.GetSettings(Tournament);
+	}
+
+	async Task Submit()
+	{
+		Match.Status = MatchStatus.Done;
+		await OnUpdate();
+	}
+
+	async Task OnUpdate()
+	{
+		if (!await _tournamentService.Update(Tournament))
+			_snack.Add("Niepowodzenie zapisywania statusu turnieju", Severity.Error);
 	}
 
 }

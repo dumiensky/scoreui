@@ -1,6 +1,7 @@
 @using ScoreUI.Models.Entities
 @using ScoreUI.Components.Participants
 @using ScoreUI.Models.Consts
+@using ScoreUI.Models.Enums
 
 @inject NavigationManager _nav
 
@@ -17,10 +18,16 @@
 		<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
 			<div style="width: 100%">
 				<div class="pa-3" style="border-bottom: 1px solid black">
-					<ParticipantIdDisplay Tournament="Tournament" Id="Match.OneId" />
+					<MudStack Row>
+						<MatchWinnerIndicator Match="Match" ParticipantId="Match.OneId" />
+						<ParticipantIdDisplay Tournament="Tournament" Id="Match.OneId" />
+					</MudStack>
 				</div>
 				<div class="pa-3">
-					<ParticipantIdDisplay Tournament="Tournament" Id="Match.TwoId" />
+					<MudStack Row>
+						<MatchWinnerIndicator Match="Match" ParticipantId="Match.TwoId" />
+						<ParticipantIdDisplay Tournament="Tournament" Id="Match.TwoId" />
+					</MudStack>
 				</div>
 			</div>
 			<MudStack Justify="Justify.SpaceBetween">
