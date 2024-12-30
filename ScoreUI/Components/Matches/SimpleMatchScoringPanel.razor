@@ -1,0 +1,35 @@
+@using ScoreUI.Models.Entities
+
+<MudStack Row Justify="Justify.SpaceBetween">
+	<MudStack Row AlignItems="AlignItems.Center">
+		<MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+			<MudButton Variant="Variant.Filled">
+				<MudIcon Icon="@Icons.Material.Filled.Add" />
+			</MudButton>
+			<MudButton Variant="Variant.Filled">
+				<MudIcon Icon="@Icons.Material.Filled.Remove" />
+			</MudButton>
+		</MudStack>
+		<MudText Typo="Typo.h1">
+			<strong>@Match.ScoreOne</strong>
+		</MudText>
+	</MudStack>
+	<MudStack Row AlignItems="AlignItems.Center">
+		<MudText Typo="Typo.h1">
+			<strong>@Match.ScoreTwo</strong>
+		</MudText>
+		<MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+			<MudButton Variant="Variant.Filled">
+				<MudIcon Icon="@Icons.Material.Filled.Add" />
+			</MudButton>
+			<MudButton Variant="Variant.Filled">
+				<MudIcon Icon="@Icons.Material.Filled.Remove" />
+			</MudButton>
+		</MudStack>
+	</MudStack>
+</MudStack>
+
+@code {
+	[Parameter, EditorRequired]
+	public required SimpleMatch Match { get; set; }
+}

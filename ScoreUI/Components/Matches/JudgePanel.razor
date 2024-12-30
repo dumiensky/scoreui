@@ -25,15 +25,44 @@
 	</MudGrid>
 </MudPaper>
 
+<MudPaper Class="my-3 pa-3">
+	@switch (Match)
+	{
+		case SimpleMatch sm:
+			<SimpleMatchScoringPanel Match="sm" />
+			break;
+			
+		case DualPointsMatch dp when _matchSettings is DualPointsMatchSettings dps:
+			<DualPointsMatchScoringPanel Match="dp" Settings="dps" />
+			break;
+			
+		case MultiDuelMatch md when _matchSettings is MultiDuelMatchSettings mds:
+			<MultiDuelMatchScoringPanel Match="md" Settings="mds" />
+			break;
+	}
+</MudPaper>
+
 @if (_matchSettings?.IsTimed == true)
 {
-	<MatchTimerPanel Match="Match" Settings="_matchSettings" />
+	<MudPaper Class="my-3 pa-3 gray lighten-4">
+		<MatchTimerPanel Match="Match" Settings="_matchSettings" />
+	</MudPaper>
+}
+
+@if (!string.IsNullOrWhiteSpace(Match.Comment))
+{
+	<MudPaper Class="my-3 pa-3 gray lighten-4">
+		<MudText Typo="Typo.caption">
+			@Match.Comment
+		</MudText>
+	</MudPaper>
 }
 
 @code {
+
 	[Parameter, EditorRequired]
 	public required Tournament Tournament { get; set; }
-	
+
 	[Parameter, EditorRequired]
 	public required Match Match { get; set; }
 

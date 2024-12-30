@@ -1,0 +1,11 @@
+@using ScoreUI.Models.Entities
+
+<h3>DualPointsMatch</h3>
+
+@code {
+	[Parameter, EditorRequired]
+	public required DualPointsMatch Match { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required DualPointsMatchSettings Settings { get; set; }
+}

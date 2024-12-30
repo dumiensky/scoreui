@@ -1,0 +1,11 @@
+@using ScoreUI.Models.Entities
+
+<h3>MultiDuelMatch</h3>
+
+@code {
+	[Parameter, EditorRequired]
+	public required MultiDuelMatch Match { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required MultiDuelMatchSettings Settings { get; set; }
+}
