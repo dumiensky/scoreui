@@ -1,4 +1,7 @@
 @using ScoreUI.Models.Entities
+@using ScoreUI.Components.Tournaments
+
+@inject NavigationManager _nav
 
 @switch (_accessState)
 {
@@ -47,21 +50,33 @@
 @code {
 	[Parameter, EditorRequired]
 	public required Tournament Tournament { get; set; }
+	
+	[Parameter]
+	public string? Token { get; set; }
 
 	string? _key;
 	AccessState _accessState = AccessState.PasswordPending;
 
-	protected override void OnInitialized()
+	protected override void OnParametersSet()
 	{
-		if (string.IsNullOrEmpty(Tournament.Settings.Key))
+		if (string.IsNullOrEmpty(Tournament.Settings.Key) || Token == Tournament.GetTournamentToken())
+		{
 			_accessState = AccessState.AccessGranted;
+		}
 	}
 
 	void SubmitKey()
 	{
 		if (_key?.ToLower() == Tournament.Settings.Key)
 		{
-			_accessState = AccessState.AccessGranted;
+			var uri = _nav.Uri;
+
+			if (uri.IndexOf("?", StringComparison.InvariantCulture) is var index and > 0)
+			{
+				uri = uri[..index];
+			}
+			
+			_nav.NavigateTo(uri + $"?token={Tournament.GetTournamentToken()}");
 		}
 		else
 		{

@@ -1,5 +1,8 @@
+using System.Security.Cryptography;
+using System.Text;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Wrapper;
+using ScoreUI.Models.Enums;
 
 namespace ScoreUI.Models.Entities;
 
@@ -9,12 +12,21 @@ namespace ScoreUI.Models.Entities;
 	typeof(MultiDuelMatch))]
 public abstract class Match : Entity
 {
+	public MatchStatus Status { get; set; }
 	public Guid OneId { get; set; }
 	public Guid TwoId { get; set; }
 	public string? DisplayText { get; set; }
 	public string? Comment { get; set; }
 
 	public abstract Guid? GetWinnerId();
+
+	public string GetMatchToken(string? key) =>
+		Convert.ToHexString(SHA1.HashData(Encoding.UTF8.GetBytes($"{key}x{Id}7")));
+
+	public abstract MatchSettings GetSettings(Tournament tournament);
+
+	public bool ScoringDisabled => Status is MatchStatus.Done;
+	public bool ScoringEnabled => Status is MatchStatus.Pending;
 }
 
 public class SimpleMatch : Match
@@ -29,6 +41,9 @@ public class SimpleMatch : Match
 			< 0 => TwoId,
 			_ => null
 		};
+
+	public override MatchSettings GetSettings(Tournament tournament) =>
+		tournament.Settings.SimpleMatch;
 
 	public static SimpleMatch Create(Guid oneId, Guid twoId, string? displayText, string? comment) =>
 		new()
@@ -62,6 +77,9 @@ public class DualPointsMatch : Match
 			}
 		};
 
+	public override MatchSettings GetSettings(Tournament tournament) =>
+		tournament.Settings.DualPointsMatch;
+
 	public static DualPointsMatch Create(Guid oneId, Guid twoId, string? displayText, string? comment) =>
 		new()
 		{
@@ -92,8 +110,12 @@ public class MultiDuelMatch : Match
 		};
 	}
 
+	public override MatchSettings GetSettings(Tournament tournament) =>
+		tournament.Settings.MultiDuelMatch;
+
 	public class Duel
 	{
+		public Guid Id { get; set; }
 		public int ScoreOne { get; set; }
 		public int ScoreTwo { get; set; }
 		
@@ -104,6 +126,11 @@ public class MultiDuelMatch : Match
 				< 0 => twoId,
 				_ => null
 			};
+
+		public static Duel Create() => new()
+		{
+			Id = Guid.NewGuid()
+		};
 	}
 	
 	public static MultiDuelMatch Create(Guid oneId, Guid twoId, string? displayText, string? comment) =>

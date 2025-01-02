@@ -1,0 +1,55 @@
+@using ScoreUI.Models.Consts
+@using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
+@using ScoreUI.Components.Matches
+@attribute [Route(Urls.Tournaments.Judge)]
+
+@inject ITournamentService _tournamentService
+
+@if (!_loaded)
+{
+	<MudProgressCircular Indeterminate />
+}
+else if (_tournament is not null && _match is not null)
+{
+	<JudgePanel Tournament="_tournament" Match="_match" />
+}
+else
+{
+	<MudAlert Severity="Severity.Error" Variant="Variant.Filled">
+		Nie znaleziono podanego pojedynku
+	</MudAlert>
+}
+
+@code {
+	[Parameter]
+	public Guid TournamentId { get; set; }
+	
+	[Parameter]
+	public Guid MatchId { get; set; }
+	
+	[Parameter, SupplyParameterFromQuery]
+	public string? Token { get; set; }
+
+	Tournament? _tournament;
+	Match? _match;
+	bool _loaded;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_tournament = await _tournamentService.Get(TournamentId);
+
+		if (_tournament is not null)
+		{
+			var match = _tournament.ActiveMatches.FirstOrDefault(_ => _.Id == MatchId);
+
+			if (match is not null && match.GetMatchToken(_tournament.Settings.Key) == Token)
+			{
+				_match = match;
+			}
+		}
+
+		_loaded = true;
+	}
+
+}

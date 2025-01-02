@@ -1,0 +1,118 @@
+@using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
+@using ScoreUI.Components.Participants
+@using ScoreUI.Models.Enums
+
+@inject ITournamentService _tournamentService
+@inject ISnackbar _snack
+
+@if (!string.IsNullOrWhiteSpace(Match.DisplayText))
+{
+	<MudPaper Class="my-3 pa-3 gray lighten-4">
+		<MudText Typo="Typo.h6">
+			@Match.DisplayText
+		</MudText>
+	</MudPaper>
+}
+
+<MudPaper Class="my-3 pa-3">
+	<MudGrid>
+		<MudItem xs="12" md="5" xl="4">
+			<MatchParticipantDisplay Tournament="Tournament" Id="Match.OneId" />
+		</MudItem>
+
+		<MudItem xs="12" md="2" xl="4">
+			&nbsp;
+		</MudItem>
+
+		<MudItem xs="12" md="5" xl="4">
+			<MatchParticipantDisplay Tournament="Tournament" Id="Match.TwoId" RightToLeft />
+		</MudItem>
+	</MudGrid>
+</MudPaper>
+
+@if (Match.Status is MatchStatus.Done && Match.GetWinnerId() is {} matchWinnerId)
+{
+	<MudAlert Severity="Severity.Success" Variant="Variant.Filled" Class="my-3 pa-3">
+		Ten pojedynek został już oceniony<br/>
+		Zwycięzca:
+		<ParticipantIdDisplay Tournament="Tournament" Id="matchWinnerId" />
+	</MudAlert>
+}
+
+<MudPaper Class="my-3 pa-3">
+	@switch (Match)
+	{
+		case SimpleMatch sm:
+			<SimpleMatchScoringPanel Match="sm" OnUpdate="OnUpdate" />
+			break;
+			
+		case DualPointsMatch dp when _matchSettings is DualPointsMatchSettings dps:
+			<DualPointsMatchScoringPanel Match="dp" Settings="dps" OnUpdate="OnUpdate" />
+			break;
+			
+		case MultiDuelMatch md when _matchSettings is MultiDuelMatchSettings mds:
+			<MultiDuelMatchScoringPanel Tournament="Tournament" Match="md" Settings="mds" OnUpdate="OnUpdate" />
+			break;
+	}
+</MudPaper>
+
+@if (_matchSettings?.IsTimed == true)
+{
+	<MudPaper Class="my-3 pa-3 gray lighten-4">
+		<MatchTimerPanel Match="Match" Settings="_matchSettings" />
+	</MudPaper>
+}
+
+@if (Match.ScoringEnabled && Match.GetWinnerId() is { } winnerId)
+{
+	<MudPaper Class="my-3 pa-3 gray lighten-4">
+		<MudText Align="Align.Center">
+			Zatwierdź zwycięstwo
+		</MudText>
+		<div class="d-flex justify-center">
+			<ParticipantIdDisplay Tournament="Tournament" Id="winnerId" />
+		</div>
+		<MudButton FullWidth Color="Color.Success" Variant="Variant.Filled" Class="my-3" OnClick="Submit">
+			ZATWIERDŹ
+		</MudButton>
+	</MudPaper>
+}
+
+@if (!string.IsNullOrWhiteSpace(Match.Comment))
+{
+	<MudPaper Class="my-3 pa-3 gray lighten-4">
+		<MudText Typo="Typo.caption">
+			@Match.Comment
+		</MudText>
+	</MudPaper>
+}
+
+@code {
+
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+
+	[Parameter, EditorRequired]
+	public required Match Match { get; set; }
+
+	MatchSettings? _matchSettings;
+
+	protected override void OnParametersSet()
+	{
+		_matchSettings = Match.GetSettings(Tournament);
+	}
+
+	async Task Submit()
+	{
+		Match.Status = MatchStatus.Done;
+		await OnUpdate();
+	}
+
+	async Task OnUpdate()
+	{
+		if (!await _tournamentService.Update(Tournament))
+			_snack.Add("Niepowodzenie zapisywania statusu turnieju", Severity.Error);
+	}
+
+}

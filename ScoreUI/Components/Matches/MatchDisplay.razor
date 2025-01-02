@@ -1,5 +1,9 @@
 @using ScoreUI.Models.Entities
 @using ScoreUI.Components.Participants
+@using ScoreUI.Models.Consts
+@using ScoreUI.Models.Enums
+
+@inject NavigationManager _nav
 
 <MudPaper Class="gray lighten-4">
 	@if (!string.IsNullOrWhiteSpace(Match.DisplayText))
@@ -14,14 +18,20 @@
 		<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
 			<div style="width: 100%">
 				<div class="pa-3" style="border-bottom: 1px solid black">
-					<ParticipantIdDisplay Tournament="Tournament" Id="Match.OneId" />
+					<MudStack Row>
+						<MatchWinnerIndicator Match="Match" ParticipantId="Match.OneId" />
+						<ParticipantIdDisplay Tournament="Tournament" Id="Match.OneId" />
+					</MudStack>
 				</div>
 				<div class="pa-3">
-					<ParticipantIdDisplay Tournament="Tournament" Id="Match.TwoId" />
+					<MudStack Row>
+						<MatchWinnerIndicator Match="Match" ParticipantId="Match.TwoId" />
+						<ParticipantIdDisplay Tournament="Tournament" Id="Match.TwoId" />
+					</MudStack>
 				</div>
 			</div>
 			<MudStack Justify="Justify.SpaceBetween">
-				<MudButton StartIcon="@Icons.Material.Filled.ChevronRight" Variant="Variant.Filled" Color="Color.Primary">
+				<MudButton StartIcon="@Icons.Material.Filled.ChevronRight" Variant="Variant.Filled" Color="Color.Primary" OnClick='Judge'>
 					Oceniaj
 				</MudButton>
 				<MudButton StartIcon="@Icons.Material.Filled.DeleteOutline" Variant="Variant.Filled" Color="Color.Error" OnClick="() => OnDelete.InvokeAsync(Match)">
@@ -49,4 +59,9 @@
 	
 	[Parameter, EditorRequired]
 	public EventCallback<Match> OnDelete { get; set; }
+
+	void Judge()
+	{
+		_nav.NavigateTo(Urls.Tournaments.GetJudge(Tournament.Id, Match.Id) + $"?token={Match.GetMatchToken(Tournament.Settings.Key)}");
+	}
 }

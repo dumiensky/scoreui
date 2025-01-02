@@ -1,0 +1,150 @@
+@using ScoreUI.Models.Entities
+@using ScoreUI.Components.Participants
+
+@inject ISnackbar _snack
+@inject IDialogService _dialogService
+
+<MudPaper Class="my-3 pa-3">
+	<MudStack Row Wrap="Wrap.Wrap">
+		@foreach (var (duel, index) in Match.Duels.Select((x, i) => (x, i)))
+		{
+			<MudButton 
+				OnClick="() => _currentDuel = duel" 
+				Color="Color.Primary"
+				Variant="duel == _currentDuel ? Variant.Filled : Variant.Outlined"
+				Class="d-block">
+				Pojedynek @(index + 1)<br/>
+				@if (duel.GetWinnerId(Match.OneId, Match.TwoId) is { } winnerId)
+				{
+					<ParticipantIdDisplay Tournament="Tournament" Id="winnerId" />
+				}
+				else
+				{
+					<MudText Typo="Typo.caption">
+						Brak zwycięzcy
+					</MudText>
+				}
+			</MudButton>
+		}
+		<MudButton
+			OnClick="CreateDuel"
+			Color="Color.Success"
+			Variant="Variant.Text"
+			StartIcon="@Icons.Material.Filled.Add"
+			Disabled="Match.Duels.Count >= Settings.MaxDuels">
+			Dodaj pojedynek
+		</MudButton>
+	</MudStack>
+</MudPaper>
+
+<MudPaper Class="my-3 pa-3">
+	@if (_currentDuel is not null)
+	{
+		<MudStack Row Justify="Justify.SpaceBetween">
+			<MudText Typo="Typo.h6">
+				Pojedynek @(Match.Duels.IndexOf(_currentDuel) + 1)
+			</MudText>
+			<MudButton 
+				Size="Size.Small"
+				Color="Color.Error"
+				OnClick="() => DeleteDuel(_currentDuel)"
+				Disabled="Match.Duels.Count <= Settings.MinDuels">
+				Usuń ten pojedynek
+			</MudButton>
+		</MudStack>
+		
+		<MudStack Row Justify="Justify.SpaceBetween">
+			<MudStack Row AlignItems="AlignItems.Center">
+				<MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+					<MudButton Variant="Variant.Filled" OnClick="() => Modify(_currentDuel, m => m.ScoreOne += 1)" Disabled="Match.ScoringDisabled">
+						<MudIcon Icon="@Icons.Material.Filled.Add" />
+					</MudButton>
+					<MudButton Variant="Variant.Filled" OnClick="() => Modify(_currentDuel, m => m.ScoreOne -= 1)" Disabled="Match.ScoringDisabled">
+						<MudIcon Icon="@Icons.Material.Filled.Remove" />
+					</MudButton>
+				</MudStack>
+				<MudText Typo="Typo.h1">
+					<strong>@_currentDuel.ScoreOne</strong>
+				</MudText>
+			</MudStack>
+			<MudStack Row AlignItems="AlignItems.Center">
+				<MudText Typo="Typo.h1">
+					<strong>@_currentDuel.ScoreTwo</strong>
+				</MudText>
+				<MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+					<MudButton Variant="Variant.Filled" OnClick="() => Modify(_currentDuel, m => m.ScoreTwo += 1)" Disabled="Match.ScoringDisabled">
+						<MudIcon Icon="@Icons.Material.Filled.Add" />
+					</MudButton>
+					<MudButton Variant="Variant.Filled" OnClick="() => Modify(_currentDuel, m => m.ScoreTwo -= 1)" Disabled="Match.ScoringDisabled">
+						<MudIcon Icon="@Icons.Material.Filled.Remove" />
+					</MudButton>
+				</MudStack>
+			</MudStack>
+		</MudStack>
+	}
+	else
+	{
+		<MudAlert Severity="Severity.Info">
+			Wybierz pojedynek do ocenienia
+		</MudAlert>
+	}
+</MudPaper>
+
+@code {
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required MultiDuelMatch Match { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required MultiDuelMatchSettings Settings { get; set; }
+	
+	[Parameter]
+	public EventCallback OnUpdate { get; set; }
+
+	MultiDuelMatch.Duel? _currentDuel;
+
+	protected override void OnInitialized()
+	{
+		var diff = Settings.MinDuels - Match.Duels.Count;
+
+		for (var i = 0; i < diff; i++)
+		{
+			Match.Duels.Add(MultiDuelMatch.Duel.Create());
+		}
+
+		_currentDuel = Match.Duels.FirstOrDefault();
+	}
+
+	async Task DeleteDuel(MultiDuelMatch.Duel currentDuel)
+	{
+		if (await _dialogService.ShowMessageBox(
+				title: "Usuwanie pojedynku",
+				message: "Na pewno chcesz usunąć ten pojedynek?",
+				yesText: "Tak, usuń",
+				noText: "Anuluj") != true)
+			return;
+
+		Match.Duels.Remove(currentDuel);
+		_currentDuel = null;
+
+		_snack.Add("Usunięto pojedynek, nadano nowe numery pojedynków", Severity.Info);
+
+		await OnUpdate.InvokeAsync();
+		await InvokeAsync(StateHasChanged);
+	}
+
+	void Modify(MultiDuelMatch.Duel duel, Action<MultiDuelMatch.Duel> action)
+	{
+		action(duel);
+		OnUpdate.InvokeAsync();
+	}
+
+	void CreateDuel()
+	{
+		Match.Duels.Add(MultiDuelMatch.Duel.Create());
+		OnUpdate.InvokeAsync();
+	}
+
+}

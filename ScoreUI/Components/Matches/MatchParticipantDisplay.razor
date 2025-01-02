@@ -1,0 +1,38 @@
+@using ScoreUI.Models.Entities
+
+@if (_participant is not null)
+{
+	<div>
+		<div class="@(RightToLeft ? "d-flex flex-row-reverse align-center gap-4" : "d-flex flex-row align-center gap-4")">
+			@if (_participant.ImageBase64 is not null)
+			{
+				<img src="@_participant.ImageBase64" width="100" alt="LOGO" />
+			}
+			<MudText Typo="Typo.h3">
+				@_participant.GetShortName()
+			</MudText>
+		</div>
+		<div style="width: 100%; height: 12px; margin-top: 5px; background-color: @_participant.ColorHex">
+			&nbsp;
+		</div>
+	</div>
+}
+
+@code {
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required Guid Id { get; set; }
+	
+	[Parameter]
+	public bool RightToLeft { get; set; }
+
+	Participant? _participant;
+
+	protected override void OnParametersSet()
+	{
+		_participant = Tournament.GetParticipant(Id);
+	}
+
+}
