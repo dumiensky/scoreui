@@ -1,0 +1,9 @@
+@using ScoreUI.Models.Consts
+@attribute [Route(Urls.Displays.Display)]
+
+<h3>Display page</h3>
+
+@code {
+	[Parameter]
+	public Guid DisplayId { get; set; }
+}

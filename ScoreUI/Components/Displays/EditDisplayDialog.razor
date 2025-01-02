@@ -1,0 +1,52 @@
+@using ScoreUI.Models.Entities
+@using ScoreUI.Models.Enums
+@using ScoreUI.Models.Extensions
+<MudDialog>
+	<DialogContent>
+		
+		<MudRadioGroup @bind-Value="_displayType">
+			<MudRadio T="DisplayType?" Value="DisplayType.StreamOverlay">
+				@DisplayType.StreamOverlay.DisplayName()
+			</MudRadio>
+			<MudRadio T="DisplayType?" Value="DisplayType.Standalone">
+				@DisplayType.Standalone.DisplayName()
+			</MudRadio>
+		</MudRadioGroup>
+
+	</DialogContent>
+	<DialogActions>
+		<MudStack Row Justify="Justify.SpaceBetween">
+			<MudButton OnClick="Cancel">
+				Anuluj
+			</MudButton>
+			<MudButton OnClick="Submit" Color="Color.Success" Variant="Variant.Filled" 
+						Disabled="_displayType is null">
+				Zatwierdź
+			</MudButton>
+		</MudStack>
+	</DialogActions>
+</MudDialog>
+
+@code {
+	
+	[CascadingParameter]
+	public required MudDialogInstance Instance { get; set; }
+	
+	[Parameter]
+	public required Tournament Tournament { get; set; }
+
+	DisplayType? _displayType;
+	
+	void Submit()
+	{
+		if (_displayType is null)
+			return;
+		
+		Instance.Close(DialogResult.Ok(new Data(_displayType.Value)));
+	}
+	
+	void Cancel() => Instance.Close(DialogResult.Cancel());
+
+	public record Data(DisplayType DisplayType);
+
+}

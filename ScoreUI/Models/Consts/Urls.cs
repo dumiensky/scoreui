@@ -17,4 +17,12 @@ public static class Urls
 		public static string GetManageAlias(string alias) => $"{Index}/{alias}";
 		public static string GetJudge(Guid tournamentId, Guid matchId) => $"{GetManageId(tournamentId)}/judge/{matchId}";
 	}
+
+	public static class Displays
+	{
+		const string Index = "/displays";
+		public const string Display = Index + "/{DisplayId:guid}";
+
+		public static string GetDisplay(Guid displayId) => $"{Index}/{displayId}";
+	}
 }
