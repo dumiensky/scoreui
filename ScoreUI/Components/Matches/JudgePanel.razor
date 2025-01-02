@@ -52,7 +52,7 @@
 			break;
 			
 		case MultiDuelMatch md when _matchSettings is MultiDuelMatchSettings mds:
-			<MultiDuelMatchScoringPanel Match="md" Settings="mds" OnUpdate="OnUpdate" />
+			<MultiDuelMatchScoringPanel Tournament="Tournament" Match="md" Settings="mds" OnUpdate="OnUpdate" />
 			break;
 	}
 </MudPaper>

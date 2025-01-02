@@ -115,6 +115,7 @@ public class MultiDuelMatch : Match
 
 	public class Duel
 	{
+		public Guid Id { get; set; }
 		public int ScoreOne { get; set; }
 		public int ScoreTwo { get; set; }
 		
@@ -125,6 +126,11 @@ public class MultiDuelMatch : Match
 				< 0 => twoId,
 				_ => null
 			};
+
+		public static Duel Create() => new()
+		{
+			Id = Guid.NewGuid()
+		};
 	}
 	
 	public static MultiDuelMatch Create(Guid oneId, Guid twoId, string? displayText, string? comment) =>
