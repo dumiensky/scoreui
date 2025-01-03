@@ -1,0 +1,91 @@
+@using ScoreUI.Models.Entities
+
+@switch (Match)
+{
+	case SimpleMatch sm:
+		<div class="black py-1 px-2">
+			<MudText Typo="Typo.h6" Class="white-text">
+				@if (sm.OneId == ParticipantId)
+				{
+					@sm.ScoreOne
+				}
+				else
+				{
+					@sm.ScoreTwo
+				}
+			</MudText>
+		</div>
+		break;
+		
+	case DualPointsMatch dp:
+		<div class="d-flex @(dp.OneId == ParticipantId ? "flex-row" : "flex-row-reverse")">
+			<div class="gray lighten-5 py-1 px-2">
+				<MudText Typo="Typo.h6" Class="black-text">
+					@if (dp.OneId == ParticipantId)
+					{
+						@dp.ScoreOneB
+					}
+					else
+					{
+						@dp.ScoreTwoB
+					}
+				</MudText>
+			</div>
+			<div class="black py-1 px-2">
+				<MudText Typo="Typo.h6" Class="white-text">
+					@if (dp.OneId == ParticipantId)
+					{
+						@dp.ScoreOneA
+					}
+					else
+					{
+						@dp.ScoreTwoA
+					}
+				</MudText>
+			</div>
+		</div>
+		break;
+		
+	case MultiDuelMatch md:
+		<div class="d-flex @(md.OneId == ParticipantId ? "flex-row" : "flex-row-reverse")">
+			@if (Tournament.Settings.Displays.DisplaySumOfWonDuels)
+			{
+				<div class="red lighten-5 py-1 px-2">
+					<MudText Typo="Typo.h6" Class="black-text">
+						@if (md.OneId == ParticipantId)
+						{
+							@md.Duels.Count(_ => _.GetWinnerId(md.OneId, md.TwoId) == md.OneId)
+						}
+						else
+						{
+							@md.Duels.Count(_ => _.GetWinnerId(md.OneId, md.TwoId) == md.TwoId)
+						}
+					</MudText>
+				</div>
+			}
+			<div class="black py-1 px-2">
+				<MudText Typo="Typo.h6" Class="white-text">
+					@if (md.OneId == ParticipantId)
+					{
+						// todo: get current duel
+					}
+					else
+					{
+						// todo: get current duel
+					}
+				</MudText>
+			</div>
+		</div>
+		break;
+}
+
+@code {
+	[Parameter, EditorRequired]
+	public required Match Match { get; set; }
+	
+	[Parameter, EditorRequired]
+	public Guid ParticipantId { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+}

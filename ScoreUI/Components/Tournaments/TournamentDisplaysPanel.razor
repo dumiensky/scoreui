@@ -169,7 +169,12 @@ else
 					new(
 						Tournament.Settings.Displays.ShowTournamentName,
 						Tournament.Settings.Displays.UseShortNames, 
-						Tournament.Settings.Displays.ColorMode)
+						Tournament.Settings.Displays.ColorMode,
+						Tournament.Settings.Displays.DisplaySumOfWonDuels)
+				},
+				{
+					_ => _.TournamentAllowsMultiDuels,
+					Tournament.Settings.MultiDuelMatch.IsEnabled
 				}
 			});
 
@@ -179,6 +184,7 @@ else
 			Tournament.Settings.Displays.ShowTournamentName = data.ShowTournamentName;
 			Tournament.Settings.Displays.UseShortNames = data.UseShortNames;
 			Tournament.Settings.Displays.ColorMode = data.ColorMode;
+			Tournament.Settings.Displays.DisplaySumOfWonDuels = data.DisplaySumOfWonDuels;
 
 			await _tournamentService.Update(Tournament);
 		}

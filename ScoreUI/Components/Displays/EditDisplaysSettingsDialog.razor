@@ -6,6 +6,14 @@
 		<MudCheckBox @bind-Value="_showTournamentName" Label="Pokazuj nazwę turnieju" Class="my-3" />
 		<MudCheckBox @bind-Value="_useShortName" Label="Używaj skróconych nazw uczestników" Class="my-3" />
 		
+		@if (TournamentAllowsMultiDuels)
+		{
+			<MudCheckBox @bind-Value="_displaySumOfWonDuels" Label="Pokazuj liczbę wygranych pojedynków" Class="my-3" />
+			<MudText Typo="Typo.caption" Class="ml-12 mt-n6 d-block">
+				Dla meczy wielopojedynkowych
+			</MudText>
+		}
+		
 		<MudSelect @bind-Value="_colorMode" Label="Tryb kolorowania" Class="my-3">
 			<MudSelectItem Value="@DisplaysColorMode.Underline">
 				Podkreślenie
@@ -37,9 +45,12 @@
 	public required MudDialogInstance Instance { get; set; }
 	
 	[Parameter]
+	public bool TournamentAllowsMultiDuels { get; set; }
+	
+	[Parameter]
 	public required Data Values { get; set; }
 
-	bool _showTournamentName, _useShortName;
+	bool _showTournamentName, _useShortName, _displaySumOfWonDuels;
 	DisplaysColorMode _colorMode;
 
 	protected override void OnParametersSet()
@@ -47,12 +58,13 @@
 		_showTournamentName = Values.ShowTournamentName;
 		_useShortName = Values.UseShortNames;
 		_colorMode = Values.ColorMode;
+		_displaySumOfWonDuels = Values.DisplaySumOfWonDuels;
 	}
 
-	void Submit() => Instance.Close(DialogResult.Ok(new Data(_showTournamentName, _useShortName, _colorMode)));
+	void Submit() => Instance.Close(DialogResult.Ok(new Data(_showTournamentName, _useShortName, _colorMode, _displaySumOfWonDuels)));
 	
 	void Cancel() => Instance.Close(DialogResult.Cancel());
 
-	public record Data(bool ShowTournamentName, bool UseShortNames, DisplaysColorMode ColorMode);
+	public record Data(bool ShowTournamentName, bool UseShortNames, DisplaysColorMode ColorMode, bool DisplaySumOfWonDuels);
 
 }

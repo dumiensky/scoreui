@@ -1,8 +1,83 @@
+@using ScoreUI.Models.Enums
 @inherits DisplayBase
 
-<h3>StreamOverlayDisplay</h3>
-<h6>Current match: @CurrentMatch?.DisplayText</h6>
+<MudStack Justify="Justify.Center" Class="mt-5" Spacing="0" Style="opacity: .95">
+	@if (Tournament.Settings.Displays.ShowTournamentName)
+	{
+		<MudStack Row Justify="Justify.Center">
+			<div class="pa-1 gray lighten-4" style="min-width: 200px;">
+				<MudText Class="black-text" Align="Align.Center">
+					@Tournament.Name
+				</MudText>
+			</div>
+		</MudStack>
+	}
+	@if (CurrentMatch?.DisplayText is not null)
+	{
+		<MudStack Row Justify="Justify.Center">
+			<div class="pa-1 gray lighten-4" style="min-width: 200px;">
+				<MudText Class="black-text" Align="Align.Center">
+					<strong>@CurrentMatch.DisplayText</strong>
+				</MudText>
+			</div>
+		</MudStack>
+	}
+	<MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Spacing="0">
+		<div style="background: @GetBackgroundColor(ParticipantOne); min-width: 150px;" class="pa-1">
+			<MudStack Row Justify="Justify.SpaceBetween">
+				<MudStack Row>
+					@if (ParticipantOne?.ImageBase64 is not null)
+					{
+						<img src="@ParticipantOne.ImageBase64" alt="LOGO" width="40" height="40" />
+					}
+					<MudText Class="pa-1" Typo="Typo.h6" Style="@GetTextColorStyle(ParticipantOne)">
+						@GetParticipantName(ParticipantOne)
+					</MudText>
+				</MudStack>
+				@if (ParticipantOne is not null)
+				{
+					<StreamOverlayDisplayScore
+						Match="CurrentMatch"
+						ParticipantId="ParticipantOne.Id"
+						Tournament="Tournament" />
+				}
+			</MudStack>
+			@if (Tournament.Settings.Displays.ColorMode is DisplaysColorMode.Underline && ParticipantOne?.ColorHex is not null)
+			{
+				<div style="background: @ParticipantOne.ColorHex">
+					&nbsp;
+				</div>
+			}
+		</div>
+		<div style="background: @GetBackgroundColor(ParticipantTwo); min-width: 150px;" class="pa-1">
+			<MudStack Row Justify="Justify.SpaceBetween">
+				@if (ParticipantTwo is not null)
+				{
+					<StreamOverlayDisplayScore
+						Match="CurrentMatch"
+						ParticipantId="ParticipantTwo.Id"
+						Tournament="Tournament" />
+				}
+				<MudStack Row>
+					<MudText Class="pa-1" Typo="Typo.h6" Style="@GetTextColorStyle(ParticipantTwo)">
+						@GetParticipantName(ParticipantTwo)
+					</MudText>
+					@if (ParticipantTwo?.ImageBase64 is not null)
+					{
+						<img src="@ParticipantTwo.ImageBase64" alt="LOGO" width="40" height="40" />
+					}
+				</MudStack>
+			</MudStack>
+			@if (Tournament.Settings.Displays.ColorMode is DisplaysColorMode.Underline && ParticipantTwo?.ColorHex is not null)
+			{
+				<div style="background: @ParticipantTwo.ColorHex">
+					&nbsp;
+				</div>
+			}
+		</div>
+	</MudStack>
+</MudStack>
 
 @code {
-	
+
 }

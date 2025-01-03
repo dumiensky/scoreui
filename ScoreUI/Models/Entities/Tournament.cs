@@ -80,4 +80,6 @@ public class DisplaysSettings
 	public bool UseShortNames { get; set; }
 	
 	public DisplaysColorMode ColorMode { get; set; }
+	
+	public bool DisplaySumOfWonDuels { get; set; }
 }
