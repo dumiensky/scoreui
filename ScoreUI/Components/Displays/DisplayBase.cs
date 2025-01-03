@@ -17,10 +17,20 @@ public abstract class DisplayBase : ComponentBase, IDisposable
 
 	protected override void OnInitialized()
 	{
-		DisplayHooks.CurrentMatchChanged += DisplayHooksCurrentMatchChanged;
+		DisplayHooks.CurrentMatchChanged += DisplayHooksOnCurrentMatchChanged;
+		DisplayHooks.TournamentUpdated += DisplayHooksOnTournamentUpdated;
 	}
 
-	void DisplayHooksCurrentMatchChanged(object? sender, CurrentMatchChangedEventArgs e)
+	void DisplayHooksOnTournamentUpdated(object? sender, Tournament e)
+	{
+		if (e.Id == Tournament.Id)
+		{
+			Tournament = e;
+			InvokeAsync(StateHasChanged);
+		}
+	}
+
+	void DisplayHooksOnCurrentMatchChanged(object? sender, CurrentMatchChangedEventArgs e)
 	{
 		if (e.TournamentId == Tournament.Id)
 		{
@@ -31,6 +41,6 @@ public abstract class DisplayBase : ComponentBase, IDisposable
 
 	public void Dispose()
 	{
-		DisplayHooks.CurrentMatchChanged -= DisplayHooksCurrentMatchChanged;
+		DisplayHooks.CurrentMatchChanged -= DisplayHooksOnCurrentMatchChanged;
 	}
 }

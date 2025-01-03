@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using MongoDB.Wrapper;
+using ScoreUI.Models.Enums;
 
 namespace ScoreUI.Models.Entities;
 
@@ -39,7 +40,7 @@ public class TournamentSettings
 	
 	public string? Key { get; set; }
 
-	public DisplaysSettings Displayses { get; set; } = new();
+	public DisplaysSettings Displays { get; set; } = new();
 }
 
 public abstract class MatchSettings
@@ -78,5 +79,5 @@ public class DisplaysSettings
 	
 	public bool UseShortNames { get; set; }
 	
-	public bool ColorBackgroundInsteadOfText { get; set; }
+	public DisplaysColorMode ColorMode { get; set; }
 }
