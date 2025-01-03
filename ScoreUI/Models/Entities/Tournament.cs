@@ -38,6 +38,8 @@ public class TournamentSettings
 	public string? Alias { get; set; }
 	
 	public string? Key { get; set; }
+
+	public DisplaysSettings Displayses { get; set; } = new();
 }
 
 public abstract class MatchSettings
@@ -68,4 +70,13 @@ public class MultiDuelMatchSettings : MatchSettings
 	public int MinDuels { get; set; } = 1;
 	public int MaxDuels { get; set; } = 5;
 	public bool ResetTimeOnNewMatch { get; set; }
+}
+
+public class DisplaysSettings
+{
+	public bool ShowTournamentName { get; set; }
+	
+	public bool UseShortNames { get; set; }
+	
+	public bool ColorBackgroundInsteadOfText { get; set; }
 }

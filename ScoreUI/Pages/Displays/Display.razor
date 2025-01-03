@@ -1,9 +1,66 @@
+@using MongoDB.Wrapper.Abstractions
 @using ScoreUI.Models.Consts
+@using ScoreUI.Models.Entities
+@using ScoreUI.Models.Enums
+@using ScoreUI.Services.Interfaces
+@using ScoreUI.Components.Displays
 @attribute [Route(Urls.Displays.Display)]
 
-<h3>Display page</h3>
+@inject IMongoDb _mongoDb
+@inject ITournamentService _tournamentService
+
+@if (!_loaded)
+{
+	<MudProgressCircular Indeterminate />
+}
+else if (_display is null)
+{
+	<MudAlert Severity="Severity.Error">
+		Nie znaleziono ekranu powiązanego z podanym adresem
+	</MudAlert>
+}
+else if (_tournament is null)
+{
+	<MudAlert Severity="Severity.Error">
+		Nie znaleziono turnieju powiązanego z podanym ekranem
+	</MudAlert>
+}
+else
+{
+	switch (_display.Type)
+	{
+		case DisplayType.StreamOverlay:
+			<StreamOverlayDisplay Tournament="_tournament" />
+			break;
+			
+		case DisplayType.Standalone:
+			<StandaloneDisplay Tournament="_tournament" />
+			break;
+			
+		default:
+			<MudAlert Severity="Severity.Warning">
+				Nieznany typ ekranu! Zmień typ ekranu w ustawieniach turnieju.
+			</MudAlert>
+			break;
+	}
+}
 
 @code {
 	[Parameter]
 	public Guid DisplayId { get; set; }
+
+	Models.Entities.Display? _display;
+	Tournament? _tournament;
+	bool _loaded;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		_display = await _mongoDb.Get<Models.Entities.Display>(DisplayId);
+
+		if (_display is not null)
+			_tournament = await _tournamentService.Get(_display.TournamentId);
+			
+		_loaded = true;
+	}
+
 }

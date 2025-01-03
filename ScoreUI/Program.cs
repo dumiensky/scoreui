@@ -19,6 +19,7 @@ builder
 builder.Services.AddMudServices();
 builder.Services.AddClipboard();
 builder.Services.AddSingleton<IMongoDb>(new MongoDb(mongoDbSettings));
+builder.Services.AddSingleton<IDisplayHooks, DisplayHooks>();
 builder.Services.AddTransient<ITournamentService, TournamentService>();
 
 var app = builder.Build();
