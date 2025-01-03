@@ -4,7 +4,7 @@ using ScoreUI.Services.Interfaces;
 
 namespace ScoreUI.Services;
 
-public class TournamentService(IMongoDb mongoDb) : ITournamentService
+public class TournamentService(IMongoDb mongoDb, IDisplayHooks displayHooks) : ITournamentService
 {
 	public async Task Create(Tournament tournament)
 	{
@@ -27,6 +27,11 @@ public class TournamentService(IMongoDb mongoDb) : ITournamentService
 
 	public async Task<bool> Update(Tournament tournament)
 	{
-		return await mongoDb.Replace(tournament);
+		var result = await mongoDb.Replace(tournament);
+
+		if (result)
+			displayHooks.SendTournamentUpdated(tournament);
+        
+		return result;
 	}
 }
