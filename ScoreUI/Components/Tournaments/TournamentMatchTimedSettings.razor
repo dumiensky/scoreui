@@ -1,0 +1,16 @@
+@using ScoreUI.Models.Entities
+
+<MudCheckBox @bind-Value="Settings.IsTimed" Label="Mierzyć czas?" />
+@if (Settings.IsTimed)
+{
+	<MinutesAndSecondsEditor @bind-Value="Settings.MaxTime" Label="Maksymalna długość rozgrywki" />
+	<MudCheckBox @bind-Value="Settings.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
+	<MudCheckBox @bind-Value="Settings.CountTimerDown" Label="Odliczać czas w dół?" />
+}
+
+@code {
+
+	[Parameter, EditorRequired]
+	public required MatchSettings Settings { get; set; }
+
+}

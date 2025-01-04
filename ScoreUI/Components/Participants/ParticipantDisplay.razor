@@ -5,7 +5,13 @@
 	{
 		<img src="@Participant.ImageBase64" alt="Logo" width="32" />
 	}
-	<span style="color: @Participant.ColorHex">
+	@if (Participant.ColorHex is not null)
+	{
+		<div class="px-2 mx-2" style="background: @Participant.ColorHex">
+			&nbsp;
+		</div>
+	}
+	<span>
 		@Participant.GetShortName()
 	</span>
 </MudStack>

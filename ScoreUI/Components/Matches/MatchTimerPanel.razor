@@ -1,10 +1,20 @@
 @using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
+
+@inject IDisplayHooks _displayHooks
+@implements IDisposable
 
 <div class="d-flex align-center justify-center">
 	<div style="max-width: 500px" class="gray lighten-2 pa-3 rounded">
 		<MudText Typo="Typo.h3" Color="Color.Primary" Align="Align.Center">
 			@(_time.Minutes.ToString("00"))m : @(_time.Seconds.ToString("00"))s
 		</MudText>
+		@if (_time > Settings.MaxTime)
+		{
+			<MudText Typo="Typo.body2" Color="Color.Error" Align="Align.Center">
+				Przekroczenie czasu
+			</MudText>
+		}
 		<MudStack Row>
 			<MudButton 
 				FullWidth 
@@ -63,6 +73,7 @@
 					Stop();
 				}
 				
+				_displayHooks.SendTimerChanged(Match.Id, _time);
 				InvokeAsync(StateHasChanged);
 			},
 			null,
@@ -93,6 +104,13 @@
 			_time = TimeSpan.Zero;
 			_stepSeconds = 1;
 		}
+		
+		_displayHooks.SendTimerChanged(Match.Id, _time);
+	}
+
+	void IDisposable.Dispose()
+	{
+		Stop();
 	}
 
 }

@@ -12,7 +12,7 @@ public class Participant : Entity
 	
 	public string? ColorHex { get; set; }
 
-	public string? GetShortName() => ShortName ?? Name;
+	public string GetShortName() => ShortName ?? Name;
 
 	public static Participant Create(string name, string? shortName, string? imageBase64, string? colorHex) =>
 		new()

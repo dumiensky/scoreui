@@ -1,0 +1,61 @@
+
+<div>
+	@if (!string.IsNullOrWhiteSpace(Label))
+	{
+		<MudText Typo="Typo.caption">
+			@Label
+		</MudText>
+	}
+	<MudStack Row>
+		<MudNumericField
+			T="int?"
+			Min="0"
+			Max="999"
+			Value="_value?.Minutes"
+			ValueChanged="i => MinutesChanged(i)"
+			Label="Minuty"
+			Variant="Variant.Outlined" />
+		<MudNumericField
+			T="int?"
+			Min="0"
+			Max="59"
+			Value="_value?.Seconds"
+			ValueChanged="i => SecondsChanged(i)"
+			Label="Sekundy"
+			Variant="Variant.Outlined" />
+	</MudStack>
+</div>
+
+@code {
+	[Parameter]
+	public TimeSpan? Value { get; set; }
+	
+	[Parameter]
+	public EventCallback<TimeSpan?> ValueChanged { get; set; }
+	
+	[Parameter]
+	public string? Label { get; set; }
+
+	TimeSpan? _value;
+
+	protected override void OnParametersSet()
+	{
+		_value = Value ?? TimeSpan.Zero;
+	}
+
+	void MinutesChanged(int? i)
+	{
+		var v = i ?? 0;
+		_value = new TimeSpan(0, v, _value?.Seconds ?? 0);
+
+		ValueChanged.InvokeAsync(_value);
+	}
+
+	void SecondsChanged(int? i)
+	{
+		var v = i ?? 0;
+		_value = new TimeSpan(0, _value?.Minutes ?? 0, v);
+
+		ValueChanged.InvokeAsync(_value);
+	}
+}

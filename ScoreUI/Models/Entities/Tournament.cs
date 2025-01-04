@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using MongoDB.Wrapper;
+using ScoreUI.Models.Enums;
 
 namespace ScoreUI.Models.Entities;
 
@@ -38,6 +39,8 @@ public class TournamentSettings
 	public string? Alias { get; set; }
 	
 	public string? Key { get; set; }
+
+	public DisplaysSettings Displays { get; set; } = new();
 }
 
 public abstract class MatchSettings
@@ -68,4 +71,19 @@ public class MultiDuelMatchSettings : MatchSettings
 	public int MinDuels { get; set; } = 1;
 	public int MaxDuels { get; set; } = 5;
 	public bool ResetTimeOnNewMatch { get; set; }
+}
+
+public class DisplaysSettings
+{
+	public bool ShowTournamentName { get; set; }
+	
+	public bool UseShortTournamentName { get; set; }
+	
+	public bool UseShortNames { get; set; }
+	
+	public DisplaysColorMode ColorMode { get; set; }
+	
+	public bool DisplaySumOfWonDuels { get; set; }
+	
+	public TimerLocation TimerLocation { get; set; }
 }

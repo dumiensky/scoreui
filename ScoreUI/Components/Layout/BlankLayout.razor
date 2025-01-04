@@ -1,0 +1,21 @@
+@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider MaxWidth="MaxWidth.Medium" FullWidth="true" />
+<MudSnackbarProvider />
+
+@Body
+
+<div id="blazor-error-ui">
+	<MudAlert Severity="Severity.Error" Variant="Variant.Filled">
+		<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+			<MudText>
+				Wystąpił nieoczekiwany błąd.
+			</MudText>
+			<MudButton Href="/" Variant="Variant.Filled" Color="Color.Dark" StartIcon="@Icons.Material.Filled.Refresh">
+				Załaduj ponownie aplikację.
+			</MudButton>
+		</MudStack>
+	</MudAlert>
+</div>

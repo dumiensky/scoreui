@@ -66,6 +66,13 @@ else
 
 	async Task DeleteMatch(Match context)
 	{
+		if (await _dialogService.ShowMessageBox(
+				title: "Usuwanie meczu",
+				message: "Jesteś pewien, że chcesz usunąć ten mecz?",
+				yesText: "Tak, usuń",
+				cancelText: "Anuluj") != true)
+			return;
+		
 		context.Deleted = true;
 
 		if (await _tournamentService.Update(Tournament))

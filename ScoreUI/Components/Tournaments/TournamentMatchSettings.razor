@@ -1,0 +1,43 @@
+@using ScoreUI.Models.Entities
+
+@if (Tournament.Settings.SimpleMatch.IsEnabled)
+{
+	<div class="gray lighten-5 pa-3 my-3 rounded">
+		<MudText>
+			Ustawienia <strong>Meczu prostego</strong>
+		</MudText>
+		<TournamentMatchTimedSettings Settings="Tournament.Settings.SimpleMatch" />
+	</div>
+}
+
+@if (Tournament.Settings.DualPointsMatch.IsEnabled)
+{
+	<div class="gray lighten-5 pa-3 my-3 rounded">
+		<MudText>
+			Ustawienia <strong>Meczu podwójnie punktowanego</strong>
+		</MudText>
+		<TournamentMatchTimedSettings Settings="Tournament.Settings.DualPointsMatch" />
+		
+		<MudTextField @bind-Value="Tournament.Settings.DualPointsMatch.ScoreAName" Label="Nazwa punktów głównych" Class="ml-4" Variant="Variant.Outlined" />
+		<MudTextField @bind-Value="Tournament.Settings.DualPointsMatch.ScoreBName" Label="Nazwa punktów podrzędnych" Class="ml-4" Variant="Variant.Outlined" />
+	</div>
+}
+
+@if (Tournament.Settings.MultiDuelMatch.IsEnabled)
+{
+	<div class="gray lighten-5 pa-3 my-3 rounded">
+		<MudText>
+			Ustawienia <strong>Meczu wielopojedynkowego</strong>
+		</MudText>
+		<TournamentMatchTimedSettings Settings="Tournament.Settings.MultiDuelMatch" />
+		<MudNumericField @bind-Value="Tournament.Settings.MultiDuelMatch.MinDuels" Min="1" Max="99" Label="Minimalna ilość pojedynków" Class="ml-4" Variant="Variant.Outlined" />
+		<MudNumericField @bind-Value="Tournament.Settings.MultiDuelMatch.MaxDuels" Min="1" Max="99" Label="Maksymalna ilość pojedynków" Class="ml-4" Variant="Variant.Outlined" />
+	</div>
+}
+
+@code {
+
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+
+}

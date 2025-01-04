@@ -1,0 +1,39 @@
+@using ScoreUI.Models.Entities
+@using ScoreUI.Models.Enums
+
+<div style="position: fixed; @LocationStyle">
+	<MatchTimer Match="Match" Tournament="Tournament" />
+</div>
+
+@code {
+	[Parameter, EditorRequired]
+	public required Match Match { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+
+	string LocationStyle => Tournament.Settings.Displays.TimerLocation switch
+	{
+		TimerLocation.TopRight => $"top: {TopOffset()}px; right: 32px;",
+		TimerLocation.BottomLeft => "bottom: 32px; left: 32px;",
+		TimerLocation.BottomRight => "bottom: 32px; right: 32px;",
+		_ => $"top: {TopOffset()}px; left: 32px;" // top-left
+	};
+
+	string TopOffset()
+	{
+		int offset = 20;
+
+		if (Tournament.Settings.Displays.ShowTournamentName)
+		{
+			offset += 24;
+		}
+
+		if (Match.DisplayText is not null)
+		{
+			offset += 24;
+		}
+
+		return offset.ToString();
+	}
+}

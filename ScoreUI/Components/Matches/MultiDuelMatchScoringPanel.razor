@@ -1,15 +1,18 @@
 @using ScoreUI.Models.Entities
 @using ScoreUI.Components.Participants
+@using ScoreUI.Services.Interfaces
 
 @inject ISnackbar _snack
 @inject IDialogService _dialogService
+@inject IDisplayHooks _displayHooks
+@implements IDisposable
 
 <MudPaper Class="my-3 pa-3">
 	<MudStack Row Wrap="Wrap.Wrap">
 		@foreach (var (duel, index) in Match.Duels.Select((x, i) => (x, i)))
 		{
 			<MudButton 
-				OnClick="() => _currentDuel = duel" 
+				OnClick="() => SetCurrentDuel(duel)" 
 				Color="Color.Primary"
 				Variant="duel == _currentDuel ? Variant.Filled : Variant.Outlined"
 				Class="d-block">
@@ -114,7 +117,7 @@
 			Match.Duels.Add(MultiDuelMatch.Duel.Create());
 		}
 
-		_currentDuel = Match.Duels.FirstOrDefault();
+		SetCurrentDuel(Match.Duels.FirstOrDefault());
 	}
 
 	async Task DeleteDuel(MultiDuelMatch.Duel currentDuel)
@@ -147,4 +150,14 @@
 		OnUpdate.InvokeAsync();
 	}
 
+	void SetCurrentDuel(MultiDuelMatch.Duel? duel)
+	{
+		_currentDuel = duel;
+		_displayHooks.SetCurrentDuel(Match.Id, duel);
+	}
+
+	void IDisposable.Dispose()
+	{
+		_displayHooks.SetCurrentDuel(Match.Id, null);
+	}
 }
