@@ -6,7 +6,7 @@
 		<div class="@(RightToLeft ? "d-flex flex-row-reverse align-center gap-4" : "d-flex flex-row align-center gap-4")">
 			@if (_participant.ImageBase64 is not null)
 			{
-				<img src="@_participant.ImageBase64" width="100" alt="LOGO" />
+				<img src="@_participant.ImageBase64" width="60" alt="LOGO" />
 			}
 			<MudText Typo="Typo.h3">
 				@_participant.GetShortName()
