@@ -38,7 +38,8 @@ else if (_displays.Any())
 		Items="_displays"
 		EditTrigger="TableEditTrigger.EditButton"
 		RowEditCommit="CommitEdit"
-		Elevation="0">
+		Elevation="0"
+		Hover>
 		<RowTemplate>
 			<MudTd>
 				@(_displays.IndexOf(context) + 1)

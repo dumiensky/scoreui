@@ -1,6 +1,6 @@
 @using ScoreUI.Models.Entities
 
-<MudSelect T="Guid?" Value="_value" ValueChanged="ValueHasChanged" Label="@Label">
+<MudSelect T="Guid?" Value="_value" ValueChanged="ValueHasChanged" Label="@Label" Variant="Variant.Outlined">
 	@foreach (var value in Tournament.ActiveParticipants)
 	{
 		<MudSelectItem T="Guid?" Value="value.Id">

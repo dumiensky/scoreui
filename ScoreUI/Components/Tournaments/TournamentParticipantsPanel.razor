@@ -19,7 +19,7 @@
 </MudStack>
 @if (Tournament.Participants.Any())
 {
-	<MudTable Items="Tournament.ActiveParticipants.OrderBy(_ => _.Name)" Dense Elevation="0">
+	<MudTable Items="Tournament.ActiveParticipants.OrderBy(_ => _.Name)" Dense Elevation="0" Hover>
 		<RowTemplate>
 			<MudTd>
 				@context.Name
@@ -50,9 +50,24 @@
 				}
 			</MudTd>
 			<MudTd>
-				<MudButton Size="Size.Small" Variant="Variant.Filled" Color="Color.Error" OnClick="() => DeleteParticipant(context)">
-					Usuń
-				</MudButton>
+				<MudStack Row Justify="Justify.FlexEnd">
+					<MudButton
+						Size="Size.Small"
+						Variant="Variant.Filled"
+						Color="Color.Dark"
+						StartIcon="@Icons.Material.Filled.Edit"
+						OnClick="() => EditParticipant(context)">
+						Edytuj
+					</MudButton>
+					<MudButton
+						Size="Size.Small"
+						Variant="Variant.Filled"
+						Color="Color.Error"
+						OnClick="() => DeleteParticipant(context)"
+						Disabled="Tournament.Matches.Any(_ => _.OneId == context.Id || _.TwoId == context.Id)">
+						Usuń
+					</MudButton>
+				</MudStack>
 			</MudTd>
 		</RowTemplate>
 	</MudTable>
@@ -86,6 +101,29 @@ else
 
 			if (await _tournamentService.Update(Tournament))
 				_snack.Add("Dodano uczestnika", Severity.Success);
+
+			await InvokeAsync(StateHasChanged);
+		}
+	}
+
+	async Task EditParticipant(Participant context)
+	{
+		var dialog = await _dialogService.ShowAsync<EditParticipantDialog>("Edycja uczestnika",
+			new DialogParameters<EditParticipantDialog>()
+			{
+				{ _ => _.Values, new(context.Name, context.ShortName, context.ImageBase64, context.ColorHex) }
+			});
+		var result = await dialog.Result;
+
+		if (result?.Data is EditParticipantDialog.Data rData)
+		{
+			context.Name = rData.Name;
+			context.ShortName = rData.ShortName;
+			context.ImageBase64 = rData.ImageBase64;
+			context.ColorHex = rData.ColorHex;
+
+			if (await _tournamentService.Update(Tournament))
+				_snack.Add("Zaktualizowano uczestnika", Severity.Success);
 
 			await InvokeAsync(StateHasChanged);
 		}
