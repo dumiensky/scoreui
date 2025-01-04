@@ -8,3 +8,11 @@
 		</MudText>
 	</div>
 }
+@if (CurrentMatch?.DisplayText is not null)
+{
+	<div class="px-1 gray lighten-4">
+		<MudText Typo="Typo.h4" Class="black-text" Align="Align.Center">
+			<strong>@CurrentMatch.DisplayText</strong>
+		</MudText>
+	</div>
+}
