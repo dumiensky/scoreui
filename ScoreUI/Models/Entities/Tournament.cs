@@ -77,6 +77,8 @@ public class DisplaysSettings
 {
 	public bool ShowTournamentName { get; set; }
 	
+	public bool UseShortTournamentName { get; set; }
+	
 	public bool UseShortNames { get; set; }
 	
 	public DisplaysColorMode ColorMode { get; set; }

@@ -168,6 +168,7 @@ else
 					_ => _.Values,
 					new(
 						Tournament.Settings.Displays.ShowTournamentName,
+						Tournament.Settings.Displays.UseShortTournamentName,
 						Tournament.Settings.Displays.UseShortNames, 
 						Tournament.Settings.Displays.ColorMode,
 						Tournament.Settings.Displays.DisplaySumOfWonDuels,
@@ -176,6 +177,10 @@ else
 				{
 					_ => _.TournamentAllowsMultiDuels,
 					Tournament.Settings.MultiDuelMatch.IsEnabled
+				},
+				{
+					_ => _.TournamentHasShortName,
+					!string.IsNullOrWhiteSpace(Tournament.ShortName)
 				}
 			});
 
@@ -183,6 +188,7 @@ else
 		if (result?.Data is EditDisplaysSettingsDialog.Data data)
 		{
 			Tournament.Settings.Displays.ShowTournamentName = data.ShowTournamentName;
+			Tournament.Settings.Displays.UseShortTournamentName = data.UseShortTournamentName;
 			Tournament.Settings.Displays.UseShortNames = data.UseShortNames;
 			Tournament.Settings.Displays.ColorMode = data.ColorMode;
 			Tournament.Settings.Displays.DisplaySumOfWonDuels = data.DisplaySumOfWonDuels;

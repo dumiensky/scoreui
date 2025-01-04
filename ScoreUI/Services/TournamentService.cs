@@ -22,6 +22,9 @@ public class TournamentService(IMongoDb mongoDb, IDisplayHooks displayHooks) : I
 		if (alias is null)
 			return true;
 
+		if (alias.Equals("create", StringComparison.CurrentCultureIgnoreCase))
+			return false;
+
 		return !await mongoDb.Any<Tournament>(_ => _.Settings.Alias!.ToLower() == alias.ToLower());
 	}
 

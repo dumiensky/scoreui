@@ -10,7 +10,7 @@
 	<MudText Typo="Typo.h6">
 		Pojedynki
 	</MudText>
-	<MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="AddMatch">
+	<MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="AddMatch" Disabled="Tournament.Participants.Count <= 1">
 		Dodaj pojedynek
 	</MudButton>
 </MudStack>

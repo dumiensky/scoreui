@@ -4,6 +4,12 @@
 	<DialogContent>
 
 		<MudCheckBox @bind-Value="_showTournamentName" Label="Pokazuj nazwę turnieju" Class="my-3" />
+		
+		@if (TournamentHasShortName)
+		{
+			<MudCheckBox @bind-Value="_useShortTournamentName" Label="Używaj krótkiej nazwy turnieju" Class="my-3" />
+		}
+		
 		<MudCheckBox @bind-Value="_useShortName" Label="Używaj skróconych nazw uczestników" Class="my-3" />
 		
 		@if (TournamentAllowsMultiDuels)
@@ -63,9 +69,12 @@
 	public bool TournamentAllowsMultiDuels { get; set; }
 	
 	[Parameter]
+	public bool TournamentHasShortName { get; set; }
+	
+	[Parameter]
 	public required Data Values { get; set; }
 
-	bool _showTournamentName, _useShortName, _displaySumOfWonDuels;
+	bool _showTournamentName, _useShortTournamentName, _useShortName, _displaySumOfWonDuels;
 	DisplaysColorMode _colorMode;
 	TimerLocation _timerLocation;
 
@@ -79,12 +88,13 @@
 	}
 
 	void Submit() => Instance.Close(DialogResult.Ok(new Data(
-		_showTournamentName, _useShortName, _colorMode, _displaySumOfWonDuels, _timerLocation)));
+		_showTournamentName, _useShortTournamentName, _useShortName, _colorMode, _displaySumOfWonDuels, _timerLocation)));
 	
 	void Cancel() => Instance.Close(DialogResult.Cancel());
 
 	public record Data(
 		bool ShowTournamentName, 
+		bool UseShortTournamentName,
 		bool UseShortNames, 
 		DisplaysColorMode ColorMode, 
 		bool DisplaySumOfWonDuels,

@@ -60,6 +60,11 @@ public abstract class DisplayBase : ComponentBase, IDisposable
 		DisplayHooks.CurrentMatchChanged -= DisplayHooksOnCurrentMatchChanged;
 	}
 
+	protected string GetTournamentName() =>
+		Tournament.Settings.Displays.UseShortTournamentName && !string.IsNullOrWhiteSpace(Tournament.ShortName)
+			? Tournament.ShortName
+			: Tournament.Name;
+
 	protected string GetParticipantName(Participant? participant)
 	{
 		if (participant is null)

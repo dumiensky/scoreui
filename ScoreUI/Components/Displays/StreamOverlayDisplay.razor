@@ -2,13 +2,13 @@
 @using ScoreUI.Models.Enums
 @inherits DisplayBase
 
-<MudStack Justify="Justify.Center" Class="mt-5" Spacing="0" Style="opacity: .95">
+<MudStack Justify="Justify.Center" Class="ma-3 mt-5" Spacing="0" Style="opacity: .95">
 	@if (Tournament.Settings.Displays.ShowTournamentName)
 	{
 		<MudStack Row Justify="Justify.Center">
 			<div class="px-1 gray lighten-4" style="min-width: 200px;">
 				<MudText Class="black-text" Align="Align.Center">
-					@Tournament.Name
+					@GetTournamentName()
 				</MudText>
 			</div>
 		</MudStack>

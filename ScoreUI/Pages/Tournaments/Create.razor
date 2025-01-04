@@ -98,7 +98,7 @@
 							<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.IsTimed" Label="Mierzyć czas?" />
 							@if (_tournament.Settings.SimpleMatch.IsTimed)
 							{
-								<MudTimePicker @bind-Time="_tournament.Settings.SimpleMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
+								<MinutesAndSecondsEditor @bind-Value="_tournament.Settings.SimpleMatch.MaxTime" Label="Maksymalna długość rozgrywki" />
 								<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
 								<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.CountTimerDown" Label="Odliczać czas w dół?" />
 							}

@@ -1,8 +1,10 @@
 @inherits DisplayBase
 
-<h3>StandaloneDisplay</h3>
-<h6>Current match: @CurrentMatch?.DisplayText</h6>
-
-@code {
-	
+@if (Tournament.Settings.Displays.ShowTournamentName)
+{
+	<div class="px-1 gray lighten-4">
+		<MudText Typo="Typo.h3" Class="black-text" Align="Align.Center">
+			@GetTournamentName()
+		</MudText>
+	</div>
 }
