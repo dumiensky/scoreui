@@ -1,0 +1,59 @@
+@using Newtonsoft.Json
+@using ScoreUI.Models.Entities
+
+<MudDialog>
+	<DialogContent>
+		
+		@if (_tournament is not null)
+		{
+			<MudTabs KeepPanelsAlive="false">
+				<MudTabPanel Text="Informacje">
+					<TournamentInfoSettings Tournament="_tournament" OnUpdated="StateHasChanged" />
+				</MudTabPanel>
+				<MudTabPanel Text="Rodzaje meczy">
+					<TournamentMatchTypesSettings Tournament="_tournament" />
+				</MudTabPanel>
+				<MudTabPanel Text="Ustawienia meczy">
+					<TournamentMatchSettings Tournament="_tournament" />
+				</MudTabPanel>
+			</MudTabs>
+		}
+
+	</DialogContent>
+	<DialogActions>
+		<MudStack Row Justify="Justify.SpaceBetween">
+			<MudButton OnClick="Cancel">
+				Anuluj
+			</MudButton>
+			<MudButton OnClick="Submit" Color="Color.Success" Variant="Variant.Filled" Disabled="string.IsNullOrWhiteSpace(_tournament?.Name)">
+				Zatwierdź
+			</MudButton>
+		</MudStack>
+	</DialogActions>
+</MudDialog>
+
+@code {
+
+	[CascadingParameter]
+	public required MudDialogInstance Instance { get; set; }
+	
+	[Parameter]
+	public required Tournament Tournament { get; set; }
+
+	Tournament? _tournament;
+
+	static readonly JsonSerializerSettings SerializerSettings = new()
+	{
+		TypeNameHandling = TypeNameHandling.All
+	};
+
+	protected override void OnParametersSet()
+	{
+		_tournament = JsonConvert.DeserializeObject<Tournament>(
+			JsonConvert.SerializeObject(Tournament, SerializerSettings), SerializerSettings); // create a new instance of an object
+	}
+
+	void Submit() => Instance.Close(DialogResult.Ok(_tournament));
+	
+	void Cancel() => Instance.Close(DialogResult.Cancel());
+}

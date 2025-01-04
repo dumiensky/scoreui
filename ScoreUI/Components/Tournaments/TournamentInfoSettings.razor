@@ -1,0 +1,28 @@
+@using ScoreUI.Models.Entities
+
+<MudTextField
+	@bind-Value="Tournament.Name"
+	Label="Nazwa turnieju"
+	Variant="Variant.Outlined"
+	Class="my-3"
+	Required
+	RequiredError="Nazwa turnieju jest wymagana"
+	Immediate 
+	OnKeyUp="OnUpdated"/>
+
+<MudTextField
+	@bind-Value="Tournament.ShortName"
+	Label="Krótka nazwa turnieju"
+	Variant="Variant.Outlined"
+	Class="my-3"
+	OnKeyUp="OnUpdated"/>
+
+@code {
+
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+	
+	[Parameter]
+	public EventCallback OnUpdated { get; set; }
+
+}

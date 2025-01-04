@@ -1,9 +1,18 @@
 @using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
+
+@inject IDialogService _dialogService
+@inject ITournamentService _tournamentService
 
 <MudPaper Class="my-3 pa-3 indigo lighten-5">
-	<MudText Typo="Typo.h3">
-		@Tournament.Name
-	</MudText>
+	<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+		<MudText Typo="Typo.h3">
+			@Tournament.Name
+		</MudText>
+		<MudButton Color="Color.Dark" StartIcon="@Icons.Material.Filled.Settings" OnClick="UpdateTournamentSettings">
+			Ustawienia
+		</MudButton>
+	</MudStack>
 </MudPaper>
 
 <MudPaper Class="my-3 pa-3">
@@ -22,5 +31,28 @@
 
 	[Parameter, EditorRequired]
 	public required Tournament Tournament { get; set; }
+
+	async Task UpdateTournamentSettings()
+	{
+		var dialog = _dialogService.Show<EditTournamentDialog>(
+			"Ustawienia turnieju",
+			new DialogParameters<EditTournamentDialog>()
+			{
+				{ _ => _.Tournament, Tournament }
+			});
+
+		var result = await dialog.Result;
+
+		if (result?.Data is Tournament newTournament)
+		{
+			Tournament.Name = newTournament.Name;
+			Tournament.ShortName = newTournament.ShortName;
+			Tournament.Settings.SimpleMatch = newTournament.Settings.SimpleMatch;
+			Tournament.Settings.DualPointsMatch = newTournament.Settings.DualPointsMatch;
+			Tournament.Settings.MultiDuelMatch = newTournament.Settings.MultiDuelMatch;
+
+			await _tournamentService.Update(Tournament);
+		}
+	}
 
 }

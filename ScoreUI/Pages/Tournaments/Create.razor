@@ -35,55 +35,13 @@
 			{
 				case CreatorPage.Info:
 
-					<MudTextField
-						@bind-Value="_tournament.Name"
-						Label="Nazwa turnieju"
-						Variant="Variant.Outlined"
-						Class="my-3"
-						Required
-						RequiredError="Nazwa turnieju jest wymagana"
-						Immediate />
-
-					<MudTextField
-						@bind-Value="_tournament.ShortName"
-						Label="Krótka nazwa turnieju"
-						Variant="Variant.Outlined"
-						Class="my-3" />
+					<TournamentInfoSettings Tournament="_tournament" OnUpdated="StateHasChanged" />
 
 					break;
 
 				case CreatorPage.MatchTypes:
 
-					<MudText>
-						Dozwolone typy meczy
-					</MudText>
-
-					<MudCheckBox
-						T="bool"
-						Class="mt-3"
-						@bind-Value="@_tournament.Settings.SimpleMatch.IsEnabled"
-						Label="Mecz prosty" />
-					<MudText Typo="Typo.body2">
-						Mecz prosty, punktowany pojedynczo dla każdego uczestnika
-					</MudText>
-
-					<MudCheckBox
-						T="bool"
-						Class="mt-3"
-						@bind-Value="@_tournament.Settings.DualPointsMatch.IsEnabled"
-						Label="Mecz podwójnie punktowany" />
-					<MudText Typo="Typo.body2">
-						Mecz punktowany na punkty główne i podrzędne
-					</MudText>
-
-					<MudCheckBox
-						T="bool"
-						Class="mt-3"
-						@bind-Value="@_tournament.Settings.MultiDuelMatch.IsEnabled"
-						Label="Mecz wielopojedynkowy" />
-					<MudText Typo="Typo.body2">
-						Mecz składający się z wielu prostych pojedynków
-					</MudText>
+					<TournamentMatchTypesSettings Tournament="_tournament" OnUpdated="StateHasChanged" />
 
 					break;
 					

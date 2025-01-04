@@ -1,0 +1,51 @@
+@using ScoreUI.Models.Entities
+
+<MudText>
+	Dozwolone typy meczy
+</MudText>
+
+<MudCheckBox
+	T="bool"
+	Class="mt-3"
+	Value="@Tournament.Settings.SimpleMatch.IsEnabled"
+	ValueChanged="e => Update(t => t.Settings.SimpleMatch.IsEnabled = e)"
+	Label="Mecz prosty" />
+<MudText Typo="Typo.body2">
+	Mecz prosty, punktowany pojedynczo dla każdego uczestnika
+</MudText>
+
+<MudCheckBox
+	T="bool"
+	Class="mt-3"
+	Value="@Tournament.Settings.DualPointsMatch.IsEnabled"
+	ValueChanged="e => Update(t => t.Settings.DualPointsMatch.IsEnabled = e)"
+	Label="Mecz podwójnie punktowany" />
+<MudText Typo="Typo.body2">
+	Mecz punktowany na punkty główne i podrzędne
+</MudText>
+
+<MudCheckBox
+	T="bool"
+	Class="mt-3"
+	Value="@Tournament.Settings.MultiDuelMatch.IsEnabled"
+	ValueChanged="e => Update(t => t.Settings.MultiDuelMatch.IsEnabled = e)"
+	Label="Mecz wielopojedynkowy" />
+<MudText Typo="Typo.body2">
+	Mecz składający się z wielu prostych pojedynków
+</MudText>
+
+@code {
+
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+	
+	[Parameter]
+	public EventCallback OnUpdated { get; set; }
+
+	void Update(Action<Tournament> action)
+	{
+		action(Tournament);
+		OnUpdated.InvokeAsync();
+	}
+
+}
