@@ -3,10 +3,14 @@
 <MudDialog>
 	<DialogContent>
 
-		<ParticipantSelector Tournament="Tournament" @bind-Value="_oneId" />
-		<ParticipantSelector Tournament="Tournament" @bind-Value="_twoId" />
+		<div class="my-3">
+			<ParticipantSelector Tournament="Tournament" @bind-Value="_oneId" Label="Pierwszy uczestnik" />
+		</div>
+		<div class="my-3">
+			<ParticipantSelector Tournament="Tournament" @bind-Value="_twoId" Label="Drugi uczestnik" />
+		</div>
 		
-		<MudRadioGroup @bind-Value="_matchType" Disabled="_disableMatchType">
+		<MudRadioGroup @bind-Value="_matchType" Disabled="_disableMatchType" Class="my-3">
 			@if (Tournament.Settings.SimpleMatch.IsEnabled)
 			{
 				<MudRadio T="MatchType?" Value="MatchType.Simple">
@@ -27,8 +31,8 @@
 			}
 		</MudRadioGroup>
 		
-		<MudTextField @bind-Value="_displayText" Label="Nazwa pojedynku" />
-		<MudTextField @bind-Value="_comment" Label="Komentarz (prywatny)" />
+		<MudTextField @bind-Value="_displayText" Label="Nazwa pojedynku" Class="my-3" />
+		<MudTextField @bind-Value="_comment" Label="Komentarz (prywatny)" Class="my-3" />
 
 	</DialogContent>
 	<DialogActions>
@@ -68,6 +72,22 @@
 		_disableMatchType = Values?.MatchType is not null;
 		_displayText = Values?.DisplayText;
 		_comment = Values?.Comment;
+
+		if (_matchType is null)
+		{
+			if (Tournament.Settings.SimpleMatch.IsEnabled)
+			{
+				_matchType = MatchType.Simple;
+			}
+			else if (Tournament.Settings.DualPointsMatch.IsEnabled)
+			{
+				_matchType = MatchType.DualPoints;
+			}
+			else if (Tournament.Settings.MultiDuelMatch.IsEnabled)
+			{
+				_matchType = MatchType.MultiDuel;
+			}
+		}
 	}
 	
 	void Submit()
