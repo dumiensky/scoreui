@@ -4,10 +4,20 @@
 @using ScoreUI.Models.Enums
 @using ScoreUI.Services.Interfaces
 @using ScoreUI.Components.Displays
+@using ScoreUI.Components.Layout
 @attribute [Route(Urls.Displays.Display)]
+@layout BlankLayout
 
 @inject IMongoDb _mongoDb
 @inject ITournamentService _tournamentService
+
+<HeadContent>
+	<style>
+		html, body {
+			background: transparent !important;
+		}
+	</style>
+</HeadContent>
 
 @if (!_loaded)
 {
