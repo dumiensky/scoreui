@@ -170,7 +170,8 @@ else
 						Tournament.Settings.Displays.ShowTournamentName,
 						Tournament.Settings.Displays.UseShortNames, 
 						Tournament.Settings.Displays.ColorMode,
-						Tournament.Settings.Displays.DisplaySumOfWonDuels)
+						Tournament.Settings.Displays.DisplaySumOfWonDuels,
+						Tournament.Settings.Displays.TimerLocation)
 				},
 				{
 					_ => _.TournamentAllowsMultiDuels,
@@ -185,6 +186,7 @@ else
 			Tournament.Settings.Displays.UseShortNames = data.UseShortNames;
 			Tournament.Settings.Displays.ColorMode = data.ColorMode;
 			Tournament.Settings.Displays.DisplaySumOfWonDuels = data.DisplaySumOfWonDuels;
+			Tournament.Settings.Displays.TimerLocation = data.TimerLocation;
 
 			await _tournamentService.Update(Tournament);
 		}

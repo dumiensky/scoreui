@@ -88,8 +88,8 @@
 			<CurrentDuelDisplay Match="md" />
 		</MudStack>
 	}
+	@if (CurrentMatch?.GetSettings(Tournament) is { IsTimed: true })
+	{
+		<StreamOverlayMatchTimer Match="CurrentMatch" Tournament="Tournament" />
+	}
 </MudStack>
-
-@code {
-
-}

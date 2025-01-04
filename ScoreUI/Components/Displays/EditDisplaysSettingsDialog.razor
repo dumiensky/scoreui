@@ -26,6 +26,21 @@
 			</MudSelectItem>
 		</MudSelect>
 
+		<MudSelect @bind-Value="_timerLocation" Label="Lokalizacja czasu na streamie" Class="my-3">
+			<MudSelectItem Value="@TimerLocation.TopLeft">
+				Lewy górny róg
+			</MudSelectItem>
+			<MudSelectItem Value="@TimerLocation.TopRight">
+				Prawy górny róg
+			</MudSelectItem>
+			<MudSelectItem Value="@TimerLocation.BottomLeft">
+				Lewy dolny róg
+			</MudSelectItem>
+			<MudSelectItem Value="@TimerLocation.BottomRight">
+				Prawy dolny róg
+			</MudSelectItem>
+		</MudSelect>
+
 	</DialogContent>
 	<DialogActions>
 		<MudStack Row Justify="Justify.SpaceBetween">
@@ -52,6 +67,7 @@
 
 	bool _showTournamentName, _useShortName, _displaySumOfWonDuels;
 	DisplaysColorMode _colorMode;
+	TimerLocation _timerLocation;
 
 	protected override void OnParametersSet()
 	{
@@ -59,12 +75,19 @@
 		_useShortName = Values.UseShortNames;
 		_colorMode = Values.ColorMode;
 		_displaySumOfWonDuels = Values.DisplaySumOfWonDuels;
+		_timerLocation = Values.TimerLocation;
 	}
 
-	void Submit() => Instance.Close(DialogResult.Ok(new Data(_showTournamentName, _useShortName, _colorMode, _displaySumOfWonDuels)));
+	void Submit() => Instance.Close(DialogResult.Ok(new Data(
+		_showTournamentName, _useShortName, _colorMode, _displaySumOfWonDuels, _timerLocation)));
 	
 	void Cancel() => Instance.Close(DialogResult.Cancel());
 
-	public record Data(bool ShowTournamentName, bool UseShortNames, DisplaysColorMode ColorMode, bool DisplaySumOfWonDuels);
+	public record Data(
+		bool ShowTournamentName, 
+		bool UseShortNames, 
+		DisplaysColorMode ColorMode, 
+		bool DisplaySumOfWonDuels,
+		TimerLocation TimerLocation);
 
 }

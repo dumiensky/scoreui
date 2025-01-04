@@ -82,4 +82,6 @@ public class DisplaysSettings
 	public DisplaysColorMode ColorMode { get; set; }
 	
 	public bool DisplaySumOfWonDuels { get; set; }
+	
+	public TimerLocation TimerLocation { get; set; }
 }

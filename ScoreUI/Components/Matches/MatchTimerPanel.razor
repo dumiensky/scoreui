@@ -1,4 +1,7 @@
 @using ScoreUI.Models.Entities
+@using ScoreUI.Services.Interfaces
+
+@inject IDisplayHooks _displayHooks
 
 <div class="d-flex align-center justify-center">
 	<div style="max-width: 500px" class="gray lighten-2 pa-3 rounded">
@@ -63,6 +66,7 @@
 					Stop();
 				}
 				
+				_displayHooks.SendTimerChanged(Match.Id, _time);
 				InvokeAsync(StateHasChanged);
 			},
 			null,
@@ -93,6 +97,8 @@
 			_time = TimeSpan.Zero;
 			_stepSeconds = 1;
 		}
+		
+		_displayHooks.SendTimerChanged(Match.Id, _time);
 	}
 
 }

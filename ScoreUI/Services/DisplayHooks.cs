@@ -7,7 +7,8 @@ namespace ScoreUI.Services;
 public class DisplayHooks : IDisplayHooks
 {
 	public event EventHandler<CurrentMatchChangedEventArgs>? CurrentMatchChanged;
-	public event EventHandler<CurrentDuelChangedEventArgs>? CurrentDuelChanged; 
+	public event EventHandler<CurrentDuelChangedEventArgs>? CurrentDuelChanged;
+	public event EventHandler<MatchTimerChangedEventArgs>? MatchTimerChanged; 
 	public event EventHandler<Tournament>? TournamentUpdated; 
 
 	public void SetCurrentMatch(Guid tournamentId, Match? match)
@@ -23,5 +24,10 @@ public class DisplayHooks : IDisplayHooks
 	public void SendTournamentUpdated(Tournament tournament)
 	{
 		TournamentUpdated?.Invoke(this, tournament);
+	}
+
+	public void SendTimerChanged(Guid matchId, TimeSpan? timer)
+	{
+		MatchTimerChanged?.Invoke(this, new(matchId, timer));
 	}
 }

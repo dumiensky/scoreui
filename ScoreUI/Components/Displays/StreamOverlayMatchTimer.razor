@@ -1,0 +1,72 @@
+@using ScoreUI.Models.Entities
+@using ScoreUI.Models.Enums
+@using ScoreUI.Models.Events
+@using ScoreUI.Services.Interfaces
+
+@inject IDisplayHooks _displayHooks
+@implements IDisposable
+
+@if (_currentTime is not null)
+{
+	<div style="position: fixed; @LocationStyle">
+		<div class="black" style="padding: 6px;">
+			<MudText Typo="Typo.h6" Class="white-text">
+				<strong>@(_currentTime.Value.Minutes.ToString("00")):@(_currentTime.Value.Seconds.ToString("00"))</strong>
+			</MudText>
+		</div>
+	</div>
+}
+
+@code {
+	[Parameter, EditorRequired]
+	public required Match Match { get; set; }
+	
+	[Parameter, EditorRequired]
+	public required Tournament Tournament { get; set; }
+
+	TimeSpan? _currentTime;
+
+	protected override void OnInitialized()
+	{
+		_displayHooks.MatchTimerChanged += DisplayHooksOnMatchTimerChanged;
+	}
+
+	void DisplayHooksOnMatchTimerChanged(object? sender, MatchTimerChangedEventArgs e)
+	{
+		if (e.MatchId == Match.Id)
+		{
+			_currentTime = e.CurrentTime;
+			InvokeAsync(StateHasChanged);
+		}
+	}
+
+	string LocationStyle => Tournament.Settings.Displays.TimerLocation switch
+	{
+		TimerLocation.TopRight => $"top: {TopOffset()}px; right: 32px;",
+		TimerLocation.BottomLeft => "bottom: 32px; left: 32px;",
+		TimerLocation.BottomRight => "bottom: 32px; right: 32px;",
+		_ => $"top: {TopOffset()}px; left: 32px;" // top-left
+	};
+
+	string TopOffset()
+	{
+		int offset = 32;
+
+		if (Tournament.Settings.Displays.ShowTournamentName)
+		{
+			offset += 24;
+		}
+
+		if (Match.DisplayText is not null)
+		{
+			offset += 24;
+		}
+
+		return offset.ToString();
+	}
+
+	void IDisposable.Dispose()
+	{
+		_displayHooks.MatchTimerChanged -= DisplayHooksOnMatchTimerChanged;
+	}
+}
