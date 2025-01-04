@@ -39,7 +39,7 @@
 					</MudStack>
 					@if (ParticipantOne is not null)
 					{
-						<StreamOverlayDisplayScore
+						<ScoreDisplay
 							@key="@(CurrentMatch.Id + "1")"
 							Match="CurrentMatch"
 							ParticipantId="ParticipantOne.Id"
@@ -57,11 +57,12 @@
 				<MudStack Row Justify="Justify.SpaceBetween">
 					@if (ParticipantTwo is not null)
 					{
-						<StreamOverlayDisplayScore
+						<ScoreDisplay
 							@key="@(CurrentMatch.Id + "2")"
 							Match="CurrentMatch"
 							ParticipantId="ParticipantTwo.Id"
-							Tournament="Tournament" />
+							Tournament="Tournament"
+							ReverseOrder />
 					}
 					<MudStack Row>
 						<MudText Class="pa-1" Typo="Typo.h6" Style="@GetTextColorStyle(ParticipantTwo)">

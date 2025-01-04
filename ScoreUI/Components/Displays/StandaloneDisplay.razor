@@ -1,3 +1,5 @@
+@using ScoreUI.Models.Entities
+@using ScoreUI.Models.Enums
 @inherits DisplayBase
 
 @if (Tournament.Settings.Displays.ShowTournamentName)
@@ -11,8 +13,79 @@
 @if (CurrentMatch?.DisplayText is not null)
 {
 	<div class="px-1 gray lighten-4">
-		<MudText Typo="Typo.h4" Class="black-text" Align="Align.Center">
+		<MudText Typo="Typo.h3" Class="black-text" Align="Align.Center">
 			<strong>@CurrentMatch.DisplayText</strong>
 		</MudText>
 	</div>
 }
+
+@if (CurrentMatch is not null)
+{
+	<div style="background: @GetBackgroundColor(ParticipantOne);" class="pa-5 mt-5">
+		<MudStack Row Justify="Justify.SpaceBetween">
+			<MudStack Row>
+				@if (ParticipantOne?.ImageBase64 is not null)
+				{
+					<img src="@ParticipantOne.ImageBase64" alt="LOGO" width="120" height="120" />
+				}
+				<MudText Class="pa-1" Typo="Typo.h1" Style="@GetTextColorStyle(ParticipantOne)">
+					<strong>@GetParticipantName(ParticipantOne)</strong>
+				</MudText>
+			</MudStack>
+			@if (ParticipantOne is not null)
+			{
+				<ScoreDisplay
+					@key="@(CurrentMatch.Id + "1")"
+					Typo="Typo.h1"
+					Match="CurrentMatch"
+					ParticipantId="ParticipantOne.Id"
+					Tournament="Tournament" />
+			}
+		</MudStack>
+		@if (Tournament.Settings.Displays.ColorMode is DisplaysColorMode.Underline && ParticipantOne?.ColorHex is not null)
+		{
+			<div style="background: @ParticipantOne.ColorHex">
+				&nbsp;
+			</div>
+		}
+	</div>
+	<div style="background: @GetBackgroundColor(ParticipantTwo);" class="pa-5 mb-5">
+		<MudStack Row Justify="Justify.SpaceBetween">
+			<MudStack Row>
+				@if (ParticipantTwo?.ImageBase64 is not null)
+				{
+					<img src="@ParticipantTwo.ImageBase64" alt="LOGO" width="120" height="120" />
+				}
+				<MudText Class="pa-1" Typo="Typo.h1" Style="@GetTextColorStyle(ParticipantTwo)">
+					<strong>@GetParticipantName(ParticipantTwo)</strong>
+				</MudText>
+			</MudStack>
+			@if (ParticipantTwo is not null)
+			{
+				<ScoreDisplay
+					@key="@(CurrentMatch.Id + "2")"
+					Typo="Typo.h1"
+					Match="CurrentMatch"
+					ParticipantId="ParticipantTwo.Id"
+					Tournament="Tournament" />
+			}
+		</MudStack>
+		@if (Tournament.Settings.Displays.ColorMode is DisplaysColorMode.Underline && ParticipantTwo?.ColorHex is not null)
+		{
+			<div style="background: @ParticipantTwo.ColorHex">
+				&nbsp;
+			</div>
+		}
+	</div>
+}
+
+<MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+	@if (CurrentMatch is MultiDuelMatch md)
+	{
+		<CurrentDuelDisplay Typo="Typo.h1" Match="md" />
+	}
+	@if (CurrentMatch?.GetSettings(Tournament) is { IsTimed: true })
+	{
+		<MatchTimer Typo="Typo.h1" Match="CurrentMatch" Tournament="Tournament" />
+	}
+</MudStack>

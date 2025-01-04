@@ -8,7 +8,7 @@
 @if (_currentDuel is not null)
 {
 	<div class="black py-1 px-2">
-		<MudText Align="Align.Center" Class="white-text">
+		<MudText Align="Align.Center" Class="white-text" Typo="@Typo">
 			Pojedynek @(Match.Duels.IndexOf(_currentDuel) + 1)
 		</MudText>
 	</div>
@@ -17,6 +17,9 @@
 @code {
 	[Parameter, EditorRequired]
 	public required MultiDuelMatch Match { get; set; }
+
+	[Parameter]
+	public Typo Typo { get; set; } = Typo.body1;
 	
 	MultiDuelMatch.Duel? _currentDuel;
 

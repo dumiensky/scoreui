@@ -1,33 +1,9 @@
 @using ScoreUI.Models.Entities
 @using ScoreUI.Models.Enums
-@using ScoreUI.Models.Events
-@using ScoreUI.Services.Interfaces
 
-@inject IDisplayHooks _displayHooks
-@implements IDisposable
-
-@if (_currentTime is not null)
-{
-	<div style="position: fixed; @LocationStyle">
-		<div class="black" style="padding: 6px;">
-			<MudText Typo="Typo.h6">
-				@if (_currentTime.Value >= TimeSpan.Zero)
-				{
-					<strong class="@(_currentTime.Value > Match.GetSettings(Tournament).MaxTime ? "red-text" : "white-text")">
-						@(_currentTime.Value.Minutes.ToString("00")):@(_currentTime.Value.Seconds.ToString("00"))
-					</strong>
-				}
-				else
-				{
-					<strong class="red-text">
-						- @(Math.Abs(_currentTime.Value.Minutes).ToString("00")):@(Math.Abs(_currentTime.Value.Seconds).ToString("00"))
-					</strong>
-				}
-				
-			</MudText>
-		</div>
-	</div>
-}
+<div style="position: fixed; @LocationStyle">
+	<MatchTimer Match="Match" Tournament="Tournament" />
+</div>
 
 @code {
 	[Parameter, EditorRequired]
@@ -35,22 +11,6 @@
 	
 	[Parameter, EditorRequired]
 	public required Tournament Tournament { get; set; }
-
-	TimeSpan? _currentTime;
-
-	protected override void OnInitialized()
-	{
-		_displayHooks.MatchTimerChanged += DisplayHooksOnMatchTimerChanged;
-	}
-
-	void DisplayHooksOnMatchTimerChanged(object? sender, MatchTimerChangedEventArgs e)
-	{
-		if (e.MatchId == Match.Id)
-		{
-			_currentTime = e.CurrentTime;
-			InvokeAsync(StateHasChanged);
-		}
-	}
 
 	string LocationStyle => Tournament.Settings.Displays.TimerLocation switch
 	{
@@ -75,10 +35,5 @@
 		}
 
 		return offset.ToString();
-	}
-
-	void IDisposable.Dispose()
-	{
-		_displayHooks.MatchTimerChanged -= DisplayHooksOnMatchTimerChanged;
 	}
 }

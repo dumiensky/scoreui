@@ -9,7 +9,7 @@
 {
 	case SimpleMatch sm:
 		<div class="gray darken-4 py-1 px-2">
-			<MudText Typo="Typo.h6" Class="white-text">
+			<MudText Typo="@Typo" Class="white-text">
 				@if (sm.OneId == ParticipantId)
 				{
 					@sm.ScoreOne
@@ -23,9 +23,9 @@
 		break;
 		
 	case DualPointsMatch dp:
-		<div class="d-flex @(dp.OneId == ParticipantId ? "flex-row" : "flex-row-reverse")">
+		<div class="d-flex @(ReverseOrder ? "flex-row-reverse" : "flex-row")">
 			<div class="gray lighten-5 py-1 px-2">
-				<MudText Typo="Typo.h6" Class="black-text">
+				<MudText Typo="@Typo" Class="black-text">
 					@if (dp.OneId == ParticipantId)
 					{
 						@dp.ScoreOneB
@@ -37,7 +37,7 @@
 				</MudText>
 			</div>
 			<div class="gray darken-4 py-1 px-2">
-				<MudText Typo="Typo.h6" Class="white-text">
+				<MudText Typo="@Typo" Class="white-text">
 					@if (dp.OneId == ParticipantId)
 					{
 						@dp.ScoreOneA
@@ -52,11 +52,11 @@
 		break;
 		
 	case MultiDuelMatch md:
-		<div class="d-flex @(md.OneId == ParticipantId ? "flex-row" : "flex-row-reverse")">
+		<div class="d-flex @(ReverseOrder ? "flex-row-reverse" : "flex-row")">
 			@if (Tournament.Settings.Displays.DisplaySumOfWonDuels)
 			{
 				<div class="red lighten-5 py-1 px-2">
-					<MudText Typo="Typo.h6" Class="black-text">
+					<MudText Typo="@Typo" Class="black-text">
 						@if (md.OneId == ParticipantId)
 						{
 							@md.Duels.Count(_ => _.GetWinnerId(md.OneId, md.TwoId) == md.OneId)
@@ -71,7 +71,7 @@
 			@if (_currentDuel is not null)
 			{
 				<div class="black py-1 px-2">
-					<MudText Typo="Typo.h6" Class="white-text">
+					<MudText Typo="@Typo" Class="white-text">
 						@if (md.OneId == ParticipantId)
 						{
 							@_currentDuel.ScoreOne
@@ -96,6 +96,12 @@
 	
 	[Parameter, EditorRequired]
 	public required Tournament Tournament { get; set; }
+	
+	[Parameter]
+	public bool ReverseOrder { get; set; }
+
+	[Parameter]
+	public Typo Typo { get; set; } = Typo.h6;
 
 	MultiDuelMatch.Duel? _currentDuel;
 
