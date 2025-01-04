@@ -4,7 +4,6 @@
 		<MudTextField
 			@bind-Value="_name"
 			Label="Nazwa"
-			Variant="Variant.Outlined"
 			Required
 			RequiredError="To pole jest wymagane"
 			MaxLength="100"/>
@@ -12,7 +11,6 @@
 		<MudTextField
 			@bind-Value="_shortName"
 			Label="Krótka nazwa"
-			Variant="Variant.Outlined"
 			Placeholder="Wpisz krótką nazwę"
 			MaxLength="12"/>
 		
@@ -20,7 +18,8 @@
 			@bind-Text="_color"
 			Label="Kolor gracza"
 			Placeholder="Wybierz kolor"
-			Style="@($"color: {_color};")"/>
+			Style="@($"color: {_color};")"
+			Class="my-3"/>
 
 		@if (_img is null)
 		{
@@ -28,6 +27,7 @@
 				<ActivatorContent>
 					<MudButton Variant="Variant.Filled"
 								Color="Color.Primary"
+								Class="my-3"
 								StartIcon="@Icons.Material.Filled.CloudUpload">
 						Dodaj logo
 					</MudButton>
@@ -36,11 +36,15 @@
 		}
 		else
 		{
-			<MudText>Wgrano logo:</MudText>
-			<img src="@_img" width="100" alt="Wgrane logo" />
-			<MudButton Size="Size.Small" Variant="Variant.Filled" Color="Color.Error" OnClick="() => _img = null">
-				Usuń logo
-			</MudButton>
+			<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+				<div>
+					<MudText>Wgrano logo:</MudText>
+					<img src="@_img" width="100" alt="Wgrane logo" />
+				</div>
+				<MudButton Size="Size.Small" Variant="Variant.Filled" Color="Color.Error" OnClick="() => _img = null">
+					Usuń logo
+				</MudButton>
+			</MudStack>
 		}
 		
 	</DialogContent>
