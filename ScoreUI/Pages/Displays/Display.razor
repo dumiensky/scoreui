@@ -10,6 +10,9 @@
 
 @inject IMongoDb _mongoDb
 @inject ITournamentService _tournamentService
+@inject IDisplayActivityTracker _displayActivityTracker
+
+@implements IDisposable
 
 <HeadContent>
 	<style>
@@ -71,6 +74,12 @@ else
 			_tournament = await _tournamentService.Get(_display.TournamentId);
 			
 		_loaded = true;
+		
+		_displayActivityTracker.SetActive(DisplayId);
 	}
 
+	void IDisposable.Dispose()
+	{
+		_displayActivityTracker.RemoveActive(DisplayId);
+	}
 }
