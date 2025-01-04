@@ -1,6 +1,60 @@
-<h3>todo</h3>
+@using ScoreUI.Services.Interfaces
+@inject IDisplayActivityTracker _displayActivityTracker
+@implements IDisposable
+
+<div class="d-flex">
+	@switch (_amount)
+	{
+		case null:
+			<MudProgressCircular Indeterminate />
+			break;
+
+		case 0:
+			<div class="gray darken-2 rounded pa-1 white-text">
+				Nie połączono
+			</div>
+			break;
+
+		case 1:
+			<div class="green rounded pa-1 white-text">
+				Połączono
+			</div>
+			break;
+
+		default:
+			<div class="green rounded pa-1 white-text">
+				Połączono: @_amount
+			</div>
+			break;
+	}
+</div>
 
 @code {
+
 	[Parameter, EditorRequired]
 	public required Guid DisplayId { get; set; }
+
+	int? _amount;
+
+	protected override void OnParametersSet()
+	{
+		_amount = _displayActivityTracker.GetActiveAmount(DisplayId);
+	}
+
+	protected override void OnInitialized()
+	{
+		_displayActivityTracker.DisplayActivityChanged += DisplayActivityTrackerOnDisplayActivityChanged;
+	}
+
+	void DisplayActivityTrackerOnDisplayActivityChanged(object? sender, Guid e)
+	{
+		_amount = _displayActivityTracker.GetActiveAmount(DisplayId);
+		InvokeAsync(StateHasChanged);
+	}
+
+	void IDisposable.Dispose()
+	{
+		_displayActivityTracker.DisplayActivityChanged -= DisplayActivityTrackerOnDisplayActivityChanged;
+	}
+
 }
