@@ -1,0 +1,41 @@
+@using ScoreUI.Models.Entities
+@using ScoreUI.Models.Events
+@using ScoreUI.Services.Interfaces
+
+@inject IDisplayHooks _displayHooks
+@implements IDisposable
+
+@if (_currentDuel is not null)
+{
+	<div class="black py-1 px-2">
+		<MudText Align="Align.Center" Class="white-text">
+			Pojedynek @(Match.Duels.IndexOf(_currentDuel) + 1)
+		</MudText>
+	</div>
+}
+
+@code {
+	[Parameter, EditorRequired]
+	public required MultiDuelMatch Match { get; set; }
+	
+	MultiDuelMatch.Duel? _currentDuel;
+
+	protected override void OnInitialized()
+	{
+		_displayHooks.CurrentDuelChanged += DisplayHooksOnCurrentDuelChanged;
+	}
+
+	void DisplayHooksOnCurrentDuelChanged(object? sender, CurrentDuelChangedEventArgs e)
+	{
+		if (e.MatchId == Match.Id)
+		{
+			_currentDuel = e.CurrentDuel;
+			InvokeAsync(StateHasChanged);
+		}
+	}
+
+	void IDisposable.Dispose()
+	{
+		_displayHooks.CurrentDuelChanged -= DisplayHooksOnCurrentDuelChanged;
+	}
+}

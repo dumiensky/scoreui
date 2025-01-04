@@ -1,4 +1,9 @@
 @using ScoreUI.Models.Entities
+@using ScoreUI.Models.Events
+@using ScoreUI.Services.Interfaces
+
+@inject IDisplayHooks _displayHooks
+@implements IDisposable
 
 @switch (Match)
 {
@@ -63,18 +68,21 @@
 					</MudText>
 				</div>
 			}
-			<div class="black py-1 px-2">
-				<MudText Typo="Typo.h6" Class="white-text">
-					@if (md.OneId == ParticipantId)
-					{
-						// todo: get current duel
-					}
-					else
-					{
-						// todo: get current duel
-					}
-				</MudText>
-			</div>
+			@if (_currentDuel is not null)
+			{
+				<div class="black py-1 px-2">
+					<MudText Typo="Typo.h6" Class="white-text">
+						@if (md.OneId == ParticipantId)
+						{
+							@_currentDuel.ScoreOne
+						}
+						else
+						{
+							@_currentDuel.ScoreTwo
+						}
+					</MudText>
+				</div>
+			}
 		</div>
 		break;
 }
@@ -88,4 +96,27 @@
 	
 	[Parameter, EditorRequired]
 	public required Tournament Tournament { get; set; }
+
+	MultiDuelMatch.Duel? _currentDuel;
+
+	protected override void OnInitialized()
+	{
+		if (Match is MultiDuelMatch)
+			_displayHooks.CurrentDuelChanged += DisplayHooksOnCurrentDuelChanged;
+	}
+
+	void DisplayHooksOnCurrentDuelChanged(object? sender, CurrentDuelChangedEventArgs e)
+	{
+		if (e.MatchId == Match.Id)
+		{
+			_currentDuel = e.CurrentDuel;
+			InvokeAsync(StateHasChanged);
+		}
+	}
+
+	void IDisposable.Dispose()
+	{
+		if (Match is MultiDuelMatch)
+			_displayHooks.CurrentDuelChanged -= DisplayHooksOnCurrentDuelChanged;
+	}
 }
