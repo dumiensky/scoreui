@@ -89,58 +89,7 @@
 					
 				case CreatorPage.MatchSettings:
 
-					if (_tournament.Settings.SimpleMatch.IsEnabled)
-					{
-						<div class="gray lighten-5 pa-3 my-3 rounded">
-							<MudText>
-								Ustawienia <strong>Meczu prostego</strong>
-							</MudText>
-							<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.IsTimed" Label="Mierzyć czas?" />
-							@if (_tournament.Settings.SimpleMatch.IsTimed)
-							{
-								<MinutesAndSecondsEditor @bind-Value="_tournament.Settings.SimpleMatch.MaxTime" Label="Maksymalna długość rozgrywki" />
-								<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
-								<MudCheckBox @bind-Value="_tournament.Settings.SimpleMatch.CountTimerDown" Label="Odliczać czas w dół?" />
-							}
-						</div>
-					}
-					
-					if (_tournament.Settings.DualPointsMatch.IsEnabled)
-					{
-						<div class="gray lighten-5 pa-3 my-3 rounded">
-							<MudText>
-								Ustawienia <strong>Meczu podwójnie punktowanego</strong>
-							</MudText>
-							<MudCheckBox @bind-Value="_tournament.Settings.DualPointsMatch.IsTimed" Label="Mierzyć czas?" />
-							@if (_tournament.Settings.DualPointsMatch.IsTimed)
-							{
-								<MudTimePicker @bind-Time="_tournament.Settings.DualPointsMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
-								<MudCheckBox @bind-Value="_tournament.Settings.DualPointsMatch.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
-								<MudCheckBox @bind-Value="_tournament.Settings.DualPointsMatch.CountTimerDown" Label="Odliczać czas w dół?" />
-							}
-							<MudTextField @bind-Value="_tournament.Settings.DualPointsMatch.ScoreAName" Label="Nazwa punktów głównych" Class="ml-4" Variant="Variant.Outlined" />
-							<MudTextField @bind-Value="_tournament.Settings.DualPointsMatch.ScoreBName" Label="Nazwa punktów podrzędnych" Class="ml-4" Variant="Variant.Outlined" />
-						</div>
-					}
-					
-					if (_tournament.Settings.MultiDuelMatch.IsEnabled)
-					{
-						<div class="gray lighten-5 pa-3 my-3 rounded">
-							<MudText>
-								Ustawienia <strong>Meczu wielopojedynkowego</strong>
-							</MudText>
-							<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.IsTimed" Label="Mierzyć czas?" />
-							@if (_tournament.Settings.MultiDuelMatch.IsTimed)
-							{
-								<MudTimePicker @bind-Time="_tournament.Settings.MultiDuelMatch.MaxTime" Label="Maksymalna długość rozgrywki" Class="ml-4" Variant="Variant.Outlined" />
-								<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.OvertimeAllowed" Label="Pozwalać na przekroczenie czasu?" />
-								<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.CountTimerDown" Label="Odliczać czas w dół?" />
-								<MudCheckBox @bind-Value="_tournament.Settings.MultiDuelMatch.ResetTimeOnNewMatch" Label="Resetować czas podczas zmiany pojedynku?" />
-							}
-							<MudNumericField @bind-Value="_tournament.Settings.MultiDuelMatch.MinDuels" Min="1" Max="99" Label="Minimalna ilość pojedynków" Class="ml-4" Variant="Variant.Outlined" />
-							<MudNumericField @bind-Value="_tournament.Settings.MultiDuelMatch.MaxDuels" Min="1" Max="99" Label="Maksymalna ilość pojedynków" Class="ml-4" Variant="Variant.Outlined" />
-						</div>
-					}
+					<TournamentMatchSettings Tournament="_tournament" />
 					
 					break;
 					
@@ -224,7 +173,15 @@
 	async Task Submit()
 	{
 		await _tournamentService.Create(_tournament);
-		_nav.NavigateTo(Urls.Tournaments.GetManageId(_tournament.Id));
+
+		if (!string.IsNullOrWhiteSpace(_tournament.Settings.Alias))
+		{
+			_nav.NavigateTo(Urls.Tournaments.GetManageAlias(_tournament.Settings.Alias));
+		}
+		else
+		{
+			_nav.NavigateTo(Urls.Tournaments.GetManageId(_tournament.Id));
+		}
 	}
 
 }
