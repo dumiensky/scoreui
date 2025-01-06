@@ -1,0 +1,177 @@
+@using ScoreUI.Models.Consts
+@using ScoreUI.Components.Docs
+@attribute [Route(Urls.Docs.Index)]
+
+<MudPaper>
+	<div class="gray lighten-4 pb-3">
+		<MudStack Justify="Justify.Center">
+			<MudImage Alt="ScoreUI Logo" Src="/ScoreUI_logo.png" Height="200" ObjectFit="ObjectFit.Contain" />
+			<MudText Typo="Typo.h1" Align="Align.Center">
+				Kompendium wiedzy
+			</MudText>
+			<MudText Typo="Typo.h5" Align="Align.Center">
+				Dokumentacja użytkownika
+			</MudText>
+		</MudStack>
+	</div>
+
+	<div class="pa-3">
+		<DocTitle Id="o-projekcie">
+			O Projekcie
+		</DocTitle>
+		<MudText>
+			ScoreUI powstał z myślą o małych organizatorach wydarzeń sportowych chcących dołożyć warstwę wizualną z danymi meczy/pojedynków dla lokalnych obserwatorów oraz widzów transmisji online.
+			ScoreUI udostępnia uniwersalny panel do oceniania meczy, agnostyczny od dyscypliny, będący w czasie rzeczywistym połączony z <DocLink Ref="ekrany">ekranami</DocLink>, które informują widzów o aktualnym stanie spotkania.
+			Prowadzenie rozgrywek nie wymaga zakładania konta, a swoje turnieje możesz zabezpieczyć hasłem, aby nikt niepożądany nie pozyskał do nich dostępu.
+		</MudText>
+		
+		<DocTitle Id="funkcjonalnosci">
+			Opis funkcjonalności
+		</DocTitle>
+		<MudText>
+			W ScoreUI możesz:
+			<ul>
+				<li>- <DocLink Ref="tworzenie-turnieju">Stworzyć turniej</DocLink></li>
+				<li>- <DocLink Ref="uczestnicy">Wprowadzić uczestników</DocLink></li>
+				<li>- <DocLink Ref="wprowadzanie-meczy">Wprowadzić mecze</DocLink></li>
+				<li>- <DocLink Ref="rozgrywanie-meczy">Rozegrać mecze</DocLink></li>
+				<li>- <DocLink Ref="ekrany">Zdefiniować ekrany</DocLink></li>
+				<li>- <DocLink Ref="personalizacja-ekranow">Personalizować wygląd ekranów</DocLink></li>
+			</ul>
+			A to wszystko <DocLink Ref="autoryzacja">bez zakładania konta</DocLink>.
+		</MudText>
+
+		<DocTitle Id="tworzenie-turnieju">
+			Tworzenie turnieju
+		</DocTitle>
+		<MudText>
+			Aby stworzyć turniej, skorzystaj z <strong>kreatora turnieju</strong> dostępnego pod <MudLink Href="@Urls.Tournaments.Create" Target="_blank">tym adresem</MudLink>.<br/>
+			W kreatorze, będziesz musiał przejść przez następujące kroki:
+		</MudText>
+		<MudText Typo="Typo.subtitle1">
+			1. Informacje o turnieju
+		</MudText>
+		<MudText Class="ml-4">
+			Wymagana jest nazwa turnieju, opcjonalnie możesz wprowadzić także krótką nazwę turnieju, aby poźniej móc wyświetlać ją na <DocLink Ref="ekrany">ekranach</DocLink>.
+		</MudText>
+		<MudText Typo="Typo.subtitle1">
+			2. Dozwolone typy meczy
+		</MudText>
+		<MudText Class="ml-4">
+			Zaznacz, które typy meczy są dozwolone do rozegrania w ramach Twojego turnieju.
+		</MudText>
+		<MudText Typo="Typo.subtitle1">
+			3. Ustawienia meczy
+		</MudText>
+		<MudText Class="ml-4">
+			Dostosuj wybrane przez siebie typy meczy do swoich potrzeb.
+		</MudText>
+		<MudText Typo="Typo.subtitle1">
+			4. Dane dostępowe turnieju
+		</MudText>
+		<MudText Class="ml-4">
+			Opcjonalnie wprowadź alias (prostą nazwę turnieju, by później uzyskać do niego dostęp) oraz hasło zabezpieczające dostęp do turnieju
+		</MudText>
+		<MudAlert Severity="Severity.Warning" Dense NoIcon>
+			Pól wprowadzonych w kroku 4 nie będziesz mógł poźniej edytować
+		</MudAlert>
+		<MudText Typo="Typo.subtitle1">
+			5. Podsumowanie
+		</MudText>
+		<MudText Class="ml-4">
+			Po kliknięciu przycisku 'Zatwierdź' Twój turniej zostanie utworzony.
+		</MudText>
+		<MudAlert Severity="Severity.Info" Dense NoIcon>
+			Szczegółowy opis ustawień dostępnych w kreatorze znajdziesz w <DocLink Ref="ustawienia-turnieju">opisie ustawień</DocLink>
+		</MudAlert>
+
+		<DocTitle Id="panel-turnieju">
+			Panel turnieju
+		</DocTitle>
+		<MudText>
+			todo
+		</MudText>
+
+		<DocTitle Id="ustawienia-turnieju">
+			Ustawienia turnieju
+		</DocTitle>
+		<MudText>
+			todo
+		</MudText>
+
+		<DocTitle Id="uczestnicy">
+			Uczestnicy
+		</DocTitle>
+		<MudText>
+			todo
+		</MudText>
+
+		<DocTitle Id="wprowadzanie-meczy">
+			Wprowadzanie meczy
+		</DocTitle>
+		<MudText>
+			todo
+		</MudText>
+
+		<DocTitle Id="rozgrywanie-meczy">
+			Rozgrywanie meczy
+		</DocTitle>
+		<MudText>
+			todo
+		</MudText>
+
+		<DocTitle Id="ekrany">
+			Co to są ekrany?
+		</DocTitle>
+		<MudText>
+			Ekrany to dostępne pod dedykowanym adresem url elementy wizualne, dedykowane do obserwacji przez widzów wydarzenia. Technicznie rzecz ujmując, są to dynamiczne strony HTML, reagujące na polecenia wydawane z panelu oceniania meczy.
+		</MudText>
+		<MudText>
+			Dostępne są dwa typy ekranów:
+		</MudText>
+		<MudText Typo="Typo.subtitle1">
+			1. Ekran wolnostojący
+		</MudText>
+		<MudText Class="ml-4">
+			Rodzaj ekranu dedykowany dla widzów wydarzenia znajdujących się lokalnie, na miejscu wydarzenia. Do ich <DocLink Ref="uruchomienie-ekranu-wolnostojacego">uruchomienia</DocLink> potrzebna jest jedynie aktualna wersja wybranej przez siebie przeglądarki internetowej (Chrome, Firefox, Brave, Edge...)
+		</MudText>
+		<MudText Typo="Typo.subtitle1">
+			2. Nakładka na stream (Stream overlay)
+		</MudText>
+		<MudText Class="ml-4">
+			Rodzaj ekranu dedykowany dla realizatorów transmisji online. Przeznaczony jest do osadzania w oprogramowaniu do transmisji na żywo jako jedna z warstw kompozycji wideo wynikowego. W celu jego <DocLink Ref="uruchomienie-stream-overlay">uruchomienia</DocLink> wymagane jest posiadanie oprogramowania do transmisji na żywo.
+		</MudText>
+
+		<DocTitle Id="uruchomienie-ekranu-wolnostojacego">
+			Uruchomienie ekranu wolnostojącego
+		</DocTitle>
+		<MudText>
+			todo
+		</MudText>
+
+		<DocTitle Id="uruchomienie-stream-overlay">
+			Uruchomienie nakładki na stream
+		</DocTitle>
+		<MudText>
+			todo
+		</MudText>
+
+		<DocTitle Id="personalizacja-ekranow">
+			Personalizacja ekranów
+		</DocTitle>
+		<MudText>
+			todo
+		</MudText>
+
+		<DocTitle Id="autoryzacja">
+			Autoryzacja
+		</DocTitle>
+		<MudText>
+			todo
+		</MudText>
+	</div>
+</MudPaper>
+
+@code {
+	
+}

@@ -1,3 +1,30 @@
 html, body {
     background: #fafafa;
 }
+
+.doc-title {
+    border-left: 3px solid cornflowerblue;
+    padding-left: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.doc-title-anchor {
+    margin-top: -200px;
+}
+
+.doc-title-copy-icon {
+    display: none;
+}
+
+.doc-title:hover .doc-title-copy-icon {
+    display: block;
+}
+
+.doc-link {
+    text-decoration: underline; 
+    text-decoration-style: dashed; 
+    text-decoration-color: cornflowerblue;
+}
