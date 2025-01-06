@@ -1,250 +1,332 @@
 @using ScoreUI.Models.Consts
 @using ScoreUI.Components.Docs
 @attribute [Route(Urls.Docs.Index)]
+@inject NavigationManager _nav
 
 <MudPaper>
-	<div class="gray lighten-4 pb-3">
-		<MudStack Justify="Justify.Center">
-			<MudImage Alt="ScoreUI Logo" Src="/ScoreUI_logo.png" Height="200" ObjectFit="ObjectFit.Contain" />
-			<MudText Typo="Typo.h1" Align="Align.Center">
-				Kompendium wiedzy
-			</MudText>
-			<MudText Typo="Typo.h5" Align="Align.Center">
-				Dokumentacja użytkownika
-			</MudText>
-		</MudStack>
-	</div>
+<div class="gray lighten-4 pb-3">
+	<MudStack Justify="Justify.Center">
+		<MudImage Alt="ScoreUI Logo" Src="/ScoreUI_logo.png" Height="200" ObjectFit="ObjectFit.Contain" />
+		<MudText Typo="Typo.h1" Align="Align.Center">
+			Kompendium wiedzy
+		</MudText>
+		<MudText Typo="Typo.h5" Align="Align.Center">
+			Dokumentacja użytkownika
+		</MudText>
+	</MudStack>
+</div>
 
-	<div class="pa-3">
-		<DocTitle Id="o-projekcie">
-			O Projekcie
-		</DocTitle>
-		<MudText>
-			ScoreUI powstał z myślą o małych organizatorach wydarzeń sportowych chcących dołożyć warstwę wizualną z danymi meczy/pojedynków dla lokalnych obserwatorów oraz widzów transmisji online.
-			ScoreUI udostępnia uniwersalny panel do oceniania meczy, agnostyczny od dyscypliny, będący w czasie rzeczywistym połączony z <DocLink Ref="ekrany">ekranami</DocLink>, które informują widzów o aktualnym stanie spotkania.
-			Prowadzenie rozgrywek nie wymaga zakładania konta, a swoje turnieje możesz zabezpieczyć hasłem, aby nikt niepożądany nie pozyskał do nich dostępu.
-		</MudText>
-		
-		<DocTitle Id="funkcjonalnosci">
-			Opis funkcjonalności
-		</DocTitle>
-		<MudText>
-			W ScoreUI możesz:
-			<ul>
-				<li>- <DocLink Ref="tworzenie-turnieju">Stworzyć turniej</DocLink></li>
-				<li>- <DocLink Ref="uczestnicy">Wprowadzić uczestników</DocLink></li>
-				<li>- <DocLink Ref="wprowadzanie-meczy">Wprowadzić mecze</DocLink></li>
-				<li>- <DocLink Ref="rozgrywanie-meczy">Rozegrać mecze</DocLink></li>
-				<li>- <DocLink Ref="ekrany">Zdefiniować ekrany</DocLink></li>
-				<li>- <DocLink Ref="personalizacja-ekranow">Personalizować wygląd ekranów</DocLink></li>
-			</ul>
-			A to wszystko <DocLink Ref="autoryzacja">bez zakładania konta</DocLink>.
-		</MudText>
+<div class="pa-3">
+<DocTitle Id="o-projekcie">
+	O Projekcie
+</DocTitle>
+<MudText>
+	ScoreUI powstał z myślą o małych organizatorach wydarzeń sportowych chcących dołożyć warstwę wizualną z danymi meczy/pojedynków dla lokalnych obserwatorów oraz widzów transmisji online.
+	ScoreUI udostępnia uniwersalny panel do oceniania meczy, agnostyczny od dyscypliny, będący w czasie rzeczywistym połączony z <DocLink Ref="ekrany">ekranami</DocLink>, które informują widzów o aktualnym stanie spotkania.
+	Prowadzenie rozgrywek nie wymaga zakładania konta, a swoje turnieje możesz zabezpieczyć hasłem, aby nikt niepożądany nie pozyskał do nich dostępu.
+</MudText>
 
-		<DocTitle Id="tworzenie-turnieju">
-			Tworzenie turnieju
-		</DocTitle>
-		<MudText>
-			Aby stworzyć turniej, skorzystaj z <MudText Inline Typo="Typo.subtitle1">kreatora turnieju</MudText> dostępnego pod <MudLink Href="@Urls.Tournaments.Create" Target="_blank">tym adresem</MudLink>.<br/>
-			W kreatorze, będziesz musiał przejść przez następujące kroki:
-		</MudText>
-		<MudText Typo="Typo.subtitle1">
-			1. Informacje o turnieju
-		</MudText>
-		<MudText Class="ml-4">
-			Wymagana jest nazwa turnieju, opcjonalnie możesz wprowadzić także krótką nazwę turnieju, aby poźniej móc wyświetlać ją na <DocLink Ref="ekrany">ekranach</DocLink>.
-		</MudText>
-		<MudText Typo="Typo.subtitle1">
-			2. Dozwolone typy meczy
-		</MudText>
-		<MudText Class="ml-4">
-			Zaznacz, które typy meczy są dozwolone do rozegrania w ramach Twojego turnieju.
-		</MudText>
-		<MudText Typo="Typo.subtitle1">
-			3. Ustawienia meczy
-		</MudText>
-		<MudText Class="ml-4">
-			Dostosuj wybrane przez siebie typy meczy do swoich potrzeb.
-		</MudText>
-		<MudText Typo="Typo.subtitle1">
-			4. Dane dostępowe turnieju
-		</MudText>
-		<MudText Class="ml-4">
-			Opcjonalnie wprowadź alias (prostą nazwę turnieju, by później uzyskać do niego dostęp) oraz hasło zabezpieczające dostęp do turnieju
-		</MudText>
-		<MudAlert Severity="Severity.Warning" Dense NoIcon>
-			Pól wprowadzonych w kroku 4 nie będziesz mógł poźniej edytować
-		</MudAlert>
-		<MudText Typo="Typo.subtitle1">
-			5. Podsumowanie
-		</MudText>
-		<MudText Class="ml-4">
-			Po kliknięciu przycisku 'Zatwierdź' Twój turniej zostanie utworzony.
-		</MudText>
-		<MudAlert Severity="Severity.Info" Dense NoIcon>
-			Szczegółowy opis ustawień dostępnych w kreatorze znajdziesz w <DocLink Ref="ustawienia-turnieju">opisie ustawień</DocLink>
-		</MudAlert>
+<DocTitle Id="funkcjonalnosci">
+	Opis funkcjonalności
+</DocTitle>
+<MudText>
+	W ScoreUI możesz:
+	<ul>
+		<li>- <DocLink Ref="tworzenie-turnieju">Stworzyć turniej</DocLink></li>
+		<li>- <DocLink Ref="uczestnicy">Wprowadzić uczestników</DocLink></li>
+		<li>- <DocLink Ref="mecze">Wprowadzić mecze</DocLink></li>
+		<li>- <DocLink Ref="rozgrywanie-meczy">Rozegrać mecze</DocLink></li>
+		<li>- <DocLink Ref="ekrany">Zdefiniować ekrany</DocLink></li>
+		<li>- <DocLink Ref="personalizacja-ekranow">Personalizować wygląd ekranów</DocLink></li>
+	</ul>
+	A to wszystko <DocLink Ref="autoryzacja">bez zakładania konta</DocLink>.
+</MudText>
 
-		<DocTitle Id="panel-turnieju">
-			Panel turnieju
-		</DocTitle>
-		<MudText>
-			Panel turnieju to główne miejsce w którym będziesz zarządzał swoim turniejem.<br/>
-			Panel turnieju składa się trzech głównych kart:
-		</MudText>
-		<MudText Typo="Typo.subtitle1">
-			1. Uczestnicy
-		</MudText>
-		<MudText Class="ml-4">
-			W panelu uczestników możesz zarządzać uczestnikami swojego turnieju. Prezentowana jest lista zdefiniowanych uczestników, możesz ich tworzyć lub usuwać.<br/>
-			Nie usuniesz uczestnika, który już bierze udział w meczu.
-		</MudText>
-		<MudAlert Severity="Severity.Info" Dense NoIcon>
-			Więcej informacji o uczestnikach znajdziesz w zakładce <DocLink Ref="uczestnicy">uczestnicy</DocLink>
-		</MudAlert>
-		<MudText Typo="Typo.subtitle1">
-			2. Mecze
-		</MudText>
-		<MudText Class="ml-4">
-			W panelu mecze możesz zarządzać meczami odbywającymi się w ramach Twojego turnieju.<br/>
-			Możesz wprowadzać, usuwać i przeprowadzać mecze, wedle zasad określonych w ustawieniach turnieju.<br/>
-			Nie usuniesz meczu przeprowadzanego (który posiada określonego zwycięzce)
-		</MudText>
-		<MudAlert Severity="Severity.Info" Dense NoIcon>
-			Więcej informacji o meczach znajdziesz w zakładce <DocLink Ref="wprowadzanie-meczy">wprowadzanie meczy</DocLink> i <DocLink Ref="rozgrywanie-meczy">rozgrywanie meczy</DocLink>
-		</MudAlert>
-		<MudText Typo="Typo.subtitle1">
-			2. Ekrany
-		</MudText>
-		<MudText Class="ml-4">
-			W panelu ekrany możesz zarządzać ekranami reagującymi na przebieg Twojego turnieju.<br/>
-			Możesz definiować i usuwać różne typy ekranów.
-		</MudText>
-		<MudAlert Severity="Severity.Info" Dense NoIcon>
-			Więcej informacji o ekranach znajdziesz w zakładce <DocLink Ref="ekrany">ekrany</DocLink>.
-		</MudAlert>
+<DocTitle Id="tworzenie-turnieju">
+	Tworzenie turnieju
+</DocTitle>
+<MudText>
+	Aby stworzyć turniej, skorzystaj z <MudText Inline Typo="Typo.subtitle1">kreatora turnieju</MudText> dostępnego pod <MudLink Href="@Urls.Tournaments.Create" Target="_blank">tym adresem</MudLink>.<br />
+	W kreatorze, będziesz musiał przejść przez następujące kroki:
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	1. Informacje o turnieju
+</MudText>
+<MudText Class="ml-4">
+	Wymagana jest nazwa turnieju, opcjonalnie możesz wprowadzić także krótką nazwę turnieju, aby poźniej móc wyświetlać ją na <DocLink Ref="ekrany">ekranach</DocLink>.
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	2. Dozwolone typy meczy
+</MudText>
+<MudText Class="ml-4">
+	Zaznacz, które typy meczy są dozwolone do rozegrania w ramach Twojego turnieju.
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	3. Ustawienia meczy
+</MudText>
+<MudText Class="ml-4">
+	Dostosuj wybrane przez siebie typy meczy do swoich potrzeb.
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	4. Dane dostępowe turnieju
+</MudText>
+<MudText Class="ml-4">
+	Opcjonalnie wprowadź alias (prostą nazwę turnieju, by później uzyskać do niego dostęp) oraz hasło zabezpieczające dostęp do turnieju
+</MudText>
+<MudAlert Severity="Severity.Warning" Dense NoIcon>
+	Pól wprowadzonych w kroku 4 nie będziesz mógł poźniej edytować
+</MudAlert>
+<MudText Typo="Typo.subtitle1">
+	5. Podsumowanie
+</MudText>
+<MudText Class="ml-4">
+	Po kliknięciu przycisku 'Zatwierdź' Twój turniej zostanie utworzony.
+</MudText>
+<MudAlert Severity="Severity.Info" Dense NoIcon>
+	Szczegółowy opis ustawień dostępnych w kreatorze znajdziesz w <DocLink Ref="ustawienia-turnieju">opisie ustawień</DocLink>
+</MudAlert>
 
-		<DocTitle Id="ustawienia-turnieju">
-			Ustawienia turnieju
-		</DocTitle>
-		<MudText>
-			Na ustawienia turnieju składają się 3 kategorie ustawień:
-		</MudText>
-		<MudText Typo="Typo.subtitle1">
-			1. Informacje
-		</MudText>
-		<MudText Class="ml-4">
-			Informacje składają się z następujących ustawień:<br />
-			<MudText Inline Typo="Typo.subtitle1">Nazwa turnieju</MudText> (wymagane) - Nazwa Twojego turnieju<br />
-			<MudText Inline Typo="Typo.subtitle1">Krótka nazwa turnieju</MudText> - Skrócona nazwa Twojego turnieju, opcjonalnie wyświetlana na <DocLink Ref="ekrany">ekranach</DocLink>. Przydatne, gdy formalna nazwa turnieju jest długa, natomiast powszechnie stosuje się skróconą.
-		</MudText>
-		<MudText Typo="Typo.subtitle1">
-			2. Rodzaje meczy
-		</MudText>
-		<MudText Class="ml-4">
-			Rodzaje meczy zawierają checkboxy, dzięki którym możesz określić jakie rodzaje meczy mogą być odbywane w ramach Twojego turnieju.<br/>
-			Do wyboru masz 3 rodzaje meczy:<br/>
-			<MudText Inline Typo="Typo.subtitle1">Mecz prosty</MudText> - jest to mecz punktowany pojedynczo, czyli każdy uczestnik może zdobyć tylko jeden rodzaj punktu całkowitego (np. bramki, gole, ciosy). Taki mecz może skończyć sie na przykład wynikiem 1-0 lub 25-19.<br/>
-			<MudText Inline Typo="Typo.subtitle1">Mecz podwójnie punktowany</MudText> - jest to mecz punktowany podwójnie, posiadający punkty główne i punkty podrzędne. Punkty główne są brane pod uwagę jako pierwsze przy ustalaniu zwycięzcy, lecz w przypadku remisu decydujące są punkty podrzędne.<br/>
-			<MudText Inline Typo="Typo.subtitle1">Mecz wielopojedynkowy</MudText> - jest to mecz składający się z kilku odrębnych pojedynków prostych. Wynikiem meczu będzie suma zwycięstw poszczególnych pojedynków. Przykładowo, przy 3 pojedynkach zakończonych wynikami 3-5, 4-1 i 5-7, wynik końcowy będzie wynosił 1-2.
-		</MudText>
-		<MudText Typo="Typo.subtitle1">
-			3. Ustawienia meczy
-		</MudText>
-		<MudText Class="ml-4">
-			Ustawienia meczy pozwalają Ci spersonalizować w jaki sposób chcesz oceniać konkretny typ meczu.<br/><br/>
-			Każdy z typów meczy może być odbywany z <MudText Inline Typo="Typo.subtitle1">mierzonym czasem</MudText>.<br/>
-			Na ustawienia mierzonego czasu składają się:<br/>
-			<MudText Inline Typo="Typo.subtitle1">Maksymalna długość rozgrywki (minuty, sekundy)</MudText> - wprowadzony tu czas będzie bazowym czasem meczów które będziesz przeprowadzać<br/>
-			<MudText Inline Typo="Typo.subtitle1">Pozwalać na przekroczenie czasu?</MudText> - Po zaznaczeniu, czas będzie płynać dalej, nawet po przekroczeniu maksymalnej długości rozgrywki<br/>
-			<MudText Inline Typo="Typo.subtitle1">Odliczać czas w dół?</MudText> - Po zaznaczeniu, czas będzie odliczany od maksymalnej długości rozgrywki w dół (czas będzie odejmowany) aż do 00:00<br/>
-			<br/>
-			Ponadto, poszczególne typy meczy mają swoje specyficzne ustawienia:<br/>
-			<MudText Typo="Typo.subtitle1">
-				1. Mecz podwójnie punktowany
-			</MudText>
-			<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Nazwa punktów głównych</MudText> - nazwa wyświetlana dla punktów głównych<br/>
-			<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Nazwa punktów podrzędnych</MudText> - nazwa wyświetlana dla punktów podrzędnych<br/>
-			<MudText Typo="Typo.subtitle1">
-				2. Mecz wielopojedynkowy
-			</MudText>
-			<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Minimalna ilość pojedynków</MudText> - minimalna ilość pojedynków prostych składających się na mecz wielopojedynkowy<br/>
-			<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Maksymalna ilość pojedynków</MudText> - maksymalna ilość pojedynków prostych składających się na mecz wielopojedynkowy<br/>
-		</MudText>
+<DocTitle Id="panel-turnieju">
+	Panel turnieju
+</DocTitle>
+<MudText>
+	Panel turnieju to główne miejsce w którym będziesz zarządzał swoim turniejem.<br />
+	Panel turnieju składa się trzech głównych kart:
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	1. Uczestnicy
+</MudText>
+<MudText Class="ml-4">
+	W panelu uczestników możesz zarządzać uczestnikami swojego turnieju. Prezentowana jest lista zdefiniowanych uczestników, możesz ich tworzyć lub usuwać.<br />
+	Nie usuniesz uczestnika, który już bierze udział w meczu.
+</MudText>
+<MudAlert Severity="Severity.Info" Dense NoIcon>
+	Więcej informacji o uczestnikach znajdziesz w zakładce <DocLink Ref="uczestnicy">uczestnicy</DocLink>
+</MudAlert>
+<MudText Typo="Typo.subtitle1">
+	2. Mecze
+</MudText>
+<MudText Class="ml-4">
+	W panelu mecze możesz zarządzać meczami odbywającymi się w ramach Twojego turnieju.<br />
+	Możesz wprowadzać, usuwać i przeprowadzać mecze, wedle zasad określonych w ustawieniach turnieju.<br />
+	Nie usuniesz meczu przeprowadzanego (który posiada określonego zwycięzce)
+</MudText>
+<MudAlert Severity="Severity.Info" Dense NoIcon>
+	Więcej informacji o meczach znajdziesz w zakładce <DocLink Ref="mecze">mecze</DocLink> i <DocLink Ref="rozgrywanie-meczy">rozgrywanie meczy</DocLink>
+</MudAlert>
+<MudText Typo="Typo.subtitle1">
+	3. Ekrany
+</MudText>
+<MudText Class="ml-4">
+	W panelu ekrany możesz zarządzać ekranami reagującymi na przebieg Twojego turnieju.<br />
+	Możesz definiować i usuwać różne typy ekranów.
+</MudText>
+<MudAlert Severity="Severity.Info" Dense NoIcon>
+	Więcej informacji o ekranach znajdziesz w zakładce <DocLink Ref="ekrany">ekrany</DocLink>.
+</MudAlert>
 
-		<DocTitle Id="uczestnicy">
-			Uczestnicy
-		</DocTitle>
-		<MudText>
-			todo
-		</MudText>
+<DocTitle Id="ustawienia-turnieju">
+	Ustawienia turnieju
+</DocTitle>
+<MudText>
+	Na ustawienia turnieju składają się 3 kategorie ustawień:
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	1. Informacje
+</MudText>
+<MudText Class="ml-4">
+	Informacje składają się z następujących ustawień:<br />
+	<MudText Inline Typo="Typo.subtitle1">Nazwa turnieju</MudText> (wymagane) - Nazwa Twojego turnieju<br />
+	<MudText Inline Typo="Typo.subtitle1">Krótka nazwa turnieju</MudText> - Skrócona nazwa Twojego turnieju, <DocLink Ref="personalizacja-ekranow">opcjonalnie</DocLink> wyświetlana na <DocLink Ref="ekrany">ekranach</DocLink>. Przydatne, gdy formalna nazwa turnieju jest długa, natomiast powszechnie stosuje się skróconą.
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	2. Rodzaje meczy
+</MudText>
+<MudText Class="ml-4">
+	Rodzaje meczy zawierają checkboxy, dzięki którym możesz określić jakie rodzaje meczy mogą być odbywane w ramach Twojego turnieju.<br />
+	Do wyboru masz 3 rodzaje meczy:<br />
+	<MudText Inline Typo="Typo.subtitle1">Mecz prosty</MudText> - jest to mecz punktowany pojedynczo, czyli każdy uczestnik może zdobyć tylko jeden rodzaj punktu całkowitego (np. bramki, gole, ciosy). Taki mecz może skończyć sie na przykład wynikiem 1-0 lub 25-19.<br />
+	<MudText Inline Typo="Typo.subtitle1">Mecz podwójnie punktowany</MudText> - jest to mecz punktowany podwójnie, posiadający punkty główne i punkty podrzędne. Punkty główne są brane pod uwagę jako pierwsze przy ustalaniu zwycięzcy, lecz w przypadku remisu decydujące są punkty podrzędne.<br />
+	<MudText Inline Typo="Typo.subtitle1">Mecz wielopojedynkowy</MudText> - jest to mecz składający się z kilku odrębnych pojedynków prostych. Wynikiem meczu będzie suma zwycięstw poszczególnych pojedynków. Przykładowo, przy 3 pojedynkach zakończonych wynikami 3-5, 4-1 i 5-7, wynik końcowy będzie wynosił 1-2.
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	3. Ustawienia meczy
+</MudText>
+<MudText Class="ml-4">
+	Ustawienia meczy pozwalają Ci spersonalizować w jaki sposób chcesz oceniać konkretny typ meczu.<br /><br />
+	Każdy z typów meczy może odbywać się z <MudText Inline Typo="Typo.subtitle1">mierzonym czasem</MudText>.<br />
+	Na ustawienia mierzonego czasu składają się:<br />
+	<MudText Inline Typo="Typo.subtitle1">Maksymalna długość rozgrywki (minuty, sekundy)</MudText> - wprowadzony tu czas będzie bazowym czasem meczów które będziesz przeprowadzać<br />
+	<MudText Inline Typo="Typo.subtitle1">Pozwalać na przekroczenie czasu?</MudText> - Po zaznaczeniu, czas będzie płynać dalej, nawet po przekroczeniu maksymalnej długości rozgrywki<br />
+	<MudText Inline Typo="Typo.subtitle1">Odliczać czas w dół?</MudText> - Po zaznaczeniu, czas będzie odliczany od maksymalnej długości rozgrywki w dół (czas będzie odejmowany) aż do 00:00<br />
+	<br />
+	Ponadto, poszczególne typy meczy mają swoje specyficzne ustawienia:<br />
+	<MudText Typo="Typo.subtitle1">
+		1. Mecz podwójnie punktowany
+	</MudText>
+	<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Nazwa punktów głównych</MudText> - nazwa wyświetlana dla punktów głównych<br />
+	<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Nazwa punktów podrzędnych</MudText> - nazwa wyświetlana dla punktów podrzędnych<br />
+	<MudText Typo="Typo.subtitle1">
+		2. Mecz wielopojedynkowy
+	</MudText>
+	<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Minimalna ilość pojedynków</MudText> - minimalna ilość pojedynków prostych składających się na mecz wielopojedynkowy<br />
+	<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Maksymalna ilość pojedynków</MudText> - maksymalna ilość pojedynków prostych składających się na mecz wielopojedynkowy<br />
+</MudText>
 
-		<DocTitle Id="wprowadzanie-meczy">
-			Wprowadzanie meczy
-		</DocTitle>
-		<MudText>
-			todo
-		</MudText>
+<DocTitle Id="uczestnicy">
+	Uczestnicy
+</DocTitle>
+<MudText>
+	Uczestnik turnieju posiada cztery właściwości:<br />
+	<MudText Inline Typo="Typo.subtitle1">Nazwa</MudText> (wymagane) - Nazwa uczestnika, może to być imię, nazwisko, ksywka lub nazwa klubu sportowego<br />
+	<MudText Inline Typo="Typo.subtitle1">Krótka nazwa</MudText> - Krótka nazwa uczestnika, <DocLink Ref="personalizacja-ekranow">opcjonalnie</DocLink> wyświetlana na ekranach<br />
+	<MudText Inline Typo="Typo.subtitle1">Kolor</MudText> - Kolor uczestnika, może być on na <DocLink Ref="personalizacja-ekranow">kilka sposobów</DocLink> prezentowany na ekranach<br />
+	<MudText Inline Typo="Typo.subtitle1">Logo</MudText> - Logo uczestnika, prezentowane zawsze obok jego nazwy<br />
+</MudText>
+<MudText>
+	Aby stworzyć uczestnika, naciśnij przycisk 'Dodaj uczestnika' i wypełnij odpowiednie pola, a następnie naciśnij przycisk 'Zatwierdź'<br />
+	Utworzony uczestnik będzie prezentowany na liście uczestników.<br />
+	Aby edytować dane uczestnika, naciśnij przycisk 'Edytuj' i popraw wybrane pola.<br />
+	Aby usunać uczestnika, naciśnij przycisk 'Usuń'
+</MudText>
+<MudAlert Severity="Severity.Warning" Dense NoIcon>
+	Nie będziesz w stanie usunać uczestnika, który bierze udział w jakimkolwiek meczu
+</MudAlert>
 
-		<DocTitle Id="rozgrywanie-meczy">
-			Rozgrywanie meczy
-		</DocTitle>
-		<MudText>
-			todo
-		</MudText>
+<DocTitle Id="mecze">
+	Mecze
+</DocTitle>
+<MudText>
+	Na mecz składają się następujące właściwości:<br />
+	<MudText Inline Typo="Typo.subtitle1">Typ meczu</MudText> - Typ meczu, wedle ustawień turnieju<br />
+	<MudText Inline Typo="Typo.subtitle1">Uczestnik 1</MudText> - Pierwszy uczestnik, wybierany spośród zdefiniowanych uczestników<br />
+	<MudText Inline Typo="Typo.subtitle1">Uczestnik 2</MudText> - Drugi uczestnik, wybierany spośród zdefiniowanych uczestników<br />
+	<MudText Inline Typo="Typo.subtitle1">Nazwa meczu</MudText> - Nazwa meczu prezentowana na ekranach, może zawierać na przykład fazę turnieju w której mecz się odbywa<br />
+	<MudText Inline Typo="Typo.subtitle1">Komentarz</MudText> - Prywatne pole wyświetlane tylko organizatorom turnieju<br />
+	<MudText Inline Typo="Typo.subtitle1">Stan</MudText> - Mecz może być otwarty (oczekujący na rozegranie) lub rozegrany (z wytypowanym zwycięzcą)<br />
+</MudText>
+<MudText>
+	Aby stworzyć mecz, naciśnij przycisk 'Dodaj mecz' i wypełnij odpowiednie pola, a następnie naciśnij przycisk 'Zatwierdź'<br />
+	Utworzony mecz będzie prezentowany na liście meczy.
+</MudText>
+<MudText>
+	Lista meczy prezentowana jest po kolei, jeden pod drugim. W zależności od uzupełnionych danych, dla każdego meczu prezentowana jest jego nazwa, uczestnicy i komentarz.
+	Uczestnik pierwszy prezentowany jest nad uczestnikiem drugim. Uczestnik pierwszy będzie prezentowany po lewej stronie, na ekranach które prezentują uczestników w jednej linii (obok siebie).
+	Każdy mecz posiada przyciski 'Oceniaj' i 'Usuń'
+</MudText>
+<MudAlert Severity="Severity.Warning" NoIcon Dense>
+	Nie będziesz w stanie usunąć rozegranego meczu. Nie można cofnąć stanu rozegranego meczu.
+</MudAlert>
+<MudText>
+	Dla rozegranych meczy, prezentowane są ikonki oznaczające zwycięzce. Zielona ikonka dla zwycięzcy oraz czerwona dla przegranego uczestnika.
+</MudText>
 
-		<DocTitle Id="ekrany">
-			Co to są ekrany?
-		</DocTitle>
-		<MudText>
-			Ekrany to dostępne pod dedykowanym adresem url elementy wizualne, dedykowane do obserwacji przez widzów wydarzenia. Technicznie rzecz ujmując, są to dynamiczne strony HTML, reagujące na polecenia wydawane z panelu oceniania meczy.
-		</MudText>
-		<MudText>
-			Dostępne są dwa typy ekranów:
-		</MudText>
-		<MudText Typo="Typo.subtitle1">
-			1. Ekran wolnostojący
-		</MudText>
-		<MudText Class="ml-4">
-			Rodzaj ekranu dedykowany dla widzów wydarzenia znajdujących się lokalnie, na miejscu wydarzenia. Do ich <DocLink Ref="uruchomienie-ekranu-wolnostojacego">uruchomienia</DocLink> potrzebna jest jedynie aktualna wersja wybranej przez siebie przeglądarki internetowej (Chrome, Firefox, Brave, Edge...)
-		</MudText>
-		<MudText Typo="Typo.subtitle1">
-			2. Nakładka na stream (Stream overlay)
-		</MudText>
-		<MudText Class="ml-4">
-			Rodzaj ekranu dedykowany dla realizatorów transmisji online. Przeznaczony jest do osadzania w oprogramowaniu do transmisji na żywo jako jedna z warstw kompozycji wideo wynikowego. W celu jego <DocLink Ref="uruchomienie-stream-overlay">uruchomienia</DocLink> wymagane jest posiadanie oprogramowania do transmisji na żywo.
-		</MudText>
+<DocTitle Id="rozgrywanie-meczy">
+	Rozgrywanie meczy
+</DocTitle>
+<MudText>
+	Aby rozegrać mecz, naciśnij przycisk 'Oceniaj' znajdujący się na karcie meczu. Ukaże się panel oceniania meczu, z przyciskami odpowiednimi dla wybranego typu meczu.<br/>
+	Przejście do panelu oceniania meczu <MudText Typo="Typo.subtitle1" Inline>aktywuje mecz na ekranach</MudText>. Opuszczenie panelu oceniania usuwa mecz z ekranów.
+</MudText>
+<MudAlert Severity="Severity.Warning" NoIcon Dense>
+	Nie otwieraj panelu oceniania meczu w kilku kartach na raz, gdyż spowoduje to konflikty w ustaleniu aktualnego meczu na ekranie.
+</MudAlert>
+<MudText>
+	W przypadku, gdy wynik meczu wskazuje na zwycięzce, ukaże się przycisk 'Zatwierdź zwycięstwo' wraz z nazwą uczestnika. Kliknięcie tego przycisku spowoduje zmiane stanu meczu na rozegrany, a sam mecz zostanie zablokowany pod względem dalszej modyfikacji jego wyniku.
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	Odmierzanie czasu
+</MudText>
+<MudText>
+	Jeżeli w ustawieniach danego typu meczu włączono odmierzanie czasu, na panelu oceniania meczu ukaże się czasomierz z przyciskami START/STOP/RESET. Służą one odpowiednio do rozpoczęcia liczenia czasu, zatrzymania liczenia czasu i resetu czasu do stanu początkowego.<br/>
+	Aktualny czas pojedynku jest na bieżąco aktualizowany na ekranach.
+</MudText>
 
-		<DocTitle Id="uruchomienie-ekranu-wolnostojacego">
-			Uruchomienie ekranu wolnostojącego
-		</DocTitle>
-		<MudText>
-			todo
-		</MudText>
+<DocTitle Id="ekrany">
+	Co to są ekrany?
+</DocTitle>
+<MudText>
+	Ekrany to dostępne pod dedykowanym adresem url elementy wizualne, dedykowane do obserwacji przez widzów wydarzenia. Technicznie rzecz ujmując, są to dynamiczne strony HTML, reagujące na polecenia wydawane z panelu oceniania meczy.
+</MudText>
+<MudText>
+	Dostępne są dwa typy ekranów:
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	1. Ekran wolnostojący
+</MudText>
+<MudText Class="ml-4">
+	Rodzaj ekranu dedykowany dla widzów wydarzenia znajdujących się lokalnie, na miejscu wydarzenia. Do ich <DocLink Ref="uruchomienie-ekranu-wolnostojacego">uruchomienia</DocLink> potrzebna jest jedynie aktualna wersja wybranej przez siebie przeglądarki internetowej (Chrome, Firefox, Brave, Edge...)
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	2. Nakładka na stream (Stream overlay)
+</MudText>
+<MudText Class="ml-4">
+	Rodzaj ekranu dedykowany dla realizatorów transmisji online. Przeznaczony jest do osadzania w oprogramowaniu do transmisji na żywo jako jedna z warstw kompozycji wideo wynikowego. W celu jego <DocLink Ref="uruchomienie-stream-overlay">uruchomienia</DocLink> wymagane jest posiadanie oprogramowania do transmisji na żywo.
+</MudText>
+<MudAlert Severity="Severity.Info" NoIcon Dense>
+	Nie istnieje ograniczenie, zabraniające korzystać z jednego adresu ekranu wielokrotnie. Jeżeli chcesz mieć 3 ekrany tego samego typu, możesz stworzyć trzy osobne ekrany, lub jeden i skorzystać z jego adresu trzy razy.
+</MudAlert>
 
-		<DocTitle Id="uruchomienie-stream-overlay">
-			Uruchomienie nakładki na stream
-		</DocTitle>
-		<MudText>
-			todo
-		</MudText>
+<DocTitle Id="uruchomienie-ekranu-wolnostojacego">
+	Uruchomienie ekranu wolnostojącego
+</DocTitle>
+<MudText>
+	Aby uruchomić ekran wolnostojący, utwórz ekran typu 'Ekran wolnostojący' a następnie na liście ekranów naciśnij przycisk 'Kopiuj adres'.<br/>
+	Następnie wklej pozyskany adres w przeglądarkę internetową (na przykład w komputerze podłączonym do telewizora lub ekranu LED) i uruchom tryb pełnoekranowy (domyślnie przycisk F11 na klawiaturze).<br/>
+	Pomyślnie uruchomiony ekran powinien zmienić stan na 'Połączono'.
+</MudText>
 
-		<DocTitle Id="personalizacja-ekranow">
-			Personalizacja ekranów
-		</DocTitle>
-		<MudText>
-			todo
-		</MudText>
+<DocTitle Id="uruchomienie-stream-overlay">
+	Uruchomienie nakładki na stream
+</DocTitle>
+<MudText>
+	Aby uruchomić nakładkę na stream (stream overlay), utwórz ekran typu 'Nakładka na stream' a następnie na liście ekranów naciśnij przycisk 'Kopiuj adres'.<br/>
+	Tak pozyskany adres, wykorzystaj w swoim programie do transmisji na żywo jako źródło przeglądarkowe.<br/>
+	<MudText Typo="Typo.subtitle1">
+		Open Broadcaster Software (OBS)
+	</MudText>
+	Aby skorzystać z ekranu w OBS, na swojej scenie dodaj nowe źródło 'Przeglądarka / Browser source' a w pole 'Adres URL' wklej skopiowany adres.<br/><br/>
+	Pomyślnie uruchomiony ekran powinien zmienić stan na 'Połączono'.
+</MudText>
 
-		<DocTitle Id="autoryzacja">
-			Autoryzacja
-		</DocTitle>
-		<MudText>
-			todo
-		</MudText>
-	</div>
+<DocTitle Id="personalizacja-ekranow">
+	Personalizacja ekranów
+</DocTitle>
+<MudText>
+	Możesz dostosować sposób, w jaki <DocLink Ref="ekrany">ekrany</DocLink> prezentują dane.<br/><br/>
+	Do wyboru masz następujące ustawienia:<br/>
+	<MudText Typo="Typo.subtitle1" Inline>Pokazuj nazwę turnieju</MudText> - Nazwa turnieju będzie prezentowana na ekranach<br/>
+	<MudText Typo="Typo.subtitle1" Inline>Używaj krótkiej nazwy turnieju</MudText> - Jeżeli wybrano 'Pokazuj nazwę turnieju', pokazywana będzie krótka nazwa turnieju zamiast pełnej<br/>
+	<MudText Typo="Typo.subtitle1" Inline>Używaj skróconych nazw uczestników</MudText> - Jeżeli wprowadzono krótką nazwę uczestnika, będzie ona prezentowana zamiast pełnej<br/>
+	<MudText Typo="Typo.subtitle1" Inline>Pokazuj liczbę wygranych pojedynków</MudText> (Dla meczy wielopojedynkowych) - W przypadku, gdy aktualny mecz jest wielopojedynkowy, będzie prezentowana suma wygranych pojedynków, obok wyniku aktualnego pojedynku<br/>
+	<MudText Typo="Typo.subtitle1" Inline>Tryb kolorowania</MudText> - Określ, w jaki sposób używać koloru uczestnika:<br/>
+	<MudText Typo="Typo.subtitle1" Inline Class="ml-4">Podkreślenie</MudText> - Pod nazwą uczestnika będzie znajdowało się podkreślenie w jego kolorze<br/>
+	<MudText Typo="Typo.subtitle1" Inline Class="ml-4">Koloruj tekst</MudText> - Nazwa uczestnika będzie wyświetlana w jego kolorze<br/>
+	<MudText Typo="Typo.subtitle1" Inline Class="ml-4">Koloruj tło</MudText> - Nazwa uczestnika będzie znajdowała się na tle w jego kolorze<br/>
+	<MudText Typo="Typo.subtitle1" Inline>Lokalizacja czasu na streamie</MudText> - Wybierz, w którym miejscu będzie znajdował się czas pojedynku, na ekranie typu 'Nakładka na stream'<br/>
+</MudText>
+
+<DocTitle Id="autoryzacja">
+	Autoryzacja
+</DocTitle>
+<MudText>
+	Dla wygody użytkownika i prostoty, nie wymagamy utworzenia konta użytkownika aby stworzyć i zarządzać turniejem.<br/>
+	Aby zabezpieczyć dostęp do turnieju, w <DocLink Ref="tworzenie-turnieju">kreatorze turnieju</DocLink> wprowadź klucz dostępu. Klucz będzie wymagany przy każdej próbie wejścia do panelu turnieju.
+</MudText>
+<MudText Typo="Typo.subtitle1">
+	Dostęp do turnieju
+</MudText>
+<MudText>
+	Do swojego turnieju uzyskasz dostęp poprzez dedykowany adres url. Na adres dedykowany dla Twojego turnieju zostajesz przekierowany po stworzeniu turnieju w kreatorze turnieju.<br/><br/>
+	<MudText Typo="Typo.subtitle1" Inline>Turnieje z aliasem</MudText> - Twój turniej jest dostępny pod adresem <kbd>@_nav.ToAbsoluteUri(Urls.Tournaments.GetManageAlias("TWOJ_ALIAS"))</kbd><br/>
+	<MudText Typo="Typo.subtitle1" Inline>Turnieje bez aliasu</MudText> - Twój turniej jest dostępny pod adresem <kbd>@_nav.ToAbsoluteUri(Urls.Tournaments.GetManageAlias("AUTOGENEROWANY_IDENTYFIKATOR_TURNIEJU"))</kbd><br/>
+</MudText>
+<MudAlert Severity="Severity.Warning" NoIcon Dense>
+	Jeżeli nie nadałeś aliasu swojemu turniejowi, zaleca się skopiować adres turnieju w bezpieczne miejsce, aby go nie zgubić!
+</MudAlert>
+</div>
 </MudPaper>
 
 @code {
-	
+
 }

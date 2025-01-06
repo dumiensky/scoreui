@@ -8,10 +8,10 @@
 
 <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
 	<MudText Typo="Typo.h6">
-		Pojedynki
+		Mecze
 	</MudText>
 	<MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="AddMatch">
-		Dodaj pojedynek
+		Dodaj mecz
 	</MudButton>
 </MudStack>
 
@@ -27,7 +27,7 @@
 else
 {
 	<MudAlert Severity="Severity.Info" Class="my-2">
-		Nie dodano żadnego pojedynku
+		Nie dodano żadnego meczu
 	</MudAlert>
 }
 
@@ -38,7 +38,7 @@ else
 	
 	async Task AddMatch()
 	{
-		var dialog = await _dialogService.ShowAsync<EditMatchDialog>("Dodaj pojedynek",
+		var dialog = await _dialogService.ShowAsync<EditMatchDialog>("Dodaj mecz",
 			new DialogParameters<EditMatchDialog>()
 			{
 				{ _ => _.Tournament, Tournament }
@@ -58,7 +58,7 @@ else
 			Tournament.Matches.Add(match);
 
 			if (await _tournamentService.Update(Tournament))
-				_snack.Add("Dodano pojedynek", Severity.Success);
+				_snack.Add("Dodano mecz", Severity.Success);
 
 			await InvokeAsync(StateHasChanged);
 		}
@@ -76,7 +76,7 @@ else
 		context.Deleted = true;
 
 		if (await _tournamentService.Update(Tournament))
-			_snack.Add("Usunięto pojedynek", Severity.Success);
+			_snack.Add("Usunięto mecz", Severity.Success);
 
 		await InvokeAsync(StateHasChanged);
 	}
