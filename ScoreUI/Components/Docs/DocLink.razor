@@ -1,0 +1,15 @@
+@using ScoreUI.Models.Consts
+
+<a href="@Urls.Docs.Index#@Ref">
+	<span class="doc-link">
+		@ChildContent
+	</span>
+</a>
+
+@code {
+	[Parameter, EditorRequired]
+	public required string Ref { get; set; }
+	
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+}

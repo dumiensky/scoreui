@@ -25,4 +25,9 @@ public static class Urls
 
 		public static string GetDisplay(Guid displayId) => $"{Index}/{displayId}";
 	}
+
+	public static class Docs
+	{
+		public const string Index = "/docs";
+	}
 }

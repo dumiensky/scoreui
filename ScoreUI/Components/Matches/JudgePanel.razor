@@ -37,7 +37,7 @@
 @if (Match.Status is MatchStatus.Done && Match.GetWinnerId() is {} matchWinnerId)
 {
 	<MudAlert Severity="Severity.Success" Variant="Variant.Filled" Class="my-3 pa-3">
-		Ten pojedynek został już oceniony<br/>
+		Ten mecz został już oceniony<br/>
 		Zwycięzca:
 		<ParticipantIdDisplay Tournament="Tournament" Id="matchWinnerId" />
 	</MudAlert>

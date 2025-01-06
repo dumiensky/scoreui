@@ -1,0 +1,21 @@
+@using ScoreUI.Models.Consts
+
+<a href="@Urls.Docs.Index#@Id">
+	<div class="doc-title">
+		<div id="@Id" class="doc-title-anchor"></div>
+		<MudText Typo="Typo.h2">
+			@ChildContent
+		</MudText>
+		<div class="doc-title-copy-icon">
+			<MudIcon Color="Color.Info" Icon="@Icons.Material.Filled.Link" />
+		</div>
+	</div>
+</a>
+
+@code {
+	[Parameter, EditorRequired]
+	public required string Id { get; set; }
+	
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+}

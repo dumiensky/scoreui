@@ -1,14 +1,20 @@
-﻿@inherits LayoutComponentBase
+﻿@using ScoreUI.Models.Consts
+@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider Theme="Theme.Default" />
 <MudPopoverProvider />
 <MudDialogProvider MaxWidth="MaxWidth.Medium" FullWidth="true" />
 <MudSnackbarProvider />
 
 <MudLayout>
 	<MudAppBar Elevation="1">
-		<MudImage Src="/ScoreUI_logo_short.png" Width="80" />
+		<a href="@Urls.Home">
+			<MudImage Src="/ScoreUI_logo_short.png" Width="80" />
+		</a>
 		<MudSpacer />
+		<MudButton Size="Size.Small" StartIcon="@Icons.Material.Filled.Help" Href="@Urls.Docs.Index" Class="white-text">
+			POMOC
+		</MudButton>
 	</MudAppBar>
 	<MudMainContent>
 		<div class="pa-3">
