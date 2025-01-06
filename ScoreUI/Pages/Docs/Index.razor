@@ -45,7 +45,7 @@
 			Tworzenie turnieju
 		</DocTitle>
 		<MudText>
-			Aby stworzyć turniej, skorzystaj z <strong>kreatora turnieju</strong> dostępnego pod <MudLink Href="@Urls.Tournaments.Create" Target="_blank">tym adresem</MudLink>.<br/>
+			Aby stworzyć turniej, skorzystaj z <MudText Inline Typo="Typo.subtitle1">kreatora turnieju</MudText> dostępnego pod <MudLink Href="@Urls.Tournaments.Create" Target="_blank">tym adresem</MudLink>.<br/>
 			W kreatorze, będziesz musiał przejść przez następujące kroki:
 		</MudText>
 		<MudText Typo="Typo.subtitle1">
@@ -89,14 +89,87 @@
 			Panel turnieju
 		</DocTitle>
 		<MudText>
-			todo
+			Panel turnieju to główne miejsce w którym będziesz zarządzał swoim turniejem.<br/>
+			Panel turnieju składa się trzech głównych kart:
 		</MudText>
+		<MudText Typo="Typo.subtitle1">
+			1. Uczestnicy
+		</MudText>
+		<MudText Class="ml-4">
+			W panelu uczestników możesz zarządzać uczestnikami swojego turnieju. Prezentowana jest lista zdefiniowanych uczestników, możesz ich tworzyć lub usuwać.<br/>
+			Nie usuniesz uczestnika, który już bierze udział w meczu.
+		</MudText>
+		<MudAlert Severity="Severity.Info" Dense NoIcon>
+			Więcej informacji o uczestnikach znajdziesz w zakładce <DocLink Ref="uczestnicy">uczestnicy</DocLink>
+		</MudAlert>
+		<MudText Typo="Typo.subtitle1">
+			2. Mecze
+		</MudText>
+		<MudText Class="ml-4">
+			W panelu mecze możesz zarządzać meczami odbywającymi się w ramach Twojego turnieju.<br/>
+			Możesz wprowadzać, usuwać i przeprowadzać mecze, wedle zasad określonych w ustawieniach turnieju.<br/>
+			Nie usuniesz meczu przeprowadzanego (który posiada określonego zwycięzce)
+		</MudText>
+		<MudAlert Severity="Severity.Info" Dense NoIcon>
+			Więcej informacji o meczach znajdziesz w zakładce <DocLink Ref="wprowadzanie-meczy">wprowadzanie meczy</DocLink> i <DocLink Ref="rozgrywanie-meczy">rozgrywanie meczy</DocLink>
+		</MudAlert>
+		<MudText Typo="Typo.subtitle1">
+			2. Ekrany
+		</MudText>
+		<MudText Class="ml-4">
+			W panelu ekrany możesz zarządzać ekranami reagującymi na przebieg Twojego turnieju.<br/>
+			Możesz definiować i usuwać różne typy ekranów.
+		</MudText>
+		<MudAlert Severity="Severity.Info" Dense NoIcon>
+			Więcej informacji o ekranach znajdziesz w zakładce <DocLink Ref="ekrany">ekrany</DocLink>.
+		</MudAlert>
 
 		<DocTitle Id="ustawienia-turnieju">
 			Ustawienia turnieju
 		</DocTitle>
 		<MudText>
-			todo
+			Na ustawienia turnieju składają się 3 kategorie ustawień:
+		</MudText>
+		<MudText Typo="Typo.subtitle1">
+			1. Informacje
+		</MudText>
+		<MudText Class="ml-4">
+			Informacje składają się z następujących ustawień:<br />
+			<MudText Inline Typo="Typo.subtitle1">Nazwa turnieju</MudText> (wymagane) - Nazwa Twojego turnieju<br />
+			<MudText Inline Typo="Typo.subtitle1">Krótka nazwa turnieju</MudText> - Skrócona nazwa Twojego turnieju, opcjonalnie wyświetlana na <DocLink Ref="ekrany">ekranach</DocLink>. Przydatne, gdy formalna nazwa turnieju jest długa, natomiast powszechnie stosuje się skróconą.
+		</MudText>
+		<MudText Typo="Typo.subtitle1">
+			2. Rodzaje meczy
+		</MudText>
+		<MudText Class="ml-4">
+			Rodzaje meczy zawierają checkboxy, dzięki którym możesz określić jakie rodzaje meczy mogą być odbywane w ramach Twojego turnieju.<br/>
+			Do wyboru masz 3 rodzaje meczy:<br/>
+			<MudText Inline Typo="Typo.subtitle1">Mecz prosty</MudText> - jest to mecz punktowany pojedynczo, czyli każdy uczestnik może zdobyć tylko jeden rodzaj punktu całkowitego (np. bramki, gole, ciosy). Taki mecz może skończyć sie na przykład wynikiem 1-0 lub 25-19.<br/>
+			<MudText Inline Typo="Typo.subtitle1">Mecz podwójnie punktowany</MudText> - jest to mecz punktowany podwójnie, posiadający punkty główne i punkty podrzędne. Punkty główne są brane pod uwagę jako pierwsze przy ustalaniu zwycięzcy, lecz w przypadku remisu decydujące są punkty podrzędne.<br/>
+			<MudText Inline Typo="Typo.subtitle1">Mecz wielopojedynkowy</MudText> - jest to mecz składający się z kilku odrębnych pojedynków prostych. Wynikiem meczu będzie suma zwycięstw poszczególnych pojedynków. Przykładowo, przy 3 pojedynkach zakończonych wynikami 3-5, 4-1 i 5-7, wynik końcowy będzie wynosił 1-2.
+		</MudText>
+		<MudText Typo="Typo.subtitle1">
+			3. Ustawienia meczy
+		</MudText>
+		<MudText Class="ml-4">
+			Ustawienia meczy pozwalają Ci spersonalizować w jaki sposób chcesz oceniać konkretny typ meczu.<br/><br/>
+			Każdy z typów meczy może być odbywany z <MudText Inline Typo="Typo.subtitle1">mierzonym czasem</MudText>.<br/>
+			Na ustawienia mierzonego czasu składają się:<br/>
+			<MudText Inline Typo="Typo.subtitle1">Maksymalna długość rozgrywki (minuty, sekundy)</MudText> - wprowadzony tu czas będzie bazowym czasem meczów które będziesz przeprowadzać<br/>
+			<MudText Inline Typo="Typo.subtitle1">Pozwalać na przekroczenie czasu?</MudText> - Po zaznaczeniu, czas będzie płynać dalej, nawet po przekroczeniu maksymalnej długości rozgrywki<br/>
+			<MudText Inline Typo="Typo.subtitle1">Odliczać czas w dół?</MudText> - Po zaznaczeniu, czas będzie odliczany od maksymalnej długości rozgrywki w dół (czas będzie odejmowany) aż do 00:00<br/>
+			<br/>
+			Ponadto, poszczególne typy meczy mają swoje specyficzne ustawienia:<br/>
+			<MudText Typo="Typo.subtitle1">
+				1. Mecz podwójnie punktowany
+			</MudText>
+			<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Nazwa punktów głównych</MudText> - nazwa wyświetlana dla punktów głównych<br/>
+			<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Nazwa punktów podrzędnych</MudText> - nazwa wyświetlana dla punktów podrzędnych<br/>
+			<MudText Typo="Typo.subtitle1">
+				2. Mecz wielopojedynkowy
+			</MudText>
+			<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Minimalna ilość pojedynków</MudText> - minimalna ilość pojedynków prostych składających się na mecz wielopojedynkowy<br/>
+			<MudText Inline Typo="Typo.subtitle1" Class="ml-4">Maksymalna ilość pojedynków</MudText> - maksymalna ilość pojedynków prostych składających się na mecz wielopojedynkowy<br/>
 		</MudText>
 
 		<DocTitle Id="uczestnicy">

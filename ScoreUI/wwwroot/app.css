@@ -8,7 +8,7 @@ html, body {
     display: flex;
     gap: 10px;
     align-items: center;
-    margin: 10px 0;
+    margin: 25px 0 10px;
 }
 
 .doc-title-anchor {
@@ -27,4 +27,12 @@ html, body {
     text-decoration: underline; 
     text-decoration-style: dashed; 
     text-decoration-color: cornflowerblue;
+}
+
+.mud-typography.mud-typography-subtitle1 {
+    margin-top: 12px;
+}
+
+strong {
+    font-weight: 500;
 }
