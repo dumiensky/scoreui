@@ -15,9 +15,12 @@ public abstract class DisplayBase : ComponentBase, IDisposable
 	[Inject]
 	public required ILogger<DisplayBase> Logger { get; set; }
 	
-	[Parameter]
+	[Parameter, EditorRequired]
 	public required Tournament Tournament { get; set; }
 
+	[Parameter, EditorRequired]
+	public required Guid DisplayId { get; set; }
+	
 	protected Match? CurrentMatch;
 	protected Participant? ParticipantOne;
 	protected Participant? ParticipantTwo;
@@ -42,8 +45,8 @@ public abstract class DisplayBase : ComponentBase, IDisposable
 		if (e.TournamentId == Tournament.Id)
 		{
 			Logger.LogInformation(
-				"Switched current match of tournament {TournamentId} from {OldMatchId} to {NewMatchId}",
-				Tournament.Id, CurrentMatch?.Id, e.CurrentMatch?.Id);
+				"Display {DisplayId}: Switched current match of tournament {TournamentId} from {OldMatchId} to {NewMatchId}",
+				DisplayId, Tournament.Id, CurrentMatch?.Id, e.CurrentMatch?.Id);
 			
 			CurrentMatch = e.CurrentMatch;
 

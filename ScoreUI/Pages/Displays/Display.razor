@@ -44,11 +44,11 @@ else
 	switch (_display.Type)
 	{
 		case DisplayType.StreamOverlay:
-			<StreamOverlayDisplay Tournament="_tournament" />
+			<StreamOverlayDisplay Tournament="_tournament" DisplayId="DisplayId" />
 			break;
 			
 		case DisplayType.Standalone:
-			<StandaloneDisplay Tournament="_tournament" />
+			<StandaloneDisplay Tournament="_tournament" DisplayId="DisplayId" />
 			break;
 			
 		default:
