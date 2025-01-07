@@ -25,10 +25,12 @@ builder.Services.AddSerilog(
 		c.WriteTo.MongoDB($"{mongoDbSettings.ConnectionString}/{mongoDbSettings.DatabaseName}");
 		
 		c.Enrich.FromLogContext();
+		c.Enrich.WithClientIp();
 		
 		c.MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning);
 		c.MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning);
 		c.MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning);
+		c.MinimumLevel.Override("Serilog.AspNetCore.RequestLoggingMiddleware", LogEventLevel.Warning);
 	});
 builder.Services.AddMudServices();
 builder.Services.AddClipboard();
@@ -36,6 +38,7 @@ builder.Services.AddSingleton<IMongoDb>(new MongoDb(mongoDbSettings));
 builder.Services.AddSingleton<IDisplayHooks, DisplayHooks>();
 builder.Services.AddSingleton<IDisplayActivityTracker, DisplayActivityTracker>();
 builder.Services.AddTransient<ITournamentService, TournamentService>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -48,6 +51,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseSerilogRequestLogging();
 app.UseAntiforgery();
 
 app
