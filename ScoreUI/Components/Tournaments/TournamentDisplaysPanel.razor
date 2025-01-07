@@ -13,6 +13,7 @@
 @inject IMongoDb _mongoDb
 @inject IClipLazor _clipboard
 @inject NavigationManager _nav
+@inject ILogger<TournamentDisplaysPanel> _logger
 
 <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
 	<MudText Typo="Typo.h6">
@@ -117,10 +118,13 @@ else
 
 		if (result?.Data is EditDisplayDialog.Data rData)
 		{
-			await _mongoDb.Add(Display.Create(rData.DisplayType, Tournament.Id));
+			var newDisplay = Display.Create(rData.DisplayType, Tournament.Id);
+			await _mongoDb.Add(newDisplay);
 
 			await LoadDisplays();
 			_snack.Add("Dodano ekran", Severity.Success);
+			_logger.LogInformation("Created display {DisplayId} in tournament {TournamentId}",
+				newDisplay.Id, Tournament.Id);
 		}
 	}
 
@@ -136,6 +140,8 @@ else
 		await _mongoDb.Delete<Display>(display.Id);
 
 		_snack.Add("Usunięto ekran", Severity.Success);
+		_logger.LogInformation("Deleted display {DisplayId} from tournament {TournamentId}",
+			display.Id, Tournament.Id);
 
 		await LoadDisplays();
 	}
@@ -195,7 +201,8 @@ else
 			Tournament.Settings.Displays.DisplaySumOfWonDuels = data.DisplaySumOfWonDuels;
 			Tournament.Settings.Displays.TimerLocation = data.TimerLocation;
 
-			await _tournamentService.Update(Tournament);
+			if (await _tournamentService.Update(Tournament))
+				_logger.LogInformation("Updated display settings of tournament {TournamentId}", Tournament.Id);
 		}
 	}
 

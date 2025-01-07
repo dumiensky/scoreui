@@ -12,6 +12,9 @@ public abstract class DisplayBase : ComponentBase, IDisposable
 	[Inject]
 	public required IDisplayHooks DisplayHooks { get; set; }
 	
+	[Inject]
+	public required ILogger<DisplayBase> Logger { get; set; }
+	
 	[Parameter]
 	public required Tournament Tournament { get; set; }
 
@@ -38,6 +41,10 @@ public abstract class DisplayBase : ComponentBase, IDisposable
 	{
 		if (e.TournamentId == Tournament.Id)
 		{
+			Logger.LogInformation(
+				"Switched current match of tournament {TournamentId} from {OldMatchId} to {NewMatchId}",
+				Tournament.Id, CurrentMatch?.Id, e.CurrentMatch?.Id);
+			
 			CurrentMatch = e.CurrentMatch;
 
 			if (CurrentMatch is not null)

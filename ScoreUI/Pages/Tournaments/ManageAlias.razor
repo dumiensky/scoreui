@@ -4,6 +4,7 @@
 @attribute [Route(Urls.Tournaments.ManageAlias)]
 
 @inject ITournamentService _tournamentService
+@inject ILogger<ManageAlias> _logger
 
 @if (!_loaded)
 {
@@ -33,6 +34,12 @@ else
 		if (TournamentAlias is not null)
 		{
 			_tournament = await _tournamentService.FindByAlias(TournamentAlias);
+
+			if (_tournament is null)
+			{
+				_logger.LogWarning("Attempted to access unknown tournament by alias {TournamentAlias}", 
+					TournamentAlias);
+			}
 		}
 		_loaded = true;
 	}

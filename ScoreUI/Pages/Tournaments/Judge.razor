@@ -5,6 +5,7 @@
 @attribute [Route(Urls.Tournaments.Judge)]
 
 @inject ITournamentService _tournamentService
+@inject ILogger<Judge> _logger
 
 @if (!_loaded)
 {
@@ -45,6 +46,8 @@ else
 
 			if (match is not null && match.GetMatchToken(_tournament.Settings.Key) == Token)
 			{
+				_logger.LogInformation("Returning judge panel for match {MatchId} in {TournamentId}",
+					MatchId, TournamentId);
 				_match = match;
 			}
 		}

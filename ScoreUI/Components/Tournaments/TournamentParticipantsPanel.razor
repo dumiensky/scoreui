@@ -5,6 +5,7 @@
 @inject IDialogService _dialogService
 @inject ITournamentService _tournamentService
 @inject ISnackbar _snack
+@inject ILogger<TournamentParticipantsPanel> _logger
 
 <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
 	<MudText Typo="Typo.h6">
@@ -100,7 +101,11 @@ else
 			Tournament.Participants.Add(participant);
 
 			if (await _tournamentService.Update(Tournament))
+			{
 				_snack.Add("Dodano uczestnika", Severity.Success);
+				_logger.LogInformation("Created new participant {ParticipantId} in tournament {TournamentId}",
+					participant.Id, Tournament.Id);
+			}
 
 			await InvokeAsync(StateHasChanged);
 		}
@@ -123,7 +128,11 @@ else
 			context.ColorHex = rData.ColorHex;
 
 			if (await _tournamentService.Update(Tournament))
+			{
 				_snack.Add("Zaktualizowano uczestnika", Severity.Success);
+				_logger.LogInformation("Updated participant {ParticipantId} information in tournament {TournamentId}",
+					context.Id, Tournament.Id);
+			}
 
 			await InvokeAsync(StateHasChanged);
 		}
@@ -134,7 +143,11 @@ else
 		context.Deleted = true;
 
 		if (await _tournamentService.Update(Tournament))
+		{
 			_snack.Add("Usunięto uczestnika", Severity.Success);
+			_logger.LogInformation("Deleted participant {ParticipantId} from tournament {TournamentId}",
+				context.Id, Tournament.Id);
+		}
 
 		await InvokeAsync(StateHasChanged);
 	}

@@ -3,6 +3,7 @@
 
 @inject IDialogService _dialogService
 @inject ITournamentService _tournamentService
+@inject ILogger<ManagePanel> _logger
 
 <MudPaper Class="my-3 pa-3 indigo lighten-5">
 	<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
@@ -51,7 +52,8 @@
 			Tournament.Settings.DualPointsMatch = newTournament.Settings.DualPointsMatch;
 			Tournament.Settings.MultiDuelMatch = newTournament.Settings.MultiDuelMatch;
 
-			await _tournamentService.Update(Tournament);
+			if(await _tournamentService.Update(Tournament))
+				_logger.LogInformation("Updated settings of tournament {TournamentId}", Tournament.Id);
 		}
 	}
 

@@ -2,6 +2,7 @@
 @using ScoreUI.Components.Tournaments
 
 @inject NavigationManager _nav
+@inject ILogger<ManagePage> _logger
 
 @switch (_accessState)
 {
@@ -76,11 +77,17 @@
 				uri = uri[..index];
 			}
 			
+			_logger.LogInformation("Successfully authorized with key to tournament {TournamentId}",
+				Tournament.Id);
+			
 			_nav.NavigateTo(uri + $"?token={Tournament.GetTournamentToken()}");
 		}
 		else
 		{
 			_accessState = AccessState.AccessDenied;
+			
+			_logger.LogWarning("Failed attempt to provide access key for tournament {TournamentId}",
+				Tournament.Id);
 		}
 	}
 

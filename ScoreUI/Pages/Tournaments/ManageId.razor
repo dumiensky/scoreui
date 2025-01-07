@@ -4,6 +4,7 @@
 @attribute [Route(Urls.Tournaments.ManageId)]
 
 @inject ITournamentService _tournamentService
+@inject ILogger<ManageId> _logger
 
 @if (!_loaded)
 {
@@ -31,6 +32,13 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		_tournament = await _tournamentService.Get(TournamentId);
+		
+		if (_tournament is null)
+		{
+			_logger.LogWarning("Attempted to access unknown tournament by id {TournamentId}", 
+				TournamentId);
+		}
+		
 		_loaded = true;
 	}
 
