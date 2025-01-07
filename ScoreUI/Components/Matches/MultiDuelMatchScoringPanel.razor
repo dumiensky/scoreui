@@ -5,6 +5,7 @@
 @inject ISnackbar _snack
 @inject IDialogService _dialogService
 @inject IDisplayHooks _displayHooks
+@inject ILogger<MultiDuelMatchScoringPanel> _logger
 @implements IDisposable
 
 <MudPaper Class="my-3 pa-3">
@@ -132,6 +133,8 @@
 		Match.Duels.Remove(currentDuel);
 		_currentDuel = null;
 
+		_logger.LogInformation("Removed duel {DuelId} of match {MatchId} from tournament {TournamentId}",
+			currentDuel.Id, Match.Id, Tournament.Id);
 		_snack.Add("Usunięto pojedynek, nadano nowe numery pojedynków", Severity.Info);
 
 		await OnUpdate.InvokeAsync();
@@ -146,8 +149,12 @@
 
 	void CreateDuel()
 	{
-		Match.Duels.Add(MultiDuelMatch.Duel.Create());
+		var newDuel = MultiDuelMatch.Duel.Create();
+		Match.Duels.Add(newDuel);
 		OnUpdate.InvokeAsync();
+		
+		_logger.LogInformation("Created new duel {DuelId} in match {MatchId} from tournament {TournamentId}",
+			newDuel.Id, Match.Id, Tournament.Id);
 	}
 
 	void SetCurrentDuel(MultiDuelMatch.Duel? duel)

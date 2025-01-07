@@ -18,7 +18,9 @@
 	</MudAppBar>
 	<MudMainContent>
 		<div class="pa-3">
-			@Body
+			<ErrorGuard @ref="_errorGuard">
+				@Body
+			</ErrorGuard>
 		</div>
 	</MudMainContent>
 </MudLayout>
@@ -35,3 +37,14 @@
 		</MudStack>
 	</MudAlert>
 </div>
+
+@code {
+
+	ErrorGuard? _errorGuard;
+	
+	protected override void OnParametersSet()
+	{
+		_errorGuard?.Recover();
+	}
+
+}

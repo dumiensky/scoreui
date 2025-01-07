@@ -11,6 +11,7 @@
 @inject IMongoDb _mongoDb
 @inject ITournamentService _tournamentService
 @inject IDisplayActivityTracker _displayActivityTracker
+@inject ILogger<Display> _logger
 
 @implements IDisposable
 
@@ -43,11 +44,11 @@ else
 	switch (_display.Type)
 	{
 		case DisplayType.StreamOverlay:
-			<StreamOverlayDisplay Tournament="_tournament" />
+			<StreamOverlayDisplay Tournament="_tournament" DisplayId="DisplayId" />
 			break;
 			
 		case DisplayType.Standalone:
-			<StandaloneDisplay Tournament="_tournament" />
+			<StandaloneDisplay Tournament="_tournament" DisplayId="DisplayId" />
 			break;
 			
 		default:
@@ -72,6 +73,13 @@ else
 
 		if (_display is not null)
 			_tournament = await _tournamentService.Get(_display.TournamentId);
+		
+		if (_tournament is not null)
+			_logger.LogInformation("Connected {DisplayId} to tournament {TournamentId}",
+				DisplayId, _tournament.Id);
+		else
+			_logger.LogWarning("Attempted to connect {DisplayId} but it is not correlated to any tournament", 
+				DisplayId);
 			
 		_loaded = true;
 		
@@ -81,5 +89,9 @@ else
 	void IDisposable.Dispose()
 	{
 		_displayActivityTracker.RemoveActive(DisplayId);
+		
+		if (_tournament is not null)
+			_logger.LogInformation("Disconnected {DisplayId} from tournament {TournamentId}",
+				DisplayId, _tournament.Id);
 	}
 }

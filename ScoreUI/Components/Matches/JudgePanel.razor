@@ -6,6 +6,7 @@
 @inject ITournamentService _tournamentService
 @inject ISnackbar _snack
 @inject IDisplayHooks _displayHooks
+@inject ILogger<JudgePanel> _logger
 
 @implements IDisposable
 
@@ -115,6 +116,9 @@
 	{
 		Match.Status = MatchStatus.Done;
 		await OnUpdate();
+		
+		_logger.LogInformation("Submitted score of match {MatchId} in tournament {TournamentId}",
+			Match.Id, Tournament.Id);
 	}
 
 	async Task OnUpdate()
