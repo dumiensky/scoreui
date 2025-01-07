@@ -1,0 +1,24 @@
+<LoggedErrorBoundary @ref="_errorBoundary">
+	<ChildContent>
+		@ChildContent
+	</ChildContent>
+	<ErrorContent>
+		<MudAlert Severity="Severity.Error" Class="ma-3" Variant="Variant.Filled">
+			<MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+				<MudText>Wystąpił nieoczekiwany błąd!</MudText>
+				<MudButton OnClick="Recover" Variant="Variant.Filled" Color="Color.Dark">
+					Spróbuj ponownie
+				</MudButton>
+			</MudStack>
+		</MudAlert>
+	</ErrorContent>
+</LoggedErrorBoundary>
+
+@code {
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	LoggedErrorBoundary? _errorBoundary;
+
+	public void Recover() => _errorBoundary?.Recover();
+}

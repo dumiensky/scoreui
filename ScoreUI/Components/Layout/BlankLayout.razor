@@ -5,7 +5,9 @@
 <MudDialogProvider MaxWidth="MaxWidth.Medium" FullWidth="true" />
 <MudSnackbarProvider />
 
-@Body
+<ErrorGuard>
+	@Body
+</ErrorGuard>
 
 <div id="blazor-error-ui">
 	<MudAlert Severity="Severity.Error" Variant="Variant.Filled">

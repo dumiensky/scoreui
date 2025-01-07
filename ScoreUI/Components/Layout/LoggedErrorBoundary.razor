@@ -1,0 +1,27 @@
+@inherits ErrorBoundary
+@inject ILogger<LoggedErrorBoundary> _logger
+@inject NavigationManager _nav
+
+@if (CurrentException is null)
+{
+	@ChildContent
+}
+else if (ErrorContent is not null)
+{
+	@ErrorContent(CurrentException)
+}
+
+@code {
+	protected override Task OnErrorAsync(Exception ex)
+	{
+		using (_logger.BeginScope(
+					new Dictionary<string, string>
+					{
+						{ "url", _nav.Uri }
+					}))
+		{
+			_logger.LogError(ex, "Caught an unhandled exception!");
+		}
+		return Task.CompletedTask;
+	}
+}
