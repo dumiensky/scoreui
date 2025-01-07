@@ -6,6 +6,8 @@ using MudBlazor.Services;
 using ScoreUI.Pages;
 using ScoreUI.Services;
 using ScoreUI.Services.Interfaces;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,18 @@ builder
 	.Services.AddRazorComponents()
 	.AddInteractiveServerComponents();
 
+builder.Services.AddSerilog(
+	c =>
+	{
+		c.WriteTo.Console();
+		c.WriteTo.MongoDB($"{mongoDbSettings.ConnectionString}/{mongoDbSettings.DatabaseName}");
+		
+		c.Enrich.FromLogContext();
+		
+		c.MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning);
+		c.MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning);
+		c.MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning);
+	});
 builder.Services.AddMudServices();
 builder.Services.AddClipboard();
 builder.Services.AddSingleton<IMongoDb>(new MongoDb(mongoDbSettings));
