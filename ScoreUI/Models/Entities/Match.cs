@@ -19,12 +19,11 @@ public abstract class Match : Entity
 	public string? Comment { get; set; }
 
 	public abstract Guid? GetWinnerId();
+	public abstract MatchSettings GetSettings(Tournament tournament);
 
 	public string GetMatchToken(string? key) =>
 		Convert.ToHexString(SHA1.HashData(Encoding.UTF8.GetBytes($"{key}x{Id}7")));
-
-	public abstract MatchSettings GetSettings(Tournament tournament);
-
+	
 	public bool ScoringDisabled => Status is MatchStatus.Done;
 	public bool ScoringEnabled => Status is MatchStatus.Pending;
 }
